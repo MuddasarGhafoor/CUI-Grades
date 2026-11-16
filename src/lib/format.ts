@@ -17,3 +17,16 @@ export function formatMarks(value: number | null): string {
 export function formatCredits(credits: number): string {
   return `${credits} credit${credits === 1 ? "" : "s"}`;
 }
+
+/** Colour for a percentage: green for A range, teal for good, amber near the pass line, red below it. */
+export function toneColor(percent: number | null): string {
+  if (percent === null) return "var(--line-strong)";
+  if (percent >= 84.5) return "var(--ok)";
+  if (percent >= 69.5) return "var(--accent)";
+  if (percent >= 49.5) return "var(--warn)";
+  return "var(--err)";
+}
+
+export function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}

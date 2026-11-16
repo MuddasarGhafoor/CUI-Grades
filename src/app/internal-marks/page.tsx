@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { ComingSoon, PageHeader } from "@/components/ui/page-header";
+import { InternalMarksApp } from "@/components/internal/internal-marks-app";
+import { PageHeader } from "@/components/ui/page-header";
 
 export const metadata: Metadata = {
   title: "Internal marks calculator",
   description:
-    "Calculate CUI internal (sessional) marks from quizzes, assignments and midterms, for theory and lab.",
+    "Calculate CUI internal (sessional) marks from quizzes, assignments and midterms, for theory and lab, with totals already filled in.",
 };
 
 export default function InternalMarksPage() {
@@ -12,16 +13,9 @@ export default function InternalMarksPage() {
     <>
       <PageHeader
         title="Internal marks"
-        description="Quizzes, assignments and midterms for every subject, theory and lab."
+        description="Type the marks you got. Totals are already filled in, and your percentage and grade update as you go."
       />
-      <ComingSoon
-        items={[
-          "Subjects with theory and lab credit hours",
-          "Pre-filled totals for every assessment",
-          "Tab and Enter to move between fields",
-          "Progress ring and mark breakdown",
-        ]}
-      />
+      <InternalMarksApp />
     </>
   );
 }
