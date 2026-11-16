@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Carter_One, Geist, Geist_Mono } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
+import { VoiceDock } from "@/components/voice/voice-dock";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
 
@@ -59,6 +60,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <VoiceDock />
       </body>
     </html>
   );

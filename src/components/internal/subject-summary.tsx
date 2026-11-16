@@ -57,7 +57,7 @@ export function SubjectSummary({ result, children }: SubjectSummaryProps) {
   else status = `Based on the ${Math.round(result.coverage * 100)}% of marks entered so far.`;
 
   return (
-    <aside className="space-y-4 rounded-lg border border-line bg-surface p-5 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto">
+    <aside className="space-y-4 rounded-lg border border-line bg-surface p-5 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-15rem)] lg:overflow-y-auto">
       <div className="flex items-center gap-4">
         <ProgressRing value={result.percent} color={toneColor(result.percent)}>
           <div>

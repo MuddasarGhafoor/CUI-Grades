@@ -42,8 +42,8 @@ export default function Home() {
         </h1>
         <p className="mt-3 text-muted">
           Totals are filled in for you, Tab moves you to the next box, and you can say your marks
-          out loud instead of typing them. Everything stays saved in your browser, so nothing is
-          sent anywhere.
+          out loud instead of typing them. Your marks are saved in your own browser, not on a
+          server.
         </p>
       </section>
 
