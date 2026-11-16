@@ -1,0 +1,72 @@
+"use client";
+
+import Link from "next/link";
+import { ConfirmButton } from "@/components/ui/confirm-button";
+import type { CourseResult, EffectiveGrade } from "@/lib/calc";
+import { formatCredits, formatMarks, formatPercent } from "@/lib/format";
+import type { GradeBand } from "@/lib/grading";
+import { removeCourse, setActiveCourse, updateCourse } from "@/lib/store";
+import type { Course } from "@/lib/types";
+import { GradeSelect } from "./grade-select";
+
+type SubjectRowProps = {
+  course: Course;
+  result: CourseResult;
+  grade: EffectiveGrade | null;
+  scale: GradeBand[];
+};
+
+export function SubjectRow({ course, result, grade, scale }: SubjectRowProps) {
+  const fromMarks = result.gradeFromMarks;
+  const credits = result.credits;
+
+  const marksNote = fromMarks
+    ? `${formatPercent(result.percent)} from marks${result.complete ? "" : " so far"} (${fromMarks.letter})`
+    : "no marks entered";
+
+  return (
+    <li className="flex flex-wrap items-center gap-x-4 gap-y-2 py-4">
+      <div className="min-w-0 flex-1 basis-48">
+        <Link
+          href="/internal-marks"
+          onClick={() => setActiveCourse(course.id)}
+          className="font-semibold hover:text-accent"
+          title="Open in Internal marks"
+        >
+          {course.name}
+        </Link>
+        <p className="text-xs text-muted">
+          {course.theoryCredits}+{course.labCredits} · {formatCredits(credits)} · {marksNote}
+        </p>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <GradeSelect
+          id={`${course.id}-grade`}
+          label={`Grade for ${course.name}`}
+          value={course.manualGrade ?? ""}
+          scale={scale}
+          emptyLabel={fromMarks ? `From marks (${fromMarks.letter})` : "Pick a grade"}
+          onChange={(letter) =>
+            updateCourse(course.id, (c) => {
+              c.manualGrade = letter || null;
+            })
+          }
+        />
+        <p className="w-32 text-right text-sm tabular-nums">
+          {grade ? (
+            <>
+              <span className="text-muted">
+                {grade.points.toFixed(2)} × {credits} ={" "}
+              </span>
+              <span className="font-semibold">{formatMarks(grade.points * credits)}</span>
+            </>
+          ) : (
+            <span className="text-muted">not counted</span>
+          )}
+        </p>
+        <ConfirmButton label="Remove" confirmLabel="Remove?" onConfirm={() => removeCourse(course.id)} />
+      </div>
+    </li>
+  );
+}

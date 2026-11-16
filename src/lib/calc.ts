@@ -166,12 +166,14 @@ export function courseResult(course: Course, scale: GradeBand[]): CourseResult {
   };
 }
 
+export type EffectiveGrade = { letter: string; points: number; source: "manual" | "marks" };
+
 /** The grade the GPA page uses: a typed letter wins over the grade from marks. */
 export function effectiveGrade(
   course: Course,
   result: CourseResult,
   scale: GradeBand[],
-): { letter: string; points: number; source: "manual" | "marks" } | null {
+): EffectiveGrade | null {
   if (course.manualGrade) {
     const band = bandForLetter(course.manualGrade, scale);
     if (band) return { letter: band.letter, points: band.points, source: "manual" };

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { ComingSoon, PageHeader } from "@/components/ui/page-header";
+import { GpaApp } from "@/components/gpa/gpa-app";
+import { PageHeader } from "@/components/ui/page-header";
 
 export const metadata: Metadata = {
   title: "GPA calculator",
-  description: "Calculate your CUI semester GPA from your marks or letter grades.",
+  description:
+    "Calculate your CUI semester GPA from your internal marks, or pick the grades you already know.",
 };
 
 export default function GpaCalculatorPage() {
@@ -11,16 +13,9 @@ export default function GpaCalculatorPage() {
     <>
       <PageHeader
         title="GPA calculator"
-        description="Your semester GPA, from internal marks or grades you type in."
+        description="Grades come from your internal marks. Pick a grade by hand for any subject to use that instead. Subjects are shared with the Internal marks page."
       />
-      <ComingSoon
-        items={[
-          "Subjects linked from Internal marks",
-          "Pick a grade directly for any subject",
-          "Subject comparison bar chart",
-          "What you need in the final",
-        ]}
-      />
+      <GpaApp />
     </>
   );
 }
