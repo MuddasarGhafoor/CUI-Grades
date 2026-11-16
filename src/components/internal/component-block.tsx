@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { buttonClass } from "@/components/ui/button";
 import type { ComponentDef } from "@/lib/assessments";
 import type { ComponentResult } from "@/lib/calc";
@@ -7,6 +8,7 @@ import { capitalize, formatMarks } from "@/lib/format";
 import { createMark, updateCourse } from "@/lib/store";
 import type { Course, Mark } from "@/lib/types";
 import { MarkField } from "./mark-field";
+import { QuickFill } from "./quick-fill";
 
 type ComponentBlockProps = {
   course: Course;
@@ -17,6 +19,7 @@ type ComponentBlockProps = {
 
 /** One assessment, e.g. Quizzes: a row of mark boxes plus its weighted score. */
 export function ComponentBlock({ course, def, result, editing }: ComponentBlockProps) {
+  const [quickOpen, setQuickOpen] = useState(false);
   const value = course.marks[def.key];
   const entries = Array.isArray(value) ? value : [value];
 
@@ -47,15 +50,30 @@ export function ComponentBlock({ course, def, result, editing }: ComponentBlockP
 
   return (
     <section className="border-b border-line py-4 last:border-0">
-      <header className="mb-2.5 flex items-baseline justify-between gap-3">
+      <header className="mb-2.5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <h3 className="text-sm font-semibold">
           {def.label}
           <span className="ml-2 font-normal text-muted">{def.weight}%</span>
         </h3>
-        <p className="text-sm tabular-nums text-muted">
-          <span className="font-semibold text-fg">{formatMarks(result.marks)}</span> / {def.weight}
-        </p>
+        <div className="flex items-baseline gap-3">
+          {def.kind === "list" && !quickOpen && (
+            <button
+              type="button"
+              onClick={() => setQuickOpen(true)}
+              className="text-xs font-medium text-accent hover:underline"
+            >
+              Type all at once
+            </button>
+          )}
+          <p className="text-sm tabular-nums text-muted">
+            <span className="font-semibold text-fg">{formatMarks(result.marks)}</span> / {def.weight}
+          </p>
+        </div>
       </header>
+
+      {def.kind === "list" && quickOpen && (
+        <QuickFill course={course} def={def} onClose={() => setQuickOpen(false)} />
+      )}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {entries.map((mark, i) => (
