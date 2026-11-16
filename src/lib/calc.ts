@@ -223,6 +223,38 @@ export function readSemester(semester: Semester): GpaInput {
   return valid ? { credits, points: gpa } : { credits: 0, points: null };
 }
 
+export type TimelinePoint = {
+  id: string;
+  label: string;
+  gpa: number;
+  credits: number;
+  /** CGPA right after this semester. */
+  cgpa: number;
+};
+
+/** Valid semesters in order, each with the running CGPA. The current semester goes last. */
+export function cgpaTimeline(
+  semesters: Semester[],
+  current?: { id: string; label: string; result: GpaResult },
+): TimelinePoint[] {
+  const points: TimelinePoint[] = [];
+  let qualityPoints = 0;
+  let credits = 0;
+  const push = (id: string, label: string, gpa: number, ch: number) => {
+    qualityPoints += gpa * ch;
+    credits += ch;
+    points.push({ id, label, gpa, credits: ch, cgpa: qualityPoints / credits });
+  };
+  for (const semester of semesters) {
+    const read = readSemester(semester);
+    if (read.points !== null) push(semester.id, semester.label, read.points, read.credits);
+  }
+  if (current && current.result.gpa !== null && current.result.credits > 0) {
+    push(current.id, current.label, current.result.gpa, current.result.credits);
+  }
+  return points;
+}
+
 /** CGPA = all quality points / all credit hours, across past semesters plus the current one. */
 export function cumulativeGpa(semesters: Semester[], current?: GpaResult): GpaResult {
   const items = semesters.map(readSemester);

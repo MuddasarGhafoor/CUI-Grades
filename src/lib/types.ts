@@ -31,6 +31,8 @@ export type VoiceMode = "continuous" | "push-to-talk";
 
 export type Settings = {
   gradeScale: GradeBand[];
+  /** Count the GPA page's semester in the CGPA. */
+  includeCurrentSemester: boolean;
   voiceMode: VoiceMode;
   voiceLang: string;
 };

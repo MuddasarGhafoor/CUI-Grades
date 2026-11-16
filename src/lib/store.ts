@@ -53,6 +53,7 @@ export function createSemester(label: string): Semester {
 export function defaultSettings(): Settings {
   return {
     gradeScale: CUI_GRADE_SCALE.map((band) => ({ ...band })),
+    includeCurrentSemester: true,
     voiceMode: "continuous",
     voiceLang: "en-US",
   };
@@ -143,6 +144,7 @@ function normalize(raw: unknown): AppData {
     semesters,
     settings: {
       gradeScale: normalizeScale(settings.gradeScale),
+      includeCurrentSemester: settings.includeCurrentSemester !== false,
       voiceMode: settings.voiceMode === "push-to-talk" ? "push-to-talk" : "continuous",
       voiceLang: asString(settings.voiceLang, base.settings.voiceLang) || base.settings.voiceLang,
     },
@@ -249,5 +251,26 @@ export function updateCourse(id: string, mutate: (course: Course) => void) {
   updateData((d) => {
     const course = d.courses.find((c) => c.id === id);
     if (course) mutate(course);
+  });
+}
+
+export function addSemester(label: string, gpa = "", credits = ""): Semester {
+  const semester = { ...createSemester(label), gpa, credits };
+  updateData((d) => {
+    d.semesters.push(semester);
+  });
+  return semester;
+}
+
+export function updateSemester(id: string, mutate: (semester: Semester) => void) {
+  updateData((d) => {
+    const semester = d.semesters.find((s) => s.id === id);
+    if (semester) mutate(semester);
+  });
+}
+
+export function removeSemester(id: string) {
+  updateData((d) => {
+    d.semesters = d.semesters.filter((s) => s.id !== id);
   });
 }

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { ComingSoon, PageHeader } from "@/components/ui/page-header";
+import { CgpaApp } from "@/components/cgpa/cgpa-app";
+import { PageHeader } from "@/components/ui/page-header";
 
 export const metadata: Metadata = {
   title: "CGPA calculator",
-  description: "Calculate your overall CUI CGPA across all semesters.",
+  description:
+    "Calculate your overall CUI CGPA from each semester's GPA and credit hours, with this semester added from the GPA page.",
 };
 
 export default function CgpaCalculatorPage() {
@@ -11,16 +13,9 @@ export default function CgpaCalculatorPage() {
     <>
       <PageHeader
         title="CGPA calculator"
-        description="Your overall CGPA, semester by semester."
+        description="Add each finished semester's GPA and credit hours. This semester comes from the GPA page on its own."
       />
-      <ComingSoon
-        items={[
-          "Semester GPA and credit hours history",
-          "Current semester linked from GPA page",
-          "GPA and CGPA trend line",
-          "Export your result",
-        ]}
-      />
+      <CgpaApp />
     </>
   );
 }

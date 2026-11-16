@@ -15,17 +15,3 @@ export function PageHeader({ title, description, actions }: PageHeaderProps) {
     </header>
   );
 }
-
-export function ComingSoon({ items }: { items: string[] }) {
-  return (
-    <section className="rounded-lg border border-line bg-surface p-5">
-      <h2 className="font-semibold">Not built yet</h2>
-      <p className="mt-1 text-sm text-muted">This page comes in a later step. It will have:</p>
-      <ul className="mt-3 list-disc space-y-1 pl-5 text-sm marker:text-accent">
-        {items.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-    </section>
-  );
-}

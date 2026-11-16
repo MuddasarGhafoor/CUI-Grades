@@ -12,7 +12,10 @@ export function SavedProgress() {
   if (data.courses.length === 0 && data.semesters.length === 0) return null;
 
   const semester = semesterGpa(data.courses, data.settings.gradeScale);
-  const overall = cumulativeGpa(data.semesters, semester);
+  const overall = cumulativeGpa(
+    data.semesters,
+    data.settings.includeCurrentSemester ? semester : undefined,
+  );
 
   const stats = [
     { label: "Subjects this semester", value: String(data.courses.length) },
