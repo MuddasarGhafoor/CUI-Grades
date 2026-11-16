@@ -16,7 +16,7 @@ const SHORTCUTS: Shortcut[] = [
 
 function Keycap({ children }: { children: string }) {
   return (
-    <kbd className="inline-flex h-8 min-w-8 items-center justify-center rounded-md border border-b-[3px] border-line-strong bg-surface-2 px-2 font-mono text-xs font-medium text-fg">
+    <kbd className="inline-flex h-7 min-w-7 items-center justify-center rounded-md border border-b-[3px] border-line-strong bg-surface-2 px-2 font-mono text-xs font-medium text-fg">
       {children}
     </kbd>
   );
@@ -36,7 +36,7 @@ export function Shortcuts() {
               </span>
             ))}
           </div>
-          <p className="text-sm text-muted">{s.does}</p>
+          <p className="text-[13px] text-muted">{s.does}</p>
         </li>
       ))}
     </ul>

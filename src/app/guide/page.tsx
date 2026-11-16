@@ -19,6 +19,7 @@ export default function GuidePage() {
   return (
     <>
       <PageHeader
+        compact
         title="Guide"
         description="How CUI-Grades works out your marks, the official grade scale it uses, and everything you can say or press."
       />

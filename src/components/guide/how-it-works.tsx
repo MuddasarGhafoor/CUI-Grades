@@ -49,22 +49,22 @@ export function HowItWorks() {
   return (
     <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {STEPS.map((step, i) => (
-        <li key={step.title} className="card flex flex-col p-5">
+        <li key={step.title} className="card flex flex-col p-4">
           <div className="flex items-center gap-3">
-            <span className="grid size-7 shrink-0 place-items-center rounded-full border border-accent/40 text-xs font-semibold text-accent">
+            <span className="grid size-6 shrink-0 place-items-center rounded-full border border-accent/40 text-[11px] font-semibold text-accent">
               {i + 1}
             </span>
-            <h3 className="font-semibold">{step.title}</h3>
+            <h3 className="text-sm font-semibold">{step.title}</h3>
           </div>
-          <p className="mt-3 text-sm text-muted">{step.explain}</p>
+          <p className="mt-2.5 text-[13px] text-muted">{step.explain}</p>
           <div className="mt-auto pt-4">
             <div className="overflow-hidden rounded-lg border border-line">
-              <div className="space-y-0.5 bg-surface-2/50 px-3 py-2.5 font-mono text-[13px] text-muted">
+              <div className="space-y-0.5 bg-surface-2/50 px-3 py-2 font-mono text-xs text-muted">
                 {step.example.map((line) => (
                   <p key={line}>{line}</p>
                 ))}
               </div>
-              <p className="flex items-center justify-between border-t border-line px-3 py-2 text-sm">
+              <p className="flex items-center justify-between border-t border-line px-3 py-1.5 text-[13px]">
                 <span className="text-xs text-muted">Result</span>
                 <span className="font-semibold tabular-nums text-accent">{step.result}</span>
               </p>

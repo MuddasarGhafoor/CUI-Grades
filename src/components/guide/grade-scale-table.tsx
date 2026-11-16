@@ -11,7 +11,7 @@ function rangeLabel(sorted: GradeBand[], index: number): string {
 export function GradeScaleTable({ scale = CUI_GRADE_SCALE }: { scale?: GradeBand[] }) {
   const sorted = sortScale(scale);
   return (
-    <table className="w-full text-sm">
+    <table className="w-full text-[13px]">
       <thead>
         <tr className="border-b border-line text-left text-xs text-muted">
           <th className="py-2 pr-4 font-medium">Grade</th>

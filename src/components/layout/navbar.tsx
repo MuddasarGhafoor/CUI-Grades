@@ -7,9 +7,21 @@ import { Icon } from "@/components/ui/icons";
 import { CALCULATORS, GUIDE } from "@/lib/nav";
 import { ThemeToggle } from "./theme-toggle";
 
+/** Line under a nav link: teal when active, grows in on hover otherwise. */
+function Underline({ active }: { active: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`absolute inset-x-3 -bottom-px h-0.5 origin-center rounded-full transition-[scale,background-color] duration-200 ${
+        active ? "scale-x-100 bg-accent" : "scale-x-0 bg-line-strong group-hover:scale-x-100"
+      }`}
+    />
+  );
+}
+
 /**
  * Three columns: logo on the far left, the three calculators centred,
- * and the Guide and theme buttons on the far right.
+ * and the Guide and theme icons on the far right.
  */
 export function Navbar() {
   const pathname = usePathname();
@@ -27,7 +39,7 @@ export function Navbar() {
           <Logo />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Main" className="hidden items-center md:flex">
           {CALCULATORS.map((item) => {
             const active = isActive(item.href);
             return (
@@ -35,37 +47,34 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex h-9 items-center rounded-lg px-3.5 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-surface-2 text-fg shadow-[inset_0_0_0_1px_var(--line)]"
-                    : "text-muted hover:bg-surface-2/60 hover:text-fg"
+                className={`group relative flex h-16 items-center px-4 text-sm font-medium transition-colors ${
+                  active ? "text-fg" : "text-muted hover:text-fg"
                 }`}
               >
                 {item.label}
+                <Underline active={active} />
               </Link>
             );
           })}
         </nav>
 
-        <div className="col-start-3 flex items-center gap-2 justify-self-end">
+        <div className="col-start-3 flex items-center gap-1 justify-self-end">
           <Link
             href={GUIDE.href}
             aria-label="Guide"
             title="Guide"
             aria-current={onGuide ? "page" : undefined}
-            className={`grid size-9 place-items-center rounded-lg border bg-surface-2 transition-colors ${
-              onGuide
-                ? "border-accent text-accent"
-                : "border-line-strong text-muted hover:border-accent/50 hover:text-fg"
+            className={`grid size-9 place-items-center rounded-lg transition-colors ${
+              onGuide ? "text-accent" : "text-muted hover:text-fg"
             }`}
           >
-            <Icon name="book" size={17} />
+            <Icon name="book" size={19} />
           </Link>
           <ThemeToggle />
         </div>
       </div>
 
-      <nav aria-label="Main" className="flex items-center gap-1 border-t border-line px-2 py-1.5 md:hidden">
+      <nav aria-label="Main" className="flex items-center border-t border-line md:hidden">
         {CALCULATORS.map((item) => {
           const active = isActive(item.href);
           return (
@@ -73,11 +82,12 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               aria-current={active ? "page" : undefined}
-              className={`flex h-8 flex-1 items-center justify-center rounded-md text-sm font-medium transition-colors ${
-                active ? "bg-surface-2 text-fg" : "text-muted hover:text-fg"
+              className={`group relative flex h-10 flex-1 items-center justify-center text-sm font-medium transition-colors ${
+                active ? "text-fg" : "text-muted hover:text-fg"
               }`}
             >
               {item.shortLabel}
+              <Underline active={active} />
             </Link>
           );
         })}

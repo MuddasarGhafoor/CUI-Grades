@@ -14,10 +14,10 @@ function Group({ title, defs }: { title: string; defs: ComponentDef[] }) {
   return (
     <div className="overflow-hidden rounded-lg border border-line">
       <div className="flex items-center justify-between border-b border-line bg-surface-2/60 px-3 py-2">
-        <h3 className="text-sm font-semibold">{title}</h3>
+        <h3 className="text-[13px] font-semibold">{title}</h3>
         <span className="text-xs text-muted">100% of the {title.toLowerCase()} part</span>
       </div>
-      <table className="w-full text-sm">
+      <table className="w-full text-[13px]">
         <thead>
           <tr className="text-left text-xs text-muted">
             <th className="px-3 pb-1 pt-2 font-medium">Assessment</th>
