@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Carter_One, Geist, Geist_Mono } from "next/font/google";
+import { PrintSheet } from "@/components/export/print-sheet";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { VoiceDock } from "@/components/voice/voice-dock";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
 
@@ -22,14 +24,39 @@ const carterOne = Carter_One({
   subsets: ["latin"],
 });
 
+const DEFAULT_TITLE = "CUI-Grades: GPA, CGPA & internal marks calculator";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "CUI-Grades: GPA, CGPA & internal marks calculator",
-    template: "%s · CUI-Grades",
+    default: DEFAULT_TITLE,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "Calculate CUI internal marks, semester GPA and CGPA with pre-filled totals, keyboard-friendly inputs and voice commands.",
-  applicationName: "CUI-Grades",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    "CUI GPA calculator",
+    "COMSATS GPA calculator",
+    "COMSATS CGPA calculator",
+    "CUI internal marks",
+    "sessional marks calculator",
+    "COMSATS grading scale",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "/",
+    locale: "en_PK",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
@@ -61,6 +88,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <VoiceDock />
+        <PrintSheet />
       </body>
     </html>
   );

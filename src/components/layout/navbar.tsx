@@ -28,7 +28,7 @@ export function Navbar() {
     });
 
   return (
-    <header className="sticky top-0 z-20 border-b border-line bg-bg/95 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-line bg-bg/95 backdrop-blur print:hidden">
       <div className="mx-auto flex h-14 max-w-5xl items-center gap-8 px-4 sm:px-6">
         <Link href="/" className="rounded-md">
           <Logo />

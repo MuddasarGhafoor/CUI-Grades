@@ -81,3 +81,48 @@ html {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* ---------- printing ---------- */
+
+/* The result sheet only appears on paper (see components/export/print-sheet.tsx). */
+#print-sheet {
+  display: none;
+}
+
+@page {
+  margin: 16mm;
+}
+
+@media print {
+  /* Paper is always light, whatever theme is on screen. */
+  :root,
+  [data-theme="dark"],
+  [data-theme="light"] {
+    color-scheme: light;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f3f4f6;
+    --line: #e5e7eb;
+    --line-strong: #d1d5db;
+    --fg: #111827;
+    --muted: #4b5563;
+    --accent: #0f766e;
+    --accent-2: #1d4ed8;
+    --on-accent: #ffffff;
+    --ok: #15803d;
+    --warn: #b45309;
+    --err: #b91c1c;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  /* On the GPA and CGPA pages, print only the result sheet. */
+  html[data-print-sheet] body > :not(#print-sheet) {
+    display: none !important;
+  }
+  html[data-print-sheet] #print-sheet {
+    display: block;
+  }
+}

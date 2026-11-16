@@ -177,10 +177,10 @@ export function VoiceDock() {
 
   return (
     <>
-      <div aria-hidden="true" className={collapsed ? "h-20" : "h-48 sm:h-40"} />
+      <div aria-hidden="true" className={`print:hidden ${collapsed ? "h-20" : "h-48 sm:h-40"}`} />
       <VoiceHelp ref={helpRef} />
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 px-4 pb-4">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 px-4 pb-4 print:hidden">
         {collapsed ? (
           <div className="pointer-events-auto ml-auto flex w-fit items-center gap-2 rounded-full border border-line-strong bg-surface p-1.5 shadow-lg">
             <span className="relative">{micButton}</span>
