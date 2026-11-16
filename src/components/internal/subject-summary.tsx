@@ -9,8 +9,8 @@ function Row({ label, value, note }: { label: string; value: string; note?: stri
     <div className="flex items-baseline justify-between gap-3">
       <dt className="text-muted">{label}</dt>
       <dd className="text-right tabular-nums">
-        {value}
-        {note && <span className="ml-1 text-xs text-muted">{note}</span>}
+        {note && <span className="mr-1.5 text-xs text-muted">{note}</span>}
+        <span className="font-medium">{value}</span>
       </dd>
     </div>
   );
@@ -20,17 +20,17 @@ function PartSummary({ part }: { part: PartResult }) {
   const final = part.components.find((c) => !c.def.internal);
   const internalNote =
     part.internalPossible > 0 && part.internalPossible < INTERNAL_OUT_OF
-      ? `(${part.internalPossible} entered)`
+      ? `${part.internalPossible} entered`
       : undefined;
 
   return (
-    <div className="border-t border-line pt-4">
+    <div className="border-t border-line px-5 py-4">
       <h3 className="text-sm font-semibold">{part.part === "theory" ? "Theory" : "Lab"}</h3>
       <dl className="mt-2 space-y-1 text-sm">
         <Row label="Internal" value={`${formatMarks(part.internalMarks)} / ${INTERNAL_OUT_OF}`} note={internalNote} />
         <Row
           label="Final"
-          value={final?.marks == null ? "not entered" : `${formatMarks(final.marks)} / ${final.def.weight}`}
+          value={final?.marks == null ? "Not Entered" : `${formatMarks(final.marks)} / ${final.def.weight}`}
         />
         <Row label="Total" value={`${formatMarks(part.marks)} / 100`} />
       </dl>
@@ -43,7 +43,7 @@ function PartSummary({ part }: { part: PartResult }) {
 
 type SubjectSummaryProps = {
   result: CourseResult;
-  /** Extra panels shown at the bottom, such as the final exam target. */
+  /** Extra panels shown under the result, such as the final exam target. */
   children?: React.ReactNode;
 };
 
@@ -57,21 +57,21 @@ export function SubjectSummary({ result, children }: SubjectSummaryProps) {
   else status = `Based on the ${Math.round(result.coverage * 100)}% of marks entered so far.`;
 
   return (
-    <aside className="space-y-4 rounded-lg border border-line bg-surface p-5 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-15rem)] lg:overflow-y-auto">
-      <div className="flex items-center gap-4">
+    <aside className="card lg:sticky lg:top-24 lg:max-h-[calc(100dvh-16rem)] lg:overflow-y-auto">
+      <div className="flex items-center gap-4 p-5">
         <ProgressRing value={result.percent} color={toneColor(result.percent)}>
           <div>
             <p className="text-xl font-semibold tabular-nums">{formatPercent(result.percent)}</p>
-            <p className="text-xs text-muted">{grade ? grade.letter : "no grade"}</p>
+            <p className="text-[11px] text-muted">{result.complete ? "Result" : "So Far"}</p>
           </div>
         </ProgressRing>
-        <div className="min-w-0 text-sm">
-          <p className="font-semibold">{result.complete ? "Result" : "So far"}</p>
-          {grade && (
-            <p className="tabular-nums">
-              {grade.letter} · {grade.points.toFixed(2)} points
-            </p>
-          )}
+        <div className="min-w-0">
+          <p className="font-display text-4xl leading-none" style={{ color: grade ? toneColor(result.percent) : undefined }}>
+            {grade ? grade.letter : "-"}
+          </p>
+          <p className="mt-1.5 text-sm tabular-nums">
+            {grade ? `${grade.points.toFixed(2)} Grade Points` : "No Grade Yet"}
+          </p>
           <p className="mt-1 text-xs text-muted">{status}</p>
         </div>
       </div>

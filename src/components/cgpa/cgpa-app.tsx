@@ -14,7 +14,7 @@ export function CgpaApp() {
   const data = useAppData();
 
   if (!isClient) {
-    return <div aria-hidden="true" className="h-72 rounded-lg border border-line bg-surface" />;
+    return <div aria-hidden="true" className="card h-72" />;
   }
 
   const { semesters, settings } = data;
@@ -22,7 +22,7 @@ export function CgpaApp() {
   const includeCurrent = settings.includeCurrentSemester;
   const timeline = cgpaTimeline(
     semesters,
-    includeCurrent ? { id: CURRENT_ID, label: "This semester", result: current } : undefined,
+    includeCurrent ? { id: CURRENT_ID, label: "This Semester", result: current } : undefined,
   );
   const countsCurrent = timeline.some((p) => p.id === CURRENT_ID);
 

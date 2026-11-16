@@ -13,7 +13,7 @@ type SubjectTabsProps = {
 
 export function SubjectTabs({ courses, activeId, letters, onSelect, onAdd }: SubjectTabsProps) {
   return (
-    <div className="flex items-end gap-1 overflow-x-auto border-b border-line">
+    <div className="card flex items-center gap-1 overflow-x-auto p-1.5">
       {courses.map((course) => {
         const active = course.id === activeId;
         const letter = letters[course.id];
@@ -23,26 +23,31 @@ export function SubjectTabs({ courses, activeId, letters, onSelect, onAdd }: Sub
             type="button"
             onClick={() => onSelect(course.id)}
             aria-current={active ? "true" : undefined}
-            className={`relative flex max-w-56 shrink-0 items-center gap-2 px-3 py-2.5 text-sm font-medium transition-colors ${
-              active ? "text-fg" : "text-muted hover:text-fg"
+            className={`flex h-9 max-w-56 shrink-0 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors ${
+              active
+                ? "bg-surface-2 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]"
+                : "text-muted hover:bg-surface-2/60 hover:text-fg"
             }`}
           >
             <span className="truncate">{course.name}</span>
             {letter && (
-              <span className="rounded bg-surface-2 px-1.5 py-0.5 text-xs tabular-nums text-muted">
+              <span
+                className={`rounded-md px-1.5 py-px text-xs font-semibold tabular-nums ${
+                  active ? "bg-accent/15 text-accent" : "bg-surface-2 text-muted"
+                }`}
+              >
                 {letter}
               </span>
             )}
-            {active && <span className="absolute inset-x-2 -bottom-px h-0.5 bg-accent" />}
           </button>
         );
       })}
       <button
         type="button"
         onClick={onAdd}
-        className="shrink-0 px-3 py-2.5 text-sm font-medium text-accent hover:underline"
+        className="ml-auto flex h-9 shrink-0 items-center rounded-lg px-3 text-sm font-medium text-accent transition-colors hover:bg-accent/10"
       >
-        + Add subject
+        + Add Subject
       </button>
     </div>
   );

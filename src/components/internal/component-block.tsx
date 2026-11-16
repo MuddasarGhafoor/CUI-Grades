@@ -4,7 +4,7 @@ import { useState } from "react";
 import { buttonClass } from "@/components/ui/button";
 import type { ComponentDef } from "@/lib/assessments";
 import type { ComponentResult } from "@/lib/calc";
-import { capitalize, formatMarks } from "@/lib/format";
+import { formatMarks, titleCase } from "@/lib/format";
 import { createMark, updateCourse } from "@/lib/store";
 import type { Course, Mark } from "@/lib/types";
 import { MarkField } from "./mark-field";
@@ -49,7 +49,7 @@ export function ComponentBlock({ course, def, result, editing }: ComponentBlockP
   }
 
   return (
-    <section className="border-b border-line py-4 last:border-0">
+    <section className="border-b border-line px-4 py-4 last:border-0 sm:px-5">
       <header className="mb-2.5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <h3 className="text-sm font-semibold">
           {def.label}
@@ -62,7 +62,7 @@ export function ComponentBlock({ course, def, result, editing }: ComponentBlockP
               onClick={() => setQuickOpen(true)}
               className="text-xs font-medium text-accent hover:underline"
             >
-              Type all at once
+              Type All at Once
             </button>
           )}
           <p className="text-sm tabular-nums text-muted">
@@ -80,7 +80,7 @@ export function ComponentBlock({ course, def, result, editing }: ComponentBlockP
           <MarkField
             key={i}
             id={`${course.id}-${def.key}-${i}`}
-            label={def.kind === "list" ? `${capitalize(def.singular)} ${i + 1}` : capitalize(def.singular)}
+            label={def.kind === "list" ? `${titleCase(def.singular)} ${i + 1}` : titleCase(def.singular)}
             mark={mark}
             editingTotal={editing}
             onChange={(field, text) => setField(i, field, text)}
@@ -91,7 +91,7 @@ export function ComponentBlock({ course, def, result, editing }: ComponentBlockP
       {editing && def.kind === "list" && (
         <div className="mt-3 flex gap-2">
           <button type="button" onClick={addEntry} className={buttonClass("secondary", "sm")}>
-            + Add {def.singular}
+            + Add {titleCase(def.singular)}
           </button>
           <button
             type="button"
@@ -99,7 +99,7 @@ export function ComponentBlock({ course, def, result, editing }: ComponentBlockP
             disabled={entries.length <= 1}
             className={buttonClass("ghost", "sm")}
           >
-            Remove last
+            Remove Last
           </button>
         </div>
       )}

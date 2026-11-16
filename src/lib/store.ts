@@ -86,7 +86,7 @@ function normalizeMark(raw: unknown, def: ComponentDef): Mark {
 }
 
 function normalizeCourse(raw: Record<string, unknown>): Course {
-  const base = createCourse(asString(raw.name, "Untitled subject"));
+  const base = createCourse(asString(raw.name, "Untitled Subject"));
   const rawMarks = isObject(raw.marks) ? raw.marks : {};
   const marks = {} as Record<string, Mark | Mark[]>;
   for (const def of ALL_COMPONENTS) {

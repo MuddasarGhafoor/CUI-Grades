@@ -2,10 +2,10 @@ import { CUI_GRADE_SCALE, sortScale, type GradeBand } from "@/lib/grading";
 
 function rangeLabel(sorted: GradeBand[], index: number): string {
   const band = sorted[index];
-  if (index === 0) return `${band.min} and above`;
+  if (index === 0) return `${band.min} and Above`;
   const upper = sorted[index - 1].min - 1;
   if (band.min === 0) return `Below ${upper + 1}`;
-  return band.min === upper ? `${band.min}` : `${band.min}–${upper}`;
+  return band.min === upper ? `${band.min}` : `${band.min}-${upper}`;
 }
 
 export function GradeScaleTable({ scale = CUI_GRADE_SCALE }: { scale?: GradeBand[] }) {

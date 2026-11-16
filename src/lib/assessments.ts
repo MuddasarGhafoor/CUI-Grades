@@ -30,13 +30,13 @@ export const THEORY_COMPONENTS: ComponentDef[] = [
   { key: "quizzes", kind: "list", part: "theory", label: "Quizzes", singular: "quiz", weight: 15, defaultTotal: 10, defaultCount: 4, internal: true },
   { key: "assignments", kind: "list", part: "theory", label: "Assignments", singular: "assignment", weight: 10, defaultTotal: 10, defaultCount: 4, internal: true },
   { key: "mid", kind: "single", part: "theory", label: "Midterm", singular: "midterm", weight: 25, defaultTotal: 25, internal: true },
-  { key: "final", kind: "single", part: "theory", label: "Final exam", singular: "final exam", weight: 50, defaultTotal: 50, internal: false },
+  { key: "final", kind: "single", part: "theory", label: "Final Exam", singular: "final exam", weight: 50, defaultTotal: 50, internal: false },
 ];
 
 export const LAB_COMPONENTS: ComponentDef[] = [
-  { key: "labAssignments", kind: "list", part: "lab", label: "Lab assignments", singular: "lab assignment", weight: 25, defaultTotal: 10, defaultCount: 4, internal: true },
-  { key: "labMid", kind: "single", part: "lab", label: "Lab midterm", singular: "lab midterm", weight: 25, defaultTotal: 25, internal: true },
-  { key: "labFinal", kind: "single", part: "lab", label: "Lab final", singular: "lab final", weight: 50, defaultTotal: 50, internal: false },
+  { key: "labAssignments", kind: "list", part: "lab", label: "Lab Assignments", singular: "lab assignment", weight: 25, defaultTotal: 10, defaultCount: 4, internal: true },
+  { key: "labMid", kind: "single", part: "lab", label: "Lab Midterm", singular: "lab midterm", weight: 25, defaultTotal: 25, internal: true },
+  { key: "labFinal", kind: "single", part: "lab", label: "Lab Final", singular: "lab final", weight: 50, defaultTotal: 50, internal: false },
 ];
 
 export const ALL_COMPONENTS: ComponentDef[] = [...THEORY_COMPONENTS, ...LAB_COMPONENTS];

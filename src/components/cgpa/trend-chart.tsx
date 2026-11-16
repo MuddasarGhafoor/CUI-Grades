@@ -42,9 +42,9 @@ export function TrendChart({ points }: { points: TimelinePoint[] }) {
   const last = points[points.length - 1];
 
   return (
-    <section className="rounded-lg border border-line bg-surface p-5">
+    <section className="card p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2 className="font-semibold">GPA and CGPA over time</h2>
+        <h2 className="text-[15px] font-semibold">GPA and CGPA Over Time</h2>
         <ul className="flex gap-4 text-xs text-muted">
           <li className="flex items-center gap-1.5">
             <span className="h-0.5 w-4 rounded bg-accent" /> CGPA

@@ -15,11 +15,13 @@ type PartCardProps = {
 /** Theory or lab: every assessment of that part, in marking order. */
 export function PartCard({ course, part, editing }: PartCardProps) {
   return (
-    <section className="rounded-lg border border-line bg-surface px-4 sm:px-5">
-      <header className="flex items-center justify-between gap-3 border-b border-line py-3">
-        <h2 className="font-semibold">
+    <section className="card overflow-hidden">
+      <header className="flex items-center justify-between gap-3 border-b border-line bg-surface-2/40 px-4 py-3 sm:px-5">
+        <h2 className="flex items-center gap-2 font-semibold">
           {part.part === "theory" ? "Theory" : "Lab"}
-          <span className="ml-2 text-sm font-normal text-muted">{formatCredits(part.credits)}</span>
+          <span className="rounded-md border border-line px-1.5 py-0.5 text-xs font-medium text-muted">
+            {formatCredits(part.credits)}
+          </span>
         </h2>
         <p className="text-sm text-muted">
           Internal{" "}

@@ -26,7 +26,7 @@ function Group({ title, defs }: { title: string; defs: ComponentDef[] }) {
       ))}
       <tr className="text-muted">
         <td className="py-1.5 pr-4 text-xs" colSpan={2}>
-          Internal marks (everything before the final)
+          Internal Marks (Before the Final)
         </td>
         <td className="py-1.5 text-right text-xs">{INTERNAL_OUT_OF}</td>
       </tr>
@@ -40,7 +40,7 @@ export function WeightsTable() {
       <thead>
         <tr className="border-b border-line text-left text-xs text-muted">
           <th className="py-2 pr-4 font-medium">Assessment</th>
-          <th className="py-2 pr-4 font-medium">Pre-filled out of</th>
+          <th className="py-2 pr-4 font-medium">Pre-filled Out Of</th>
           <th className="py-2 text-right font-medium">Weight</th>
         </tr>
       </thead>

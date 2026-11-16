@@ -52,7 +52,7 @@ export function buildResultSummary(data: AppData): ResultSummary {
   const timeline = cgpaTimeline(
     data.semesters,
     data.settings.includeCurrentSemester
-      ? { id: "current-semester", label: "This semester", result: semester }
+      ? { id: "current-semester", label: "This Semester", result: semester }
       : undefined,
   );
 

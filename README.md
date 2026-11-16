@@ -6,11 +6,12 @@ An unofficial student tool. Not affiliated with COMSATS University Islamabad.
 
 ## Features
 
-- **Internal marks:** quizzes, assignments, midterms and finals for theory and lab, with every total already filled in. Enter or Tab jumps to the next box. Type `8 7 9 6` to fill all four quizzes at once.
-- **Final exam target:** pick a grade and see the marks you need in the final.
-- **GPA calculator:** grades come from your marks, or pick them by hand. Includes a bar chart comparing subjects.
-- **CGPA calculator:** past semesters plus this one, with the running CGPA and a trend chart.
-- **Voice commands:** say "quiz 8 out of 10", "midterm 20", "new subject database systems", "grade b plus" and more. Choose between keep-listening and hold-to-talk.
+- **Internal Marks:** quizzes, assignments, midterms and finals for theory and lab, with every total already filled in. Enter or Tab jumps to the next box. Type `8 7 9 6` to fill all four quizzes at once.
+- **Final Exam Target:** pick a grade and see the marks you need in the final.
+- **GPA Calculator:** grades come from your marks, or pick them by hand. Includes a bar chart comparing subjects.
+- **CGPA Calculator:** past semesters plus this one, with the running CGPA and a trend chart.
+- **Voice Commands:** say "quiz 8 out of 10", "midterm 20", "new subject database systems", "grade b plus" and more. Choose between keep-listening and hold-to-talk.
+- **Guide:** the official grade scale, mark weights, how every number is worked out, and the full list of voice commands and shortcuts.
 - **Export:** save the result as an image (shares straight to WhatsApp on phones) or print / save as PDF.
 - Dark and light themes. Everything is saved in the browser, so there are no accounts and no server.
 
@@ -32,7 +33,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · pnpm. No 
 ```
 src/
   app/            pages, metadata, sitemap, robots, icons
-  components/     UI by area: internal, gpa, cgpa, voice, export, layout, ui
+  components/     UI by area: internal, gpa, cgpa, guide, voice, export, layout, ui
   lib/            grading scale, calculations, store, quick entry, voice parser
 ```
 

@@ -5,7 +5,7 @@ import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
   path: "/cgpa-calculator",
-  title: "CGPA calculator",
+  title: "CGPA Calculator",
   description:
     "Calculate your overall CUI CGPA from each semester's GPA and credit hours, with this semester added from the GPA page.",
 });
@@ -14,7 +14,7 @@ export default function CgpaCalculatorPage() {
   return (
     <>
       <PageHeader
-        title="CGPA calculator"
+        title="CGPA Calculator"
         description="Add each finished semester's GPA and credit hours. This semester comes from the GPA page on its own."
         actions={<ExportActions />}
       />

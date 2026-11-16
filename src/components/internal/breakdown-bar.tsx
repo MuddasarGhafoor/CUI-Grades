@@ -41,7 +41,7 @@ export function BreakdownBar({ part }: { part: PartResult }) {
               {c.def.label}
             </span>
             <span className="tabular-nums">
-              {c.marks === null ? <span className="text-muted">–</span> : formatMarks(c.marks)}
+              {c.marks === null ? <span className="text-muted">-</span> : formatMarks(c.marks)}
               <span className="text-muted"> / {c.def.weight}</span>
             </span>
           </li>

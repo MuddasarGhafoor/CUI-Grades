@@ -1,6 +1,6 @@
 import { COMPONENT_BY_KEY, MAX_LAB_CREDITS, MAX_THEORY_CREDITS } from "../assessments";
 import { parseNumber } from "../calc";
-import { capitalize, formatMarks } from "../format";
+import { formatMarks, titleCase } from "../format";
 import { bandForLetter } from "../grading";
 import { findQuickEntryProblem, mergeQuickEntry, parseQuickEntry } from "../quick-entry";
 import {
@@ -104,7 +104,7 @@ function runMark(cmd: Extract<VoiceCommand, { type: "mark" }>): VoiceOutcome {
     if (!(total > 0)) return fail("The total must be above 0.");
     if (cmd.obtained > total) return fail(`${formatMarks(cmd.obtained)} is more than ${formatMarks(total)}. Check the total.`);
 
-    const label = `${capitalize(def.singular)} ${index + 1} in ${course.name}: ${formatMarks(cmd.obtained)} / ${formatMarks(total)}`;
+    const label = `${titleCase(def.singular)} ${index + 1} in ${course.name}: ${formatMarks(cmd.obtained)} / ${formatMarks(total)}`;
     return tracked(label, () => {
       updateCourse(course.id, (c) => {
         const marks = c.marks[def.key];
@@ -120,7 +120,7 @@ function runMark(cmd: Extract<VoiceCommand, { type: "mark" }>): VoiceOutcome {
   const total = cmd.total ?? parseNumber(current.total) ?? def.defaultTotal;
   if (!(total > 0)) return fail("The total must be above 0.");
   if (cmd.obtained > total) return fail(`${formatMarks(cmd.obtained)} is more than ${formatMarks(total)}. Check the total.`);
-  const label = `${capitalize(def.singular)} in ${course.name}: ${formatMarks(cmd.obtained)} / ${formatMarks(total)}`;
+  const label = `${titleCase(def.singular)} in ${course.name}: ${formatMarks(cmd.obtained)} / ${formatMarks(total)}`;
   return tracked(label, () => {
     updateCourse(course.id, (c) => {
       c.marks[def.key].obtained = String(cmd.obtained);

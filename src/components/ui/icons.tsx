@@ -36,6 +36,14 @@ const PATHS = {
     </>
   ),
   chevronDown: <path d="m6 9 6 6 6-6" />,
+  chevronUpDown: <path d="m8 9 4-4 4 4M8 15l4 4 4-4" />,
+  check: <path d="M5 12.5 10 17l9-10" />,
+  book: (
+    <>
+      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z" />
+      <path d="M4 19V5.5" />
+    </>
+  ),
   chevronUp: <path d="m6 15 6-6 6 6" />,
 } as const;
 

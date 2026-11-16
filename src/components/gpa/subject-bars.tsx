@@ -28,8 +28,8 @@ export function SubjectBars({ rows }: { rows: BarRow[] }) {
   const handOnly = rows.length - withMarks.length;
 
   return (
-    <section className="rounded-lg border border-line bg-surface p-5">
-      <h2 className="font-semibold">Subjects compared</h2>
+    <section className="card p-5">
+      <h2 className="text-[15px] font-semibold">Subjects Compared</h2>
       <p className="mt-1 text-sm text-muted">
         Percentage from marks. The dashed lines are the pass mark ({PASS_PERCENT}%) and an A ({A_LINE}%).
       </p>

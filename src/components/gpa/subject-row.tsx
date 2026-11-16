@@ -25,28 +25,28 @@ export function SubjectRow({ course, result, grade, scale }: SubjectRowProps) {
     : "no marks entered";
 
   return (
-    <li className="flex flex-wrap items-center gap-x-4 gap-y-2 py-4">
+    <li className="flex flex-wrap items-center gap-x-4 gap-y-3 px-4 py-4 transition-colors hover:bg-surface-2/40 sm:px-5">
       <div className="min-w-0 flex-1 basis-48">
         <Link
           href="/internal-marks"
           onClick={() => setActiveCourse(course.id)}
           className="font-semibold hover:text-accent"
-          title="Open in Internal marks"
+          title="Open in Internal Marks"
         >
           {course.name}
         </Link>
-        <p className="text-xs text-muted">
+        <p className="mt-0.5 text-xs text-muted">
           {course.theoryCredits}+{course.labCredits} · {formatCredits(credits)} · {marksNote}
         </p>
       </div>
 
       <div className="flex items-center gap-3">
         <GradeSelect
-          id={`${course.id}-grade`}
-          label={`Grade for ${course.name}`}
+          ariaLabel={`Grade for ${course.name}`}
           value={course.manualGrade ?? ""}
           scale={scale}
-          emptyLabel={fromMarks ? `From marks (${fromMarks.letter})` : "Pick a grade"}
+          emptyLabel={fromMarks ? `From Marks (${fromMarks.letter})` : "Pick a Grade"}
+          className="w-40"
           onChange={(letter) =>
             updateCourse(course.id, (c) => {
               c.manualGrade = letter || null;
@@ -62,7 +62,7 @@ export function SubjectRow({ course, result, grade, scale }: SubjectRowProps) {
               <span className="font-semibold">{formatMarks(grade.points * credits)}</span>
             </>
           ) : (
-            <span className="text-muted">not counted</span>
+            <span className="text-muted">Not counted</span>
           )}
         </p>
         <ConfirmButton label="Remove" confirmLabel="Remove?" onConfirm={() => removeCourse(course.id)} />

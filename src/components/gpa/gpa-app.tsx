@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { buttonClass } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icons";
+import { SectionCard } from "@/components/ui/section-card";
 import { courseResult, effectiveGrade, weightedGpa } from "@/lib/calc";
 import { useAppData } from "@/lib/store";
 import { useIsClient } from "@/lib/use-is-client";
@@ -18,7 +19,7 @@ export function GpaApp() {
   const [adding, setAdding] = useState(false);
 
   if (!isClient) {
-    return <div aria-hidden="true" className="h-72 rounded-lg border border-line bg-surface" />;
+    return <div aria-hidden="true" className="card h-72" />;
   }
 
   const scale = data.settings.gradeScale;
@@ -35,16 +36,17 @@ export function GpaApp() {
     <div className="space-y-6">
       <GpaSummary gpa={gpa} totalCredits={totalCredits} ungraded={ungraded} />
 
-      <section className="rounded-lg border border-line bg-surface px-4 sm:px-5">
-        <header className="flex items-center justify-between gap-3 border-b border-line py-3">
-          <h2 className="font-semibold">Subjects this semester</h2>
-          {!showForm && (
+      <SectionCard
+        title="Subjects This Semester"
+        bodyClassName=""
+        actions={
+          !showForm && (
             <button type="button" onClick={() => setAdding(true)} className={buttonClass("secondary", "sm")}>
-              + Add subject
+              + Add Subject
             </button>
-          )}
-        </header>
-
+          )
+        }
+      >
         {rows.length > 0 ? (
           <ul className="divide-y divide-line">
             {rows.map((r) => (
@@ -52,17 +54,17 @@ export function GpaApp() {
             ))}
           </ul>
         ) : (
-          <p className="pt-4 text-sm text-muted">
+          <p className="px-4 pt-4 text-sm text-muted sm:px-5">
             No subjects yet. Add them below with the grade you got, or enter marks on the{" "}
             <Link href="/internal-marks" className="text-accent hover:underline">
-              Internal marks
+              Internal Marks
             </Link>{" "}
             page and they will show up here.
           </p>
         )}
 
         {showForm && (
-          <div className={`py-4 ${rows.length > 0 ? "border-t border-line" : ""}`}>
+          <div className={`px-4 py-4 sm:px-5 ${rows.length > 0 ? "border-t border-line bg-surface-2/30" : ""}`}>
             <AddGradedSubject
               fallbackName={`Subject ${rows.length + 1}`}
               scale={scale}
@@ -71,7 +73,7 @@ export function GpaApp() {
             />
           </div>
         )}
-      </section>
+      </SectionCard>
 
       <SubjectBars
         rows={rows.map((r) => ({
@@ -85,10 +87,10 @@ export function GpaApp() {
       {gpa.gpa !== null && (
         <Link
           href="/cgpa-calculator"
-          className="group flex items-center justify-between gap-4 rounded-lg border border-line px-5 py-4 transition-colors hover:border-accent"
+          className="card group flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:border-accent/60"
         >
           <span>
-            <span className="block font-semibold">See your CGPA</span>
+            <span className="block font-semibold">See Your CGPA</span>
             <span className="block text-sm text-muted">
               This semester is added to your past semesters automatically.
             </span>

@@ -119,9 +119,10 @@ export function parseGradeLetter(text: string): string | null {
 }
 
 const PAGES = [
-  { href: "/cgpa-calculator", label: "CGPA calculator", match: /^cgpa\b/ },
-  { href: "/gpa-calculator", label: "GPA calculator", match: /^gpa\b/ },
-  { href: "/internal-marks", label: "Internal marks", match: /^(?:internal|marks)\b/ },
+  { href: "/cgpa-calculator", label: "CGPA Calculator", match: /^cgpa\b/ },
+  { href: "/gpa-calculator", label: "GPA Calculator", match: /^gpa\b/ },
+  { href: "/internal-marks", label: "Internal Marks", match: /^(?:internal|marks)\b/ },
+  { href: "/guide", label: "Guide", match: /^(?:guide|help page)\b/ },
   { href: "/", label: "Home", match: /^home\b/ },
 ];
 

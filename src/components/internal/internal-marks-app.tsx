@@ -19,7 +19,7 @@ export function InternalMarksApp() {
 
   // Saved data only exists in the browser. Show a quiet placeholder until it is read.
   if (!isClient) {
-    return <div aria-hidden="true" className="h-72 rounded-lg border border-line bg-surface" />;
+    return <div aria-hidden="true" className="card h-72" />;
   }
 
   const { courses, settings } = data;
@@ -30,7 +30,7 @@ export function InternalMarksApp() {
   if (!active) {
     return (
       <div className="max-w-3xl">
-        <h2 className="font-semibold">Add your first subject</h2>
+        <h2 className="text-lg font-semibold">Add Your First Subject</h2>
         <p className="mb-4 mt-1 text-sm text-muted">
           Give it a name and its credit hours. Quizzes, assignments and exams come pre-filled with
           their usual totals, so you only type the marks you got.
@@ -68,7 +68,7 @@ export function InternalMarksApp() {
         </div>
       )}
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
+      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
         <div className="min-w-0 space-y-6">
           <SubjectHeader
             course={active}

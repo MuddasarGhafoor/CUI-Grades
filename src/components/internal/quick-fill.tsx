@@ -44,9 +44,9 @@ export function QuickFill({ course, def, onClose }: QuickFillProps) {
   }
 
   return (
-    <div className="mb-3 rounded-md border border-line bg-bg p-3">
+    <div className="mb-3 rounded-lg border border-line bg-surface-2/50 p-3">
       <label htmlFor={inputId} className="block text-xs text-muted">
-        All {def.label.toLowerCase()} at once
+        All {def.label} at Once
       </label>
       <div className="mt-1 flex gap-2">
         <input
@@ -71,9 +71,7 @@ export function QuickFill({ course, def, onClose }: QuickFillProps) {
               onClose();
             }
           }}
-          className={`h-9 min-w-0 flex-1 rounded-md border bg-surface px-3 font-mono text-sm tabular-nums outline-none focus:border-accent ${
-            error ? "border-err" : "border-line-strong"
-          }`}
+          className={`field min-w-0 flex-1 font-mono tabular-nums ${error ? "border-err" : ""}`}
         />
         <button type="button" onClick={apply} className={buttonClass("primary")}>
           Fill

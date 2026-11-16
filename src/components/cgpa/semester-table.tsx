@@ -11,10 +11,7 @@ import type { Semester } from "@/lib/types";
 
 const COLS = "grid grid-cols-[minmax(0,1fr)_4.25rem_4.25rem_3.25rem_2rem] items-center gap-2";
 
-const inputClass = (invalid: boolean) =>
-  `h-9 w-full min-w-0 rounded-md border bg-bg px-2.5 text-sm outline-none focus:border-accent ${
-    invalid ? "border-err" : "border-line-strong"
-  }`;
+const inputClass = (invalid: boolean) => `field w-full min-w-0 px-2.5 ${invalid ? "border-err" : ""}`;
 
 function gpaInvalid(value: string) {
   if (value.trim() === "") return false;
@@ -41,26 +38,26 @@ export function SemesterTable({ semesters, timeline, current, currentId, include
   const nextLabel = `Semester ${semesters.length + 1}`;
 
   return (
-    <section className="rounded-lg border border-line bg-surface px-4 sm:px-5">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-3">
-        <h2 className="font-semibold">Semesters</h2>
+    <section className="card px-4 sm:px-5">
+      <header className="-mx-4 flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3.5 sm:-mx-5 sm:px-5">
+        <h2 className="text-[15px] font-semibold">Semesters</h2>
         <div className="flex gap-2">
           {semesters.length === 0 && (
             <button
               type="button"
-              onClick={() => addSemester("Earlier semesters")}
+              onClick={() => addSemester("Earlier Semesters")}
               className={buttonClass("ghost", "sm")}
             >
-              I only know my CGPA so far
+              I Only Know My CGPA So Far
             </button>
           )}
           <button type="button" onClick={() => addSemester(nextLabel)} className={buttonClass("secondary", "sm")}>
-            + Add semester
+            + Add Semester
           </button>
         </div>
       </header>
 
-      <div className={`${COLS} pb-1 pt-3 text-xs text-muted`}>
+      <div className={`${COLS} pb-1 pt-3 text-xs font-medium text-muted`}>
         <span>Semester</span>
         <span>GPA</span>
         <span>Credits</span>
@@ -147,7 +144,7 @@ export function SemesterTable({ semesters, timeline, current, currentId, include
         })}
       </ul>
 
-      <div className={`${COLS} mt-1 border-t border-line py-3 text-sm`}>
+      <div className={`${COLS} -mx-4 mt-2 border-t border-line bg-surface-2/40 px-4 py-3 text-sm sm:-mx-5 sm:px-5`}>
         <label className="flex min-w-0 items-center gap-2">
           <input
             type="checkbox"
@@ -161,20 +158,20 @@ export function SemesterTable({ semesters, timeline, current, currentId, include
             className="size-4 accent-[var(--accent)]"
           />
           <span className="truncate">
-            This semester{" "}
+            This Semester{" "}
             <Link href="/gpa-calculator" className="text-xs text-accent hover:underline">
-              (GPA page)
+              (GPA Page)
             </Link>
           </span>
         </label>
         {current.gpa === null ? (
-          <span className="col-span-3 text-right text-xs text-muted">no grades yet</span>
+          <span className="col-span-3 text-right text-xs text-muted">No Grades Yet</span>
         ) : (
           <>
             <span className="pr-2.5 text-right tabular-nums">{formatGpa(current.gpa)}</span>
             <span className="pr-2.5 text-right tabular-nums">{current.credits}</span>
             <span className="text-right font-semibold tabular-nums">
-              {includeCurrent ? formatGpa(cgpaAfter.get(currentId) ?? null) : "–"}
+              {includeCurrent ? formatGpa(cgpaAfter.get(currentId) ?? null) : "-"}
             </span>
           </>
         )}

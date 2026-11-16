@@ -11,7 +11,7 @@ import type { Course } from "./types";
  * credits × final weight. When both theory and lab finals are missing, the same
  * x is assumed for both, which is the simplest fair answer for one number.
  *
- * Because CUI rounds the percentage, a grade with minimum m only needs m − 0.5.
+ * Because CUI rounds the percentage, a grade with minimum m only needs m - 0.5.
  * Internal marks not entered yet count as 0, so the answer is never too optimistic.
  */
 

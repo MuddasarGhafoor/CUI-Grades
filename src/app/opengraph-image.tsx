@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "CUI-Grades: internal marks, GPA and CGPA calculator for CUI students";
+export const alt = "CUI-Grades: Internal Marks, GPA and CGPA Calculator for CUI Students";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -32,7 +32,7 @@ export default function OpengraphImage() {
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.1, maxWidth: 960 }}>
-            Internal marks, GPA and CGPA for CUI students
+            Internal Marks, GPA and CGPA for CUI Students
           </div>
           <div style={{ fontSize: 32, color: "#8d9ab0", marginTop: 28 }}>
             Pre-filled totals · Enter to move on · Voice commands · Official CUI scale

@@ -28,12 +28,12 @@ export function AddSubjectForm({ fallbackName, onDone, onCancel }: AddSubjectFor
     <form
       onSubmit={submit}
       onKeyDown={(e) => e.key === "Escape" && onCancel?.()}
-      className="rounded-lg border border-line bg-surface p-4 sm:p-5"
+      className="card p-4 sm:p-5"
     >
       <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-end">
         <div>
-          <label htmlFor="new-subject-name" className="block text-xs text-muted">
-            Subject name
+          <label htmlFor="new-subject-name" className="mb-1 block text-xs font-medium text-muted">
+            Subject Name
           </label>
           <input
             id="new-subject-name"
@@ -41,13 +41,12 @@ export function AddSubjectForm({ fallbackName, onDone, onCancel }: AddSubjectFor
             autoComplete="off"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder={`e.g. Database Systems`}
-            className="mt-1 h-9 w-full rounded-md border border-line-strong bg-bg px-3 text-sm outline-none focus:border-accent"
+            placeholder="e.g. Database Systems"
+            className="field w-full"
           />
         </div>
         <div className="flex gap-3">
           <CreditSelect
-            id="new-subject-theory"
             label="Theory"
             value={theory}
             max={MAX_THEORY_CREDITS}
@@ -55,7 +54,6 @@ export function AddSubjectForm({ fallbackName, onDone, onCancel }: AddSubjectFor
             onChange={setTheory}
           />
           <CreditSelect
-            id="new-subject-lab"
             label="Lab"
             value={lab}
             max={MAX_LAB_CREDITS}
@@ -65,7 +63,7 @@ export function AddSubjectForm({ fallbackName, onDone, onCancel }: AddSubjectFor
         </div>
         <div className="flex gap-2">
           <button type="submit" className={buttonClass("primary")}>
-            Add subject
+            Add Subject
           </button>
           {onCancel && (
             <button type="button" onClick={onCancel} className={buttonClass("ghost")}>

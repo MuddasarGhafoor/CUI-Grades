@@ -20,11 +20,11 @@ export function SubjectHeader({ course, result, editing, onToggleEditing }: Subj
   const grade = result.gradeFromMarks;
 
   return (
-    <div className="rounded-lg border border-line bg-surface p-4 sm:p-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+    <div className="card">
+      <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-end sm:p-5">
         <div className="min-w-0 flex-1">
-          <label htmlFor="subject-name" className="block text-xs text-muted">
-            Subject name
+          <label htmlFor="subject-name" className="block text-xs font-medium text-muted">
+            Subject Name
           </label>
           <input
             id="subject-name"
@@ -39,15 +39,14 @@ export function SubjectHeader({ course, result, editing, onToggleEditing }: Subj
             onBlur={(e) => {
               if (e.target.value.trim()) return;
               updateCourse(course.id, (c) => {
-                c.name = "Untitled subject";
+                c.name = "Untitled Subject";
               });
             }}
-            className="-mx-2 mt-0.5 w-[calc(100%+1rem)] rounded-md border border-transparent bg-transparent px-2 py-1 text-xl font-semibold outline-none hover:border-line focus:border-accent"
+            className="-mx-2 mt-0.5 w-[calc(100%+1rem)] rounded-lg border border-transparent bg-transparent px-2 py-1 text-xl font-semibold outline-none transition-colors hover:border-line focus:border-accent focus:bg-field"
           />
         </div>
         <div className="flex gap-3">
           <CreditSelect
-            id="subject-theory"
             label="Theory"
             value={course.theoryCredits}
             max={MAX_THEORY_CREDITS}
@@ -59,7 +58,6 @@ export function SubjectHeader({ course, result, editing, onToggleEditing }: Subj
             }
           />
           <CreditSelect
-            id="subject-lab"
             label="Lab"
             value={course.labCredits}
             max={MAX_LAB_CREDITS}
@@ -73,24 +71,24 @@ export function SubjectHeader({ course, result, editing, onToggleEditing }: Subj
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-line pt-3">
+      <div className="flex flex-wrap items-center gap-2 border-t border-line bg-surface-2/40 px-4 py-2.5 sm:px-5">
         <button
           type="button"
           onClick={onToggleEditing}
           aria-pressed={editing}
           className={buttonClass(editing ? "primary" : "secondary", "sm")}
         >
-          {editing ? "Done editing totals" : "Edit totals and counts"}
+          {editing ? "Done Editing" : "Edit Totals and Counts"}
         </button>
         <span className="text-sm text-muted lg:hidden">
           {result.percent === null
-            ? "No marks yet"
-            : `${result.complete ? "Result" : "So far"}: ${formatPercent(result.percent)}${grade ? ` · ${grade.letter}` : ""}`}
+            ? "No Marks Yet"
+            : `${result.complete ? "Result" : "So Far"}: ${formatPercent(result.percent)}${grade ? ` · ${grade.letter}` : ""}`}
         </span>
         <div className="ml-auto flex gap-1">
           <ConfirmButton
-            label="Clear marks"
-            confirmLabel="Click again to clear"
+            label="Clear Marks"
+            confirmLabel="Click Again to Clear"
             onConfirm={() =>
               updateCourse(course.id, (c) => {
                 c.marks = createCourseMarks();
@@ -98,15 +96,15 @@ export function SubjectHeader({ course, result, editing, onToggleEditing }: Subj
             }
           />
           <ConfirmButton
-            label="Delete subject"
-            confirmLabel="Click again to delete"
+            label="Delete Subject"
+            confirmLabel="Click Again to Delete"
             onConfirm={() => removeCourse(course.id)}
           />
         </div>
       </div>
       {editing && (
-        <p className="mt-3 text-xs text-muted">
-          Change any total, or add and remove quizzes and assignments. Press Done when finished.
+        <p className="border-t border-line px-4 py-2.5 text-xs text-muted sm:px-5">
+          Change any total, or add and remove quizzes and assignments. Press Done Editing when finished.
         </p>
       )}
     </div>

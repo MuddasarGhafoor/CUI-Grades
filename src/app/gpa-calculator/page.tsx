@@ -5,7 +5,7 @@ import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
   path: "/gpa-calculator",
-  title: "GPA calculator",
+  title: "GPA Calculator",
   description:
     "Calculate your CUI semester GPA from your internal marks, or pick the grades you already know.",
 });
@@ -14,8 +14,8 @@ export default function GpaCalculatorPage() {
   return (
     <>
       <PageHeader
-        title="GPA calculator"
-        description="Grades come from your internal marks. Pick a grade by hand for any subject to use that instead. Subjects are shared with the Internal marks page."
+        title="GPA Calculator"
+        description="Grades come from your internal marks. Pick a grade by hand for any subject to use that instead. Subjects are shared with the Internal Marks page."
         actions={<ExportActions />}
       />
       <GpaApp />

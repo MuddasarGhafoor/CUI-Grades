@@ -32,12 +32,12 @@ export function MarkField({ id, label, mark, editingTotal, onChange }: MarkField
 
   return (
     <div>
-      <label htmlFor={id} className="block text-xs text-muted">
+      <label htmlFor={id} className="block text-xs font-medium text-muted">
         {label}
       </label>
       <div
-        className={`mt-1 flex items-center rounded-md border bg-bg transition-colors focus-within:border-accent ${
-          error ? "border-err" : "border-line-strong"
+        className={`mt-1 flex h-10 items-center overflow-hidden rounded-lg border bg-field transition-[border-color,box-shadow] duration-150 focus-within:border-accent focus-within:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_22%,transparent)] ${
+          error ? "border-err" : "border-line-strong hover:border-[color-mix(in_srgb,var(--accent)_35%,var(--line-strong))]"
         }`}
       >
         <input
@@ -45,7 +45,7 @@ export function MarkField({ id, label, mark, editingTotal, onChange }: MarkField
           data-mark-input
           inputMode="decimal"
           autoComplete="off"
-          placeholder="–"
+          placeholder="-"
           value={mark.obtained}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
@@ -65,7 +65,7 @@ export function MarkField({ id, label, mark, editingTotal, onChange }: MarkField
             onChange={(e) => onChange("total", e.target.value)}
             onFocus={(e) => e.currentTarget.select()}
             onKeyDown={handleMarkKeyDown}
-            className={`${inputClass} w-12 shrink-0 rounded-r-md bg-surface-2 px-2 text-center`}
+            className={`${inputClass} h-full w-12 shrink-0 border-l border-line bg-surface-2 px-2 text-center`}
           />
         ) : (
           <span className="w-10 shrink-0 pr-3 text-sm tabular-nums text-muted">{mark.total || "?"}</span>

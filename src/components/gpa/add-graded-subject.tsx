@@ -42,8 +42,8 @@ export function AddGradedSubject({ fallbackName, scale, onDone, onCancel }: AddG
       className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-end"
     >
       <div>
-        <label htmlFor="gpa-new-name" className="block text-xs text-muted">
-          Subject name
+        <label htmlFor="gpa-new-name" className="mb-1 block text-xs font-medium text-muted">
+          Subject Name
         </label>
         <input
           id="gpa-new-name"
@@ -52,12 +52,11 @@ export function AddGradedSubject({ fallbackName, scale, onDone, onCancel }: AddG
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Operating Systems"
-          className="mt-1 h-9 w-full rounded-md border border-line-strong bg-bg px-3 text-sm outline-none focus:border-accent"
+          className="field w-full"
         />
       </div>
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <CreditSelect
-          id="gpa-new-theory"
           label="Theory"
           value={theory}
           max={MAX_THEORY_CREDITS}
@@ -65,31 +64,24 @@ export function AddGradedSubject({ fallbackName, scale, onDone, onCancel }: AddG
           onChange={setTheory}
         />
         <CreditSelect
-          id="gpa-new-lab"
           label="Lab"
           value={lab}
           max={MAX_LAB_CREDITS}
           disableZero={theory === 0}
           onChange={setLab}
         />
-        <div>
-          <span className="block text-xs text-muted" aria-hidden="true">
-            Grade
-          </span>
-          <GradeSelect
-            id="gpa-new-grade"
-            label="Grade"
-            value={grade}
-            scale={scale}
-            emptyLabel="Later"
-            onChange={setGrade}
-            className="mt-1"
-          />
-        </div>
+        <GradeSelect
+          label="Grade"
+          value={grade}
+          scale={scale}
+          emptyLabel="Later"
+          onChange={setGrade}
+          className="w-28"
+        />
       </div>
       <div className="flex gap-2">
         <button type="submit" className={buttonClass("primary")}>
-          Add
+          Add Subject
         </button>
         {onCancel && (
           <button type="button" onClick={onCancel} className={buttonClass("ghost")}>

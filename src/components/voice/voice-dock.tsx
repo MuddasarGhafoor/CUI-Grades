@@ -11,6 +11,7 @@ import {
 } from "react";
 import { buttonClass } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icons";
+import { Select } from "@/components/ui/select";
 import { updateData, useAppData } from "@/lib/store";
 import type { VoiceMode } from "@/lib/types";
 import { useIsClient } from "@/lib/use-is-client";
@@ -28,8 +29,8 @@ const LANGUAGES = [
 ];
 
 const MODES: { value: VoiceMode; label: string }[] = [
-  { value: "continuous", label: "Keep listening" },
-  { value: "push-to-talk", label: "Hold to talk" },
+  { value: "continuous", label: "Keep Listening" },
+  { value: "push-to-talk", label: "Hold to Talk" },
 ];
 
 type Heard = { text: string; interim: boolean };
@@ -196,11 +197,15 @@ export function VoiceDock() {
         ) : (
           <section
             aria-label="Voice commands"
-            className="pointer-events-auto mx-auto max-w-3xl rounded-lg border border-line-strong bg-surface shadow-lg"
+            className="pointer-events-auto mx-auto max-w-3xl rounded-xl border border-line-strong bg-surface shadow-pop"
           >
             {settingsOpen && (
               <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3 text-sm">
-                <div role="radiogroup" aria-label="Voice mode" className="inline-flex rounded-md border border-line-strong p-0.5">
+                <div
+                  role="radiogroup"
+                  aria-label="Voice mode"
+                  className="inline-flex rounded-lg border border-line-strong bg-field p-0.5"
+                >
                   {MODES.map((m) => (
                     <button
                       key={m.value}
@@ -208,28 +213,22 @@ export function VoiceDock() {
                       role="radio"
                       aria-checked={mode === m.value}
                       onClick={() => setMode(m.value)}
-                      className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${
-                        mode === m.value ? "bg-surface-2 text-fg" : "text-muted hover:text-fg"
+                      className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+                        mode === m.value ? "bg-surface-2 text-fg shadow-sm" : "text-muted hover:text-fg"
                       }`}
                     >
                       {m.label}
                     </button>
                   ))}
                 </div>
-                <label className="flex items-center gap-2 text-xs text-muted">
-                  Language
-                  <select
-                    value={lang}
-                    onChange={(e) => setLang(e.target.value)}
-                    className="h-8 rounded-md border border-line-strong bg-bg px-2 text-sm text-fg outline-none focus:border-accent"
-                  >
-                    {LANGUAGES.map((l) => (
-                      <option key={l.value} value={l.value}>
-                        {l.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <Select
+                  ariaLabel="Voice language"
+                  size="sm"
+                  className="w-44"
+                  value={lang}
+                  onChange={setLang}
+                  options={LANGUAGES}
+                />
               </div>
             )}
 
@@ -321,7 +320,7 @@ export function VoiceDock() {
                     placeholder="Or type a command, e.g. midterm 20 out of 25"
                     autoComplete="off"
                     spellCheck={false}
-                    className="h-9 min-w-0 flex-1 rounded-md border border-line-strong bg-bg px-3 text-sm outline-none focus:border-accent"
+                    className="field min-w-0 flex-1"
                   />
                   <button type="submit" className={buttonClass("secondary")}>
                     Go

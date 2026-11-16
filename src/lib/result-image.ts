@@ -99,7 +99,7 @@ export async function renderResultImage(summary: ResultSummary): Promise<Blob> {
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = C.fg;
   ctx.font = `60px ${display}`;
-  ctx.fillText("Semester result", PAD, 214);
+  ctx.fillText("Semester Result", PAD, 214);
 
   // Table.
   const x = { name: PAD, credits: 650, percent: 800, grade: 900, points: W - PAD };
@@ -129,13 +129,13 @@ export async function renderResultImage(summary: ResultSummary): Promise<Blob> {
     ctx.textAlign = "right";
     ctx.fillStyle = C.muted;
     ctx.fillText(s.creditSplit, x.credits, mid);
-    ctx.fillText(s.percent === null ? "–" : formatPercent(s.percent, 0), x.percent, mid);
+    ctx.fillText(s.percent === null ? "-" : formatPercent(s.percent, 0), x.percent, mid);
     ctx.font = `700 28px ${sans}`;
     ctx.fillStyle = gradeColor(s.points);
-    ctx.fillText(s.letter ?? "–", x.grade, mid);
+    ctx.fillText(s.letter ?? "-", x.grade, mid);
     ctx.font = `28px ${sans}`;
     ctx.fillStyle = C.fg;
-    ctx.fillText(s.points === null ? "–" : s.points.toFixed(2), x.points, mid);
+    ctx.fillText(s.points === null ? "-" : s.points.toFixed(2), x.points, mid);
     ctx.textAlign = "left";
     if (i < summary.subjects.length - 1) {
       ctx.fillStyle = C.line;

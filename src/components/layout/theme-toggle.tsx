@@ -37,7 +37,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className="grid size-9 place-items-center rounded-md border border-line text-muted transition-colors hover:bg-surface-2 hover:text-fg"
+      className="grid size-9 place-items-center rounded-lg border border-line-strong bg-surface-2 text-muted transition-colors hover:border-accent/50 hover:text-fg"
     >
       <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
     </button>

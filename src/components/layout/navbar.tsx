@@ -8,40 +8,54 @@ import { ThemeToggle } from "./theme-toggle";
 
 export function Navbar() {
   const pathname = usePathname();
-
-  const links = (mobile: boolean) =>
-    NAV_ITEMS.map((item) => {
-      const active = pathname.startsWith(item.href);
-      return (
-        <Link
-          key={item.href}
-          href={item.href}
-          aria-current={active ? "page" : undefined}
-          className={`relative flex items-center justify-center text-sm font-medium transition-colors ${
-            mobile ? "flex-1 py-2.5" : "h-full"
-          } ${active ? "text-fg" : "text-muted hover:text-fg"}`}
-        >
-          {mobile ? item.shortLabel : item.label}
-          {active && <span className="absolute inset-x-0 -bottom-px h-0.5 bg-accent" />}
-        </Link>
-      );
-    });
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="sticky top-0 z-20 border-b border-line bg-bg/95 backdrop-blur print:hidden">
-      <div className="mx-auto flex h-14 max-w-5xl items-center gap-8 px-4 sm:px-6">
-        <Link href="/" className="rounded-md">
+    <header className="sticky top-0 z-20 border-b border-line bg-surface/85 backdrop-blur-md print:hidden">
+      <div className="mx-auto flex h-16 max-w-5xl items-center gap-6 px-4 sm:px-6">
+        <Link href="/" aria-label="CUI-Grades home" className="flex shrink-0 items-center rounded-lg">
           <Logo />
         </Link>
-        <nav aria-label="Main" className="hidden h-full items-stretch gap-6 sm:flex">
-          {links(false)}
+
+        <nav aria-label="Main" className="hidden flex-1 items-center gap-1 md:flex">
+          {NAV_ITEMS.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={`flex h-9 items-center rounded-lg px-3 text-sm font-medium transition-colors ${
+                  active ? "bg-surface-2 text-fg shadow-[inset_0_0_0_1px_var(--line)]" : "text-muted hover:bg-surface-2/60 hover:text-fg"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
-        <div className="ml-auto">
+
+        <div className="ml-auto flex items-center">
           <ThemeToggle />
         </div>
       </div>
-      <nav aria-label="Main" className="flex border-t border-line sm:hidden">
-        {links(true)}
+
+      <nav aria-label="Main" className="flex items-center gap-1 border-t border-line px-2 py-1.5 md:hidden">
+        {NAV_ITEMS.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={active ? "page" : undefined}
+              className={`flex h-8 flex-1 items-center justify-center rounded-md text-sm font-medium transition-colors ${
+                active ? "bg-surface-2 text-fg" : "text-muted hover:text-fg"
+              }`}
+            >
+              {item.shortLabel}
+            </Link>
+          );
+        })}
       </nav>
     </header>
   );

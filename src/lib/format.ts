@@ -1,4 +1,4 @@
-const DASH = "–";
+const DASH = "-";
 
 /** GPA and CGPA to two decimals, as on CUI results: 3.4567 → "3.46". */
 export function formatGpa(value: number | null): string {
@@ -15,7 +15,7 @@ export function formatMarks(value: number | null): string {
 }
 
 export function formatCredits(credits: number): string {
-  return `${credits} credit${credits === 1 ? "" : "s"}`;
+  return `${credits} Credit${credits === 1 ? "" : "s"}`;
 }
 
 /** Colour for a percentage: green for A range, teal for good, amber near the pass line, red below it. */
@@ -29,4 +29,14 @@ export function toneColor(percent: number | null): string {
 
 export function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+const SMALL_WORDS = new Set(["a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to"]);
+
+/** "lab assignment" → "Lab Assignment". Small joining words stay lower case except at the start. */
+export function titleCase(text: string): string {
+  return text
+    .split(" ")
+    .map((word, i) => (i > 0 && SMALL_WORDS.has(word) ? word : capitalize(word)))
+    .join(" ");
 }

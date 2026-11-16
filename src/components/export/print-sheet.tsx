@@ -44,7 +44,7 @@ export function PrintSheet() {
         <span className="text-sm text-neutral-600">{formatResultDate(summary.generatedAt)}</span>
       </header>
 
-      <h1 className="mt-6 font-display text-3xl">Semester result</h1>
+      <h1 className="mt-6 font-display text-3xl">Semester Result</h1>
 
       <table className="mt-4 w-full border-collapse text-left">
         <thead>
@@ -54,7 +54,7 @@ export function PrintSheet() {
             <th className="py-1.5 text-right font-medium">Marks</th>
             <th className="py-1.5 text-right font-medium">Grade</th>
             <th className="py-1.5 text-right font-medium">Points</th>
-            <th className="py-1.5 text-right font-medium">Quality pts</th>
+            <th className="py-1.5 text-right font-medium">Quality Pts</th>
           </tr>
         </thead>
         <tbody className="tabular-nums">
@@ -64,12 +64,12 @@ export function PrintSheet() {
               <td className="py-1.5 text-right">{s.creditSplit}</td>
               <td className="py-1.5 text-right">{formatPercent(s.percent)}</td>
               <td className="py-1.5 text-right font-semibold">
-                {s.letter ?? "–"}
+                {s.letter ?? "-"}
                 {s.manual && <sup className="ml-0.5 font-normal">*</sup>}
               </td>
-              <td className="py-1.5 text-right">{s.points === null ? "–" : s.points.toFixed(2)}</td>
+              <td className="py-1.5 text-right">{s.points === null ? "-" : s.points.toFixed(2)}</td>
               <td className="py-1.5 text-right">
-                {s.points === null ? "–" : formatMarks(s.points * s.credits)}
+                {s.points === null ? "-" : formatMarks(s.points * s.credits)}
               </td>
             </tr>
           ))}
@@ -101,7 +101,7 @@ export function PrintSheet() {
                 <th className="py-1.5 font-medium">Semester</th>
                 <th className="py-1.5 text-right font-medium">GPA</th>
                 <th className="py-1.5 text-right font-medium">Credits</th>
-                <th className="py-1.5 text-right font-medium">CGPA after</th>
+                <th className="py-1.5 text-right font-medium">CGPA After</th>
               </tr>
             </thead>
             <tbody className="tabular-nums">

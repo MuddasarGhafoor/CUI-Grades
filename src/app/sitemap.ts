@@ -6,6 +6,7 @@ const ROUTES = [
   { path: "/internal-marks", priority: 0.9 },
   { path: "/gpa-calculator", priority: 0.9 },
   { path: "/cgpa-calculator", priority: 0.9 },
+  { path: "/guide", priority: 0.7 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -50,7 +50,7 @@ export function ExportActions() {
           disabled={empty || busy}
           className={buttonClass("secondary", "sm")}
         >
-          {busy ? "Creating image…" : "Save image"}
+          {busy ? "Creating Image…" : "Save Image"}
         </button>
         <button
           type="button"

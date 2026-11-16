@@ -18,15 +18,15 @@ export function SavedProgress() {
   );
 
   const stats = [
-    { label: "Subjects this semester", value: String(data.courses.length) },
+    { label: "Subjects This Semester", value: String(data.courses.length) },
     { label: "Semester GPA", value: formatGpa(semester.gpa) },
     { label: "CGPA", value: formatGpa(overall.gpa) },
   ];
 
   return (
-    <section aria-label="Saved progress" className="mt-8 rounded-lg border border-line bg-surface">
+    <section aria-label="Saved progress" className="card mt-10">
       <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-3">
-        <h2 className="text-sm font-semibold">Where you left off</h2>
+        <h2 className="text-sm font-semibold">Where You Left Off</h2>
         <Link
           href="/internal-marks"
           className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
@@ -38,7 +38,7 @@ export function SavedProgress() {
         {stats.map((stat) => (
           <div key={stat.label} className="px-5 py-4">
             <dt className="text-xs text-muted">{stat.label}</dt>
-            <dd className="mt-1 text-2xl font-semibold tabular-nums">{stat.value}</dd>
+            <dd className="mt-1 font-display text-3xl tabular-nums">{stat.value}</dd>
           </div>
         ))}
       </dl>

@@ -24,7 +24,7 @@ const carterOne = Carter_One({
   subsets: ["latin"],
 });
 
-const DEFAULT_TITLE = "CUI-Grades: GPA, CGPA & internal marks calculator";
+const DEFAULT_TITLE = "CUI-Grades: GPA, CGPA & Internal Marks Calculator";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
