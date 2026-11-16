@@ -86,7 +86,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${carterOne.variable} ${rubikMonoOne.variable} flex min-h-dvh flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${carterOne.variable} ${rubikMonoOne.variable} flex min-h-dvh flex-col overflow-x-clip antialiased`}
       >
         <Navbar />
         <main className="mx-auto w-[90%] flex-1 py-8 sm:py-10">

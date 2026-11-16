@@ -11,10 +11,6 @@ const ITEMS = ORDER.map((href) => CALCULATORS.find((c) => c.href === href)).filt
   (c): c is NavItem => c !== undefined,
 );
 
-/** Each word in its area's colour, pulled slightly towards the background for a deeper shade. */
-const wordColor = (item: NavItem) =>
-  ({ "--word": `color-mix(in srgb, ${TONE_VAR[item.tone]} 82%, var(--bg))` }) as CSSProperties;
-
 export default function Home() {
   return (
     <div>
@@ -23,20 +19,31 @@ export default function Home() {
         Height = screen - navbar (4rem) - page padding (2 x 2.5rem) - footer (about 4.5rem), plus a small margin.
         Sizes use vh so the words and cards shrink on shorter screens.
       */}
-      <section className="grid items-center gap-8 md:h-[calc(100dvh-14rem)] md:min-h-[26rem] lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14">
+      <section className="relative isolate grid items-center gap-8 md:min-h-[calc(100dvh-14rem)] lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14">
+        {/* Faint grid behind the hero, edge to edge, fading out towards the sides and bottom. */}
+        <div
+          aria-hidden="true"
+          className="bg-grid pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 [mask-image:radial-gradient(ellipse_70%_75%_at_35%_45%,black_30%,transparent_100%)]"
+        />
         <div>
-          {/* Rubik Mono One: every letter the same wide, heavy block. Its glyphs are already very wide, so sizes stay modest. */}
-          <h1 className="font-hero text-[length:min(13vh,17vw)] uppercase leading-[0.9] tracking-[-0.1em] lg:text-[length:min(15vh,9vw)]">
+          {/*
+            Watermark style: huge Rubik Mono One letters in each area's colour (Marks teal,
+            GPA blue, CGPA violet), fading into the page towards the bottom of each word.
+          */}
+          <h1 className="font-hero text-[length:min(17vh,21vw)] uppercase leading-[0.8] tracking-[-0.12em] lg:text-[length:min(16vh,11vw)]">
             {ITEMS.map((item) => (
-              <span key={item.href} style={wordColor(item)} className="block text-[color:var(--word)]">
+              <span
+                key={item.href}
+                style={{ "--wm-color": TONE_VAR[item.tone] } as CSSProperties}
+                className="text-watermark block"
+              >
                 {item.name}
               </span>
             ))}
             <span className="sr-only"> calculators</span>
           </h1>
-          <p className="mt-[3vh] max-w-xl text-base text-muted sm:text-lg">
-            Calculators for <span className="text-fg">COMSATS students</span>, on the official CUI
-            grading scale.
+          <p className="mt-[2vh] max-w-xl text-base text-muted sm:text-lg">
+            Calculators for <span className="text-tone-amber">COMSATS Students</span>, on the official CUI grading scale.
           </p>
           <SavedProgress />
         </div>

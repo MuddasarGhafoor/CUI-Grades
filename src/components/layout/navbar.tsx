@@ -49,7 +49,7 @@ export function Navbar() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={`group relative flex h-16 items-center px-4 text-sm font-medium transition-colors ${
-                  active ? "text-fg" : "text-muted hover:text-fg"
+                  active ? TONE_CLASS[item.tone].text : "text-muted hover:text-fg"
                 }`}
               >
                 {item.label}
@@ -84,7 +84,7 @@ export function Navbar() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={`group relative flex h-10 flex-1 items-center justify-center text-sm font-medium transition-colors ${
-                active ? "text-fg" : "text-muted hover:text-fg"
+                active ? TONE_CLASS[item.tone].text : "text-muted hover:text-fg"
               }`}
             >
               {item.shortLabel}

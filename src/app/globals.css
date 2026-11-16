@@ -28,6 +28,10 @@
   --tone-amber: #fbbf24;
   --tone-rose: #fb7185;
   --tone-green: #4ade80;
+  /* Hero watermark words: how much of the word's colour shows at the top and bottom of each word. */
+  --wm-top: 66%;
+  --wm-bottom: 18%;
+  --grid-line: rgb(255 255 255 / 0.035);
   --elev-card: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.35),
     0 10px 28px -14px rgb(0 0 0 / 0.6);
   --elev-pop: 0 18px 44px -10px rgb(0 0 0 / 0.65), 0 2px 6px rgb(0 0 0 / 0.3);
@@ -55,6 +59,9 @@
   --tone-amber: #d97706;
   --tone-rose: #e11d48;
   --tone-green: #16a34a;
+  --wm-top: 78%;
+  --wm-bottom: 26%;
+  --grid-line: rgb(16 24 40 / 0.055);
   --elev-card: 0 1px 2px rgb(16 24 40 / 0.05), 0 6px 20px -10px rgb(16 24 40 / 0.14);
   --elev-pop: 0 18px 44px -12px rgb(16 24 40 / 0.28), 0 2px 6px rgb(16 24 40 / 0.08);
 }
@@ -95,6 +102,29 @@
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: var(--elev-card);
+}
+
+/*
+ * Very large type that fades towards the bottom, like a watermark.
+ * Set --wm-color on the element to tint it; it falls back to the text colour.
+ */
+@utility text-watermark {
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--wm-color, var(--fg)) var(--wm-top), var(--bg)),
+    color-mix(in srgb, var(--wm-color, var(--fg)) var(--wm-bottom), var(--bg))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Faint square grid used behind the home page hero. */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 80px 80px;
 }
 
 /* Text inputs and dropdown buttons share one look, with a soft focus ring. */
