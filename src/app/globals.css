@@ -1,25 +1,122 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Theme is chosen by data-theme on <html>. Dark is the default. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a0f1c;
+  --surface: #121a2c;
+  --surface-2: #18223a;
+  --sunken: #0c1322;
+  --line: #26334f;
+  --line-strong: #33446a;
+  --fg: #eef3fb;
+  --muted: #8b9ab5;
+  --accent: #2dd4bf;
+  --accent-2: #60a5fa;
+  --on-accent: #04211d;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --err: #f87171;
+  --glow-1: #15405a55;
+  --glow-2: #2b2a6a44;
+  --shadow: 0 18px 48px #000a;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #eef3f9;
+  --sunken: #f7f9fc;
+  --line: #dde5ef;
+  --line-strong: #c5d2e3;
+  --fg: #0b1324;
+  --muted: #5b6b85;
+  --accent: #0d9488;
+  --accent-2: #2563eb;
+  --on-accent: #ffffff;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --err: #dc2626;
+  --glow-1: #2dd4bf22;
+  --glow-2: #60a5fa22;
+  --shadow: 0 18px 48px #0b132418;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-sunken: var(--sunken);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-on-accent: var(--on-accent);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-err: var(--err);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-carter-one), var(--font-geist-sans), cursive;
+
+  --shadow-pop: var(--shadow);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  min-height: 100dvh;
+  background:
+    radial-gradient(900px 420px at 10% -10%, var(--glow-1), transparent 60%),
+    radial-gradient(700px 380px at 100% 0%, var(--glow-2), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* Thin themed scrollbars */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+  background-clip: padding-box;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@utility text-gradient {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-brand {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
 }
