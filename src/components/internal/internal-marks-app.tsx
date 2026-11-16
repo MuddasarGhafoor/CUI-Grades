@@ -5,6 +5,7 @@ import { courseResult } from "@/lib/calc";
 import { setActiveCourse, useAppData } from "@/lib/store";
 import { useIsClient } from "@/lib/use-is-client";
 import { AddSubjectForm } from "./add-subject-form";
+import { FinalTarget } from "./final-target";
 import { PartCard } from "./part-card";
 import { SubjectHeader } from "./subject-header";
 import { SubjectSummary } from "./subject-summary";
@@ -82,7 +83,9 @@ export function InternalMarksApp() {
             yet; it won&apos;t count against you.
           </p>
         </div>
-        <SubjectSummary result={result} />
+        <SubjectSummary result={result}>
+          <FinalTarget key={active.id} course={active} result={result} scale={scale} />
+        </SubjectSummary>
       </div>
     </div>
   );

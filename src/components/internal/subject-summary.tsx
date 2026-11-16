@@ -41,7 +41,13 @@ function PartSummary({ part }: { part: PartResult }) {
   );
 }
 
-export function SubjectSummary({ result }: { result: CourseResult }) {
+type SubjectSummaryProps = {
+  result: CourseResult;
+  /** Extra panels shown at the bottom, such as the final exam target. */
+  children?: React.ReactNode;
+};
+
+export function SubjectSummary({ result, children }: SubjectSummaryProps) {
   const grade = result.gradeFromMarks;
   const parts = [result.theory, result.lab].filter((p): p is PartResult => p !== null);
 
@@ -51,7 +57,7 @@ export function SubjectSummary({ result }: { result: CourseResult }) {
   else status = `Based on the ${Math.round(result.coverage * 100)}% of marks entered so far.`;
 
   return (
-    <aside className="space-y-4 rounded-lg border border-line bg-surface p-5 lg:sticky lg:top-20">
+    <aside className="space-y-4 rounded-lg border border-line bg-surface p-5 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto">
       <div className="flex items-center gap-4">
         <ProgressRing value={result.percent} color={toneColor(result.percent)}>
           <div>
@@ -69,6 +75,7 @@ export function SubjectSummary({ result }: { result: CourseResult }) {
           <p className="mt-1 text-xs text-muted">{status}</p>
         </div>
       </div>
+      {children}
       {parts.map((part) => (
         <PartSummary key={part.part} part={part} />
       ))}
