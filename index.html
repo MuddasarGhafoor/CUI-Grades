@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPA Voice Calculator</title>
+<style>
+:root{
+  --bg:#0a0f1c;--card:#121a2c;--card2:#18223a;--line:#26334f;--line2:#33446a;
+  --text:#eef3fb;--muted:#8b9ab5;--accent:#4fd1bd;--accent2:#6ea8fe;
+  --ok:#5fd397;--warn:#f2c46d;--err:#ff7b84;--r:16px;
+}
+*{box-sizing:border-box}
+html{scrollbar-width:thin;scrollbar-color:#35496b transparent}
+body{margin:0;color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:180px;min-height:100vh;
+  background:radial-gradient(900px 420px at 10% -10%,#15405a55,transparent 60%),radial-gradient(700px 380px at 100% 0%,#2b2a6a44,transparent 60%),var(--bg)}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+
+/* custom scrollbars */
+::-webkit-scrollbar{width:10px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2f4062;border-radius:99px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--accent);background-clip:padding-box}
+.scroll{scrollbar-width:thin;scrollbar-color:#35496b transparent}
+
+.app{max-width:820px;margin:auto;padding:24px 16px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:13px}
+.logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 24px #4fd1bd33}
+h1{font-size:23px;margin:0;letter-spacing:-.03em;line-height:1.2}
+.top p{margin:0;color:var(--muted);font-size:13px}
+
+.btn{border:1px solid var(--line2);background:var(--card2);padding:8px 14px;border-radius:11px;font-weight:600;font-size:14px;transition:.15s}
+.btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),#4aa9d8);color:#05211d;border-color:transparent}
+.btn.danger{color:var(--err)}
+.btn.danger:hover{border-color:var(--err)}
+.btn.danger-solid{background:var(--err);color:#2a0609;border-color:var(--err)}
+.btn.icon{width:38px;height:38px;padding:0;display:grid;place-items:center;font-size:16px}
+
+/* tabs */
+.tabs{display:flex;gap:4px;background:#0e1527;border:1px solid var(--line);padding:4px;border-radius:15px;margin-bottom:18px}
+.tab{flex:1;border:0;background:none;padding:10px 6px;border-radius:11px;color:var(--muted);font-weight:650;transition:.15s;display:flex;align-items:center;justify-content:center;gap:7px}
+.tab:hover{color:var(--text)}
+.tab.on{background:var(--card2);color:var(--text);box-shadow:0 0 0 1px var(--line2),0 6px 16px #0005}
+.panel{display:none}.panel.on{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+
+.card{background:linear-gradient(180deg,#141d31,#111829);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card h3{margin:0;font-size:15px}
+.muted{color:var(--muted);font-size:13px}
+
+input[type=text],input[type=number]{width:100%;background:#0c1322;border:1px solid var(--line2);border-radius:10px;padding:9px 11px;outline:none;min-width:0;transition:.15s}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #4fd1bd22}
+input[type=number]{font-variant-numeric:tabular-nums;text-align:center}
+input[type=number]::-webkit-inner-spin-button{opacity:.3}
+label.l{display:block;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em}
+
+/* custom dropdown */
+.dd{position:relative;min-width:0}
+.dd-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;background:#0c1322;border:1px solid var(--line2);border-radius:10px;padding:9px 12px;text-align:left;transition:.15s}
+.dd-btn:hover,.dd.open .dd-btn{border-color:var(--accent)}
+.dd-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd-btn i{font-style:normal;color:var(--muted);font-size:11px;transition:.15s}
+.dd.open .dd-btn i{transform:rotate(180deg)}
+.dd-menu{display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:80;max-height:230px;overflow:auto;background:#0f182b;border:1px solid #3d4f78;border-radius:12px;padding:5px;box-shadow:0 18px 40px #000b;scrollbar-width:thin;scrollbar-color:#3b5078 transparent;min-width:120px}
+.dd.open .dd-menu{display:block;animation:fade .15s}
+.dd.up .dd-menu{top:auto;bottom:calc(100% + 6px)}
+.dd-item{display:block;width:100%;text-align:left;background:none;border:0;padding:8px 10px;border-radius:8px}
+.dd-item:hover{background:#1d2b47}
+.dd-item.on{background:#16403f;color:#aaf1e6}
+
+/* course chips */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:6px}
+.chip{flex:none;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--card);border:1px solid var(--line);color:var(--muted);padding:8px 14px;border-radius:99px;font-weight:600;font-size:14px;transition:.15s}
+.chip:hover{color:var(--text);border-color:var(--line2)}
+.chip.on{background:linear-gradient(135deg,#17504d,#1b3f6e);color:#fff;border-color:#3fa8a0}
+.chip.add{border-style:dashed;color:var(--accent);background:none}
+.chip.add:hover{border-color:var(--accent)}
+
+/* course head */
+.head{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.name-in{font-size:19px;font-weight:750;background:transparent!important;border:1px solid transparent!important;padding:5px 8px!important;margin-left:-8px;letter-spacing:-.02em;text-align:left!important}
+.name-in:hover{border-color:var(--line2)!important}
+.name-in:focus{background:#0c1322!important;border-color:var(--accent)!important}
+.cfg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.ring{position:relative;width:112px;height:112px}
+.ring svg{transform:rotate(-90deg);width:100%;height:100%}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round}
+.ring .bg{stroke:#223050}
+.ring .arc{stroke:var(--accent);transition:stroke-dasharray .45s ease,stroke .3s}
+.ring .mid{position:absolute;inset:0;display:grid;place-items:center;text-align:center;line-height:1.1}
+.ring .mid b{font-size:21px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.ring .mid span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+.pill{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:6px 11px;font-size:12px;color:var(--muted)}
+.pill b{color:var(--text);font-size:15px;margin-left:5px;font-variant-numeric:tabular-nums}
+
+.seg{display:inline-flex;background:#0e1527;border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:12px}
+.seg button{border:0;background:none;color:var(--muted);padding:7px 20px;border-radius:9px;font-weight:650;transition:.15s}
+.seg button.on{background:var(--accent);color:#05211d}
+
+.cat-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.cat-title{display:flex;align-items:center;gap:10px}
+.cat-ico{width:34px;height:34px;border-radius:10px;background:var(--card2);display:grid;place-items:center;font-size:17px}
+.tag{font-size:11px;background:#19383b;color:#a5ece0;border-radius:99px;padding:2px 8px;margin-left:7px;font-weight:600;vertical-align:1px}
+.score{font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent2);font-size:16px}
+.meter{height:4px;background:#223050;border-radius:9px;margin-bottom:12px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s}
+.row{display:grid;grid-template-columns:22px 1fr 14px 1fr 34px;gap:8px;align-items:center;margin-bottom:7px}
+.row.single{grid-template-columns:1fr 14px 1fr}
+.row .idx{color:var(--muted);font-size:12px;text-align:center}
+.row .sl{text-align:center;color:var(--muted)}
+.x{background:none;border:1px solid var(--line);color:var(--muted);border-radius:9px;height:36px;transition:.15s}
+.x:hover{color:var(--err);border-color:var(--err)}
+.add{width:100%;background:none;border:1px dashed #3d4f78;color:var(--muted);padding:8px;border-radius:10px;font-weight:600;transition:.15s}
+.add:hover{color:var(--accent);border-color:var(--accent);background:#4fd1bd0d}
+.flash{animation:flash 1s}
+@keyframes flash{0%{background:#4fd1bd33}100%{background:transparent}}
+
+.empty{text-align:center;padding:38px 18px}
+.empty .big{font-size:44px;margin-bottom:6px}
+.empty h3{font-size:19px;margin-bottom:6px}
+.empty p{color:var(--muted);margin:0 auto 18px;max-width:420px}
+
+/* results */
+.hero{display:grid;grid-template-columns:1fr 1px 1fr;gap:16px;align-items:center;padding:22px;margin-bottom:12px;border-radius:var(--r);border:1px solid #2f5a6e;background:linear-gradient(135deg,#12384a,#1b2a5a)}
+.hero .vr{background:#ffffff22;align-self:stretch}
+.hero div{text-align:center}
+.hero span{font-size:11px;color:#b6cde0;text-transform:uppercase;letter-spacing:.1em}
+.hero b{display:block;font-size:46px;letter-spacing:-.04em;line-height:1.1;font-variant-numeric:tabular-nums}
+.hero small{color:#9fb8cc;font-size:12px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.metric{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px 16px;display:flex;justify-content:space-between;align-items:center}
+.metric span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.metric b{font-size:22px;font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:10px 6px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+td.num{font-variant-numeric:tabular-nums}
+.bar-mini{height:4px;background:#223050;border-radius:9px;margin-top:5px;overflow:hidden;max-width:220px}
+.bar-mini i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.gtag{display:inline-block;min-width:44px;text-align:center;border-radius:8px;padding:2px 8px;font-weight:700;background:#1a2a48}
+
+/* grade scale */
+.grow{display:grid;grid-template-columns:1fr 1fr 36px;gap:8px;margin-bottom:7px;align-items:center}
+
+/* voice dock */
+.dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);width:min(792px,calc(100% - 24px));background:#0f1729f0;backdrop-filter:blur(14px);border:1px solid #3a4d78;border-radius:22px;padding:12px 14px;display:flex;gap:14px;align-items:center;box-shadow:0 20px 56px #000b;z-index:20}
+.dock.hide{display:none}
+.mic{flex:none;width:60px;height:60px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#04221e;font-size:25px;position:relative;transition:.2s}
+.mic:hover{transform:scale(1.06)}
+.mic.live{background:linear-gradient(135deg,#ff7b84,#f2a56d);animation:pulse 1.3s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #ff7b8466}100%{box-shadow:0 0 0 20px #ff7b8400}}
+.dmid{flex:1;min-width:0}
+.dstat{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dstat b{color:var(--text)}
+.wave{display:none;gap:2px;align-items:center;height:14px}
+.wave.on{display:flex}
+.wave i{width:3px;background:var(--err);border-radius:3px;animation:wv 0.9s infinite ease-in-out}
+.wave i:nth-child(2){animation-delay:.15s}.wave i:nth-child(3){animation-delay:.3s}.wave i:nth-child(4){animation-delay:.45s}.wave i:nth-child(5){animation-delay:.6s}
+@keyframes wv{0%,100%{height:3px}50%{height:14px}}
+.heard{font-size:14px;min-height:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--accent)}
+.heard.interim{color:var(--muted);font-style:italic}
+.typer{display:flex;gap:6px;margin-top:5px}
+.typer input{text-align:left;padding:7px 11px;font-size:13px}
+.typer .btn{padding:6px 12px}
+.dside{display:flex;flex-direction:column;gap:6px;width:118px;flex:none}
+.dside .btn{padding:6px 8px;font-size:12px}
+.dside .dd-btn{padding:6px 9px;font-size:12px}
+
+/* toasts */
+#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:90;width:min(430px,calc(100% - 24px));pointer-events:none}
+.toast{pointer-events:auto;display:flex;gap:10px;align-items:flex-start;background:#15213a;border:1px solid #3d4f78;border-left:4px solid var(--accent2);padding:11px 14px;border-radius:13px;box-shadow:0 12px 34px #000a;animation:tin .22s ease;font-size:14px}
+.toast.ok{border-left-color:var(--ok)}.toast.warn{border-left-color:var(--warn)}.toast.err{border-left-color:var(--err)}
+.toast.out{opacity:0;transform:translateY(-8px);transition:.25s}
+@keyframes tin{from{opacity:0;transform:translateY(-10px)}}
+
+/* modal */
+#modal{display:none;position:fixed;inset:0;z-index:70;align-items:center;justify-content:center;padding:16px}
+#modal.open{display:flex}
+.m-back{position:absolute;inset:0;background:#000b;backdrop-filter:blur(4px)}
+.m-box{position:relative;background:#121a2c;border:1px solid #3d4f78;border-radius:20px;padding:22px;width:min(440px,100%);animation:tin .2s;box-shadow:0 30px 80px #000c}
+.m-box h3{margin:0 0 6px;font-size:19px}
+.m-box p{margin:0 0 14px;color:var(--muted)}
+.m-act{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.help li{margin-bottom:8px}
+.help code{background:#0c1322;border:1px solid var(--line);padding:2px 8px;border-radius:7px;color:#aaf1e6;font-size:13px}
+
+@media(max-width:600px){
+  .app{padding:18px 12px}
+  .hero b{font-size:36px}
+  .head{grid-template-columns:1fr}
+  .ring{position:absolute;right:16px;top:14px;width:84px;height:84px}
+  .ring .mid b{font-size:16px}
+  .card.course{position:relative}
+  .name-in{max-width:calc(100% - 96px)}
+  .metrics{grid-template-columns:1fr}
+  .dside{display:none}.mic{width:52px;height:52px}
+  .row{grid-template-columns:18px 1fr 10px 1fr 32px}
+  .tab .tl{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand"><div class="logo">🎓</div><div><h1>GPA Calculator</h1><p>Speak your marks, get your GPA &amp; CGPA</p></div></div>
+    <button class="btn" id="helpBtn">🎙 Voice help</button>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab on" data-tab="courses" role="tab">📚 <span class="tl">Courses</span></button>
+    <button class="tab" data-tab="results" role="tab">📈 <span class="tl">GPA &amp; CGPA</span></button>
+    <button class="tab" data-tab="scale" role="tab">⚙️ <span class="tl">Grade scale</span></button>
+  </nav>
+
+  <section class="panel on" id="tab-courses"><div id="coursesView"></div></section>
+  <section class="panel" id="tab-results"><div id="resultsView"></div></section>
+  <section class="panel" id="tab-scale"><div id="scaleView"></div></section>
+</div>
+
+<div class="dock" id="dock">
+  <button class="mic" id="mic" aria-label="Start or stop voice input">🎤</button>
+  <div class="dmid">
+    <div class="dstat"><span class="wave" id="wave"><i></i><i></i><i></i><i></i><i></i></span><span id="dstat"></span></div>
+    <div class="heard" id="heard"></div>
+    <form class="typer" id="typer"><input type="text" id="cmd" placeholder="Or type a command, e.g. midterm 20 of 25" autocomplete="off"><button class="btn" type="submit">Go</button></form>
+  </div>
+  <div class="dside"><div id="langDD"></div><button class="btn" id="undoBtn">↶ Undo</button></div>
+</div>
+
+<div id="toasts"></div>
+<div id="modal"></div>
+
+<script>
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const KEY='gpa-calc-v3';
+const DEFAULT_GRADES=[[85,4],[80,3.66],[75,3.33],[70,3],[65,2.66],[60,2.33],[55,2],[50,1],[0,0]];
+// [key,label,weight,defaultTotal,isList,icon,singular]
+const THEORY=[['assignments','Assignments',10,10,1,'📝','assignment'],['quizzes','Quizzes',15,10,1,'❓','quiz'],['mid','Midterm',25,25,0,'📖','midterm'],['final','Final exam',50,50,0,'🎯','final exam']];
+const LAB=[['labAssignments','Lab assignments',25,10,1,'🧪','lab assignment'],['midLab','Lab midterm',25,25,0,'🔬','lab midterm'],['finalLab','Lab final',50,50,0,'🏁','lab final']];
+const META={};[...THEORY,...LAB].forEach(m=>META[m[0]]={label:m[1],w:m[2],def:m[3],list:!!m[4],one:m[6]});
+
+/* ---------- state ---------- */
+function newCourse(name,tch=3,lch=0){
+  return {id:0,name,tch,lch,items:{assignments:[],quizzes:[],labAssignments:[],
+    mid:{o:'',t:'25'},final:{o:'',t:'50'},midLab:{o:'',t:'25'},finalLab:{o:'',t:'50'}}};
+}
+function defaultState(){
+  return {courses:[],active:0,subtab:'theory',prevCgpa:'',prevCH:'',grades:DEFAULT_GRADES.map(g=>[...g]),lang:'en-US',nextId:1};
+}
+let state;
+try{state=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!state||!Array.isArray(state.courses))state=defaultState();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+const activeCourse=()=>state.courses.find(c=>c.id===state.active)||null;
+function createCourse(name,tch=3,lch=0){
+  const c=newCourse(name,tch,lch);c.id=state.nextId++;state.courses.push(c);
+  state.active=c.id;state.subtab='theory';save();return c;
+}
+
+/* ---------- calculation ---------- */
+const num=v=>v===''||v==null?null:Number(v);
+function listPct(arr){let o=0,t=0;arr.forEach(x=>{const a=num(x.o),b=num(x.t);if(a!=null&&b>0){o+=a;t+=b}});return t>0?100*o/t:null}
+function singlePct(x){const a=num(x.o),b=num(x.t);return a!=null&&b>0?100*a/b:null}
+function gradeFor(p){
+  const g=state.grades.filter(r=>Number.isFinite(+r[0])&&Number.isFinite(+r[1])&&r[0]!==''&&r[1]!=='').map(r=>[+r[0],+r[1]]).sort((a,b)=>b[0]-a[0]);
+  for(const [min,gpa] of g)if(p>=min)return gpa;return 0;
+}
+function calc(c){
+  const cats={};
+  [...THEORY,...LAB].forEach(([k,,, ,isList])=>{cats[k]=isList?listPct(c.items[k]):singlePct(c.items[k])});
+  const norm=defs=>{let s=0,w=0,tot=0;defs.forEach(([k,,wt])=>{tot+=wt;if(cats[k]!=null){s+=cats[k]*wt;w+=wt}});return{pct:w?s/w:null,cov:100*w/tot}};
+  const th=c.tch>0?norm(THEORY):{pct:null,cov:0},lb=c.lch>0?norm(LAB):{pct:null,cov:0};
+  const ch=c.tch+c.lch;let s=0,w=0;
+  if(c.tch>0&&th.pct!=null){s+=th.pct*c.tch;w+=c.tch}
+  if(c.lch>0&&lb.pct!=null){s+=lb.pct*c.lch;w+=c.lch}
+  const pct=w?s/w:null;
+  const cov=ch?((c.tch>0?th.cov*c.tch:0)+(c.lch>0?lb.cov*c.lch:0))/ch:0;
+  return{cats,th:th.pct,lab:lb.pct,pct,gpa:pct==null?null:gradeFor(pct),cov,ch};
+}
+function semester(){
+  let qp=0,ch=0;
+  state.courses.forEach(c=>{const r=calc(c);if(r.gpa!=null&&r.ch>0){qp+=r.gpa*r.ch;ch+=r.ch}});
+  const sgpa=ch?qp/ch:null;
+  const pc=Number(state.prevCH)||0,pg=Number(state.prevCgpa)||0;
+  const cgpa=ch+pc>0&&sgpa!=null?(pg*pc+qp)/(pc+ch):null;
+  return{sgpa,cgpa,ch,qp};
+}
+const fmtP=v=>v==null?'-':v.toFixed(1)+'%';
+const fmtG=v=>v==null?'-':v.toFixed(2);
+const ringColor=p=>p==null?'var(--accent)':p>=85?'var(--ok)':p>=70?'var(--accent)':p>=55?'var(--warn)':'var(--err)';
+
+/* ---------- toasts & modal ---------- */
+function toast(msg,type='info',ms=2800){
+  const t=document.createElement('div');t.className='toast '+type;
+  t.innerHTML=`<span>${{ok:'✅',warn:'⚠️',err:'⛔',info:'💬'}[type]}</span><span>${esc(msg)}</span>`;
+  $('#toasts').appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),260)},ms);
+}
+function modal({title,msg='',html='',ok='OK',cancel='Cancel',danger=false,collect=null}){
+  return new Promise(res=>{
+    const m=$('#modal');
+    m.innerHTML=`<div class="m-back"></div><div class="m-box" role="dialog" aria-modal="true"><h3>${esc(title)}</h3>${msg?`<p>${esc(msg)}</p>`:''}${html}<div class="m-act">${cancel?`<button class="btn" data-m="no">${esc(cancel)}</button>`:''}<button class="btn ${danger?'danger-solid':'primary'}" data-m="ok">${esc(ok)}</button></div></div>`;
+    m.classList.add('open');
+    const first=m.querySelector('input');if(first)first.focus();
+    const done=v=>{m.classList.remove('open');m.innerHTML='';document.removeEventListener('keydown',kd);m.onclick=null;res(v)};
+    const submit=()=>{const v=collect?collect():true;if(v===undefined)return;done(v)};
+    const kd=e=>{if(e.key==='Escape')done(null);else if(e.key==='Enter')submit()};
+    document.addEventListener('keydown',kd);
+    m.onclick=e=>{if(e.target.classList.contains('m-back')||e.target.dataset.m==='no')done(null);else if(e.target.dataset.m==='ok')submit()};
+  });
+}
+
+/* ---------- custom dropdown ---------- */
+const ddHandlers={};
+function dd(name,opts,val,cls=''){
+  const cur=opts.find(o=>String(o.v)===String(val))||opts[0]||{l:'-'};
+  return `<div class="dd ${cls}" data-dd="${name}"><button type="button" class="dd-btn"><span>${esc(cur.l)}</span><i>▾</i></button><div class="dd-menu">${opts.map(o=>`<button type="button" class="dd-item ${String(o.v)===String(val)?'on':''}" data-v="${esc(o.v)}">${esc(o.l)}</button>`).join('')}</div></div>`;
+}
+const closeDD=()=>document.querySelectorAll('.dd.open').forEach(d=>d.classList.remove('open'));
+document.addEventListener('click',e=>{
+  const item=e.target.closest('.dd-item');
+  if(item){const name=item.closest('.dd').dataset.dd;closeDD();ddHandlers[name]&&ddHandlers[name](item.dataset.v);return}
+  const btn=e.target.closest('.dd-btn');
+  if(btn){const d=btn.parentElement,was=d.classList.contains('open');closeDD();if(!was)d.classList.add('open');return}
+  closeDD();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDD()});
+const chOpts=n=>Array.from({length:n+1},(_,i)=>({v:i,l:i+' credit hour'+(i===1?'':'s')}));
+
+/* ---------- tabs ---------- */
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===name));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='tab-'+name));
+  $('#dock').classList.toggle('hide',name!=='courses');
+  if(name==='results')renderResults();
+  if(name==='scale')renderScale();
+}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>showTab(t.dataset.tab));
+
+/* ---------- add course ---------- */
+async function addCourseFlow(){
+  const tmp={tch:3,lch:0};
+  ddHandlers.mTch=v=>{tmp.tch=+v;$('#mTch').innerHTML=dd('mTch',chOpts(4),tmp.tch)};
+  ddHandlers.mLch=v=>{tmp.lch=+v;$('#mLch').innerHTML=dd('mLch',chOpts(3),tmp.lch)};
+  const r=await modal({title:'Add a course',msg:'Add as many courses as you need.',ok:'Add course',
+    html:`<label class="l">Course name</label><input type="text" id="mName" placeholder="e.g. Database Systems" autocomplete="off">
+    <div class="two" style="margin-top:14px"><div><label class="l">Theory credits</label><div id="mTch">${dd('mTch',chOpts(4),3)}</div></div><div><label class="l">Lab credits</label><div id="mLch">${dd('mLch',chOpts(3),0)}</div></div></div>`,
+    collect:()=>{const n=$('#mName').value.trim();if(!n){$('#mName').focus();toast('Enter a course name first.','warn');return undefined}
+      if(tmp.tch+tmp.lch<=0){toast('A course needs at least 1 credit hour.','warn');return undefined}
+      return{name:n,tch:tmp.tch,lch:tmp.lch}}});
+  if(r){createCourse(r.name,r.tch,r.lch);renderCourses();toast(`Added "${r.name}". Say your marks or enter them below.`,'ok',3500)}
+}
+
+/* ---------- courses tab ---------- */
+function listCard(c,[k,label,w,def,,ico,one]){
+  const arr=c.items[k];
+  const rows=arr.map((x,i)=>`<div class="row"><span class="idx">${i+1}</span><input type="number" min="0" step="any" placeholder="Got" data-k="${k}" data-i="${i}" data-p="o" value="${esc(x.o)}"><span class="sl">/</span><input type="number" min="0" step="any" placeholder="Out of" data-k="${k}" data-i="${i}" data-p="t" value="${esc(x.t)}"><button class="x" data-act="rm" data-k="${k}" data-i="${i}" aria-label="Remove">✕</button></div>`).join('');
+  return `<div class="card"><div class="cat-head"><div class="cat-title"><div class="cat-ico">${ico}</div><h3>${label}<span class="tag">${w}%</span></h3></div><span class="score" id="cat-${k}">-</span></div><div class="meter"><i id="bar-${k}"></i></div>${rows||`<div class="muted" style="margin-bottom:10px">Nothing yet. Say "${one} 8 out of ${def}" or tap add.</div>`}<button class="add" data-act="add" data-k="${k}">+ Add ${one}</button></div>`;
+}
+function singleCard(c,[k,label,w,,,ico]){
+  const x=c.items[k];
+  return `<div class="card"><div class="cat-head"><div class="cat-title"><div class="cat-ico">${ico}</div><h3>${label}<span class="tag">${w}%</span></h3></div><span class="score" id="cat-${k}">-</span></div><div class="meter"><i id="bar-${k}"></i></div><div class="row single"><input type="number" min="0" step="any" placeholder="Got" data-k="${k}" data-p="o" value="${esc(x.o)}"><span class="sl">/</span><input type="number" min="0" step="any" placeholder="Out of" data-k="${k}" data-p="t" value="${esc(x.t)}"></div></div>`;
+}
+function renderCourses(){
+  const v=$('#coursesView'),c=activeCourse();
+  if(!state.courses.length){
+    v.innerHTML=`<div class="card empty"><div class="big">📚</div><h3>Add your first course</h3><p>Add any number of courses with any credit hours. Then say your quiz, assignment and exam marks out loud, one by one.</p><button class="btn primary" data-act="addCourse">+ Add course</button></div>`;
+    return;
+  }
+  if(!c){state.active=state.courses[0].id;return renderCourses()}
+  if(c.lch<=0)state.subtab='theory';
+  const chips=state.courses.map(x=>`<button class="chip ${x.id===c.id?'on':''}" data-course="${x.id}" title="${esc(x.name)}">${esc(x.name)}</button>`).join('');
+  v.innerHTML=`
+  <div class="chips scroll">${chips}<button class="chip add" data-act="addCourse">+ New course</button></div>
+  <div class="card course">
+    <div class="head">
+      <div>
+        <input type="text" class="name-in" data-meta="name" value="${esc(c.name)}" aria-label="Course name">
+        <div class="cfg">
+          <div><label class="l">Theory credits</label>${dd('tch',chOpts(4),c.tch)}</div>
+          <div><label class="l">Lab credits</label>${dd('lch',chOpts(3),c.lch)}</div>
+        </div>
+      </div>
+      <div class="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="arc" id="ring-arc" cx="50" cy="50" r="42" stroke-dasharray="0 263.9"/></svg><div class="mid"><div><b id="st-pct">-</b><span>percent</span></div></div></div>
+    </div>
+    <div class="pills"><span class="pill">GPA<b id="st-gpa">-</b></span><span class="pill">Entered<b id="st-cov">0%</b></span><span class="pill" id="st-split"></span><button class="btn danger" style="margin-left:auto;padding:5px 11px;font-size:12px" data-act="delCourse">Delete</button></div>
+  </div>
+  ${c.lch>0?`<div class="seg"><button data-sub="theory" class="${state.subtab==='theory'?'on':''}">Theory</button><button data-sub="lab" class="${state.subtab==='lab'?'on':''}">Lab</button></div>`:''}
+  ${(state.subtab==='lab'&&c.lch>0?LAB:THEORY).map(m=>m[4]?listCard(c,m):singleCard(c,m)).join('')}`;
+  refreshLive();
+}
+function refreshLive(){
+  const c=activeCourse();
+  if(c&&$('#st-pct')){
+    const r=calc(c);
+    [...THEORY,...LAB].forEach(([k])=>{
+      const e=document.getElementById('cat-'+k);if(e)e.textContent=fmtP(r.cats[k]);
+      const b=document.getElementById('bar-'+k);if(b)b.style.width=(r.cats[k]==null?0:Math.min(100,r.cats[k]))+'%';
+    });
+    const set=(id,t)=>{const e=document.getElementById(id);if(e)e.textContent=t};
+    set('st-pct',r.pct==null?'-':r.pct.toFixed(1)+'%');set('st-gpa',fmtG(r.gpa));set('st-cov',Math.round(r.cov)+'%');
+    set('st-split',`${r.ch} CH${r.cov<100&&r.pct!=null?' · so far':''}`);
+    const arc=$('#ring-arc');
+    if(arc){const p=r.pct==null?0:Math.max(0,Math.min(100,r.pct));arc.setAttribute('stroke-dasharray',`${p*2.639} 263.9`);arc.style.stroke=ringColor(r.pct)}
+  }
+  updateResults();
+}
+ddHandlers.tch=v=>{const c=activeCourse();c.tch=Number(v);save();renderCourses()};
+ddHandlers.lch=v=>{const c=activeCourse();c.lch=Number(v);if(!c.lch)state.subtab='theory';save();renderCourses()};
+
+/* ---------- results tab ---------- */
+function metricsHTML(){
+  const s=semester();
+  return `<div class="hero"><div><span>Semester GPA</span><b>${fmtG(s.sgpa)}</b><small>this semester</small></div><div class="vr"></div><div><span>Projected CGPA</span><b>${fmtG(s.cgpa)}</b><small>with previous record</small></div></div>
+  <div class="metrics"><div class="metric"><span>Credits counted</span><b>${s.ch}</b></div><div class="metric"><span>Courses</span><b>${state.courses.length}</b></div></div>`;
+}
+function tableHTML(){
+  const rows=state.courses.map(c=>{const r=calc(c);return `<tr><td>${esc(c.name)}<div class="bar-mini"><i style="width:${Math.round(r.cov)}%"></i></div></td><td class="num">${fmtP(r.pct)}</td><td class="num"><span class="gtag">${fmtG(r.gpa)}</span></td><td class="num">${r.ch}</td></tr>`}).join('');
+  return `<div class="card"><h3 style="margin-bottom:6px">Course breakdown</h3><div class="tw scroll"><table><thead><tr><th>Course</th><th>%</th><th>GPA</th><th>CH</th></tr></thead><tbody>${rows||'<tr><td colspan="4" class="muted">No courses yet. Add one in the Courses tab.</td></tr>'}</tbody></table></div><div class="muted" style="margin-top:8px">The thin bar under each course shows how much of its marks you have entered. Courses with no marks are not counted.</div></div>`;
+}
+function renderResults(){
+  $('#resultsView').innerHTML=`<div id="metrics">${metricsHTML()}</div>
+  <div class="card"><h3 style="margin-bottom:4px">Previous record</h3><p class="muted" style="margin:0 0 12px">First semester? Leave both empty.</p><div class="two"><div><label class="l">Previous CGPA</label><input type="number" min="0" max="4" step="0.01" placeholder="0.00" data-prev="prevCgpa" value="${esc(state.prevCgpa)}"></div><div><label class="l">Completed credit hours</label><input type="number" min="0" step="0.5" placeholder="0" data-prev="prevCH" value="${esc(state.prevCH)}"></div></div></div>
+  <div id="rtable">${tableHTML()}</div>`;
+}
+function updateResults(){
+  const m=$('#metrics'),t=$('#rtable');
+  if(m)m.innerHTML=metricsHTML();if(t)t.innerHTML=tableHTML();
+}
+
+/* ---------- grade scale tab ---------- */
+function renderScale(){
+  $('#scaleView').innerHTML=`<div class="card"><h3>Grade scale</h3><p class="muted" style="margin:4px 0 14px">GPA is given by the highest minimum percentage a course reaches. Edit this to match your university's official scale.</p>
+  <div class="grow"><label class="l" style="margin:0">Minimum %</label><label class="l" style="margin:0">GPA</label><span></span></div>
+  ${state.grades.map((g,i)=>`<div class="grow"><input type="number" min="0" max="100" step="any" data-g="0" data-i="${i}" value="${g[0]}"><input type="number" min="0" step="0.01" data-g="1" data-i="${i}" value="${g[1]}"><button class="x" data-act="rmGrade" data-i="${i}" aria-label="Remove">✕</button></div>`).join('')}
+  <div style="display:flex;gap:8px;margin-top:12px"><button class="add" data-act="addGrade">+ Add row</button><button class="btn" data-act="resetGrades">Defaults</button></div></div>
+  <div class="card"><h3>Data</h3><p class="muted" style="margin:4px 0 12px">Everything is saved automatically in this browser.</p><button class="btn danger" data-act="resetAll">Delete all courses and reset</button></div>`;
+}
+
+/* ---------- events ---------- */
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.k!==undefined){
+    const c=activeCourse(),k=t.dataset.k;
+    if(META[k].list)c.items[k][+t.dataset.i][t.dataset.p]=t.value;else c.items[k][t.dataset.p]=t.value;
+    save();refreshLive();
+  }else if(t.dataset.prev){state[t.dataset.prev]=t.value;save();updateResults()}
+  else if(t.dataset.g!==undefined){state.grades[+t.dataset.i][+t.dataset.g]=t.value===''?'':Number(t.value);save();refreshLive()}
+  else if(t.dataset.meta==='name'){activeCourse().name=t.value;save()}
+});
+document.addEventListener('change',e=>{
+  if(e.target.dataset.meta==='name'){const c=activeCourse();if(!e.target.value.trim())c.name='Untitled course';save();renderCourses()}
+});
+document.addEventListener('click',async e=>{
+  const sub=e.target.closest('[data-sub]');
+  if(sub){state.subtab=sub.dataset.sub;renderCourses();return}
+  const chip=e.target.closest('[data-course]');
+  if(chip){state.active=Number(chip.dataset.course);state.subtab='theory';save();renderCourses();return}
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const act=b.dataset.act,c=activeCourse();
+  if(act==='add'){const k=b.dataset.k;c.items[k].push({o:'',t:String(META[k].def)});save();renderCourses();
+    const inputs=document.querySelectorAll(`input[data-k="${k}"][data-p="o"]`);inputs[inputs.length-1]&&inputs[inputs.length-1].focus()}
+  else if(act==='rm'){c.items[b.dataset.k].splice(+b.dataset.i,1);save();renderCourses()}
+  else if(act==='addCourse')addCourseFlow();
+  else if(act==='delCourse'){
+    const ok=await modal({title:'Delete this course?',msg:`"${c.name}" and all its marks will be removed.`,ok:'Delete',danger:true});
+    if(ok){state.courses=state.courses.filter(x=>x.id!==c.id);state.active=state.courses[0]?state.courses[0].id:0;save();renderCourses();toast('Course deleted','info')}
+  }
+  else if(act==='addGrade'){state.grades.push([40,0]);save();renderScale()}
+  else if(act==='rmGrade'){state.grades.splice(+b.dataset.i,1);save();renderScale();refreshLive()}
+  else if(act==='resetGrades'){state.grades=DEFAULT_GRADES.map(g=>[...g]);save();renderScale();refreshLive();toast('Grade scale restored','ok')}
+  else if(act==='resetAll'){
+    const ok=await modal({title:'Delete everything?',msg:'All courses, marks and previous record will be removed. This cannot be undone.',ok:'Delete all',danger:true});
+    if(ok){state=defaultState();undoStack.length=0;save();renderCourses();renderScale();toast('Everything cleared','ok')}
+  }
+});
+
+/* ---------- voice commands ---------- */
+const ONES={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19};
+const TENS={twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+function wordsToDigits(s){
+  const t=s.split(/\s+/),out=[];
+  for(let i=0;i<t.length;i++){
+    const w=t[i];
+    if(w in TENS){let v=TENS[w];if(ONES[t[i+1]]!==undefined&&ONES[t[i+1]]<10)v+=ONES[t[++i]];out.push(v)}
+    else if(w in ONES)out.push(ONES[w]);
+    else if(w==='point'&&out.length){
+      let d='';while(i+1<t.length&&(/^\d$/.test(t[i+1])||(ONES[t[i+1]]!==undefined&&ONES[t[i+1]]<10))){const n=t[++i];d+=/^\d$/.test(n)?n:ONES[n]}
+      out.push(d?parseFloat(out.pop()+'.'+d):out.pop());
+    }
+    else if(w==='half'&&typeof out[out.length-1]==='number')out.push(out.pop()+0.5);
+    else out.push(w);
+  }
+  return out.join(' ');
+}
+const undoStack=[];
+function titleCase(s){return s.replace(/\b\w/g,c=>c.toUpperCase())}
+function runCommand(raw){
+  const nc=raw.trim().match(/^(?:new|add|create)\s+course\s+(.+)$/i);
+  if(nc){const name=titleCase(nc[1].trim().replace(/[.]$/,''));createCourse(name,3,0);renderCourses();toast(`Added "${name}" (3 theory credits). Change credits above if needed.`,'ok',3800);return true}
+  let t=raw.toLowerCase().replace(/[,!?]/g,' ').replace(/\b(out of|out off|over|upon|slash|divided by|by|off)\b/g,' / ').replace(/\//g,' / ');
+  t=wordsToDigits(t.replace(/\s+/g,' ').trim());
+  if(/\b(undo|remove last|delete last|cancel last)\b/.test(t))return doUndo();
+  const nums=(t.match(/\d+(?:\.\d+)?/g)||[]).map(Number);
+  if(!nums.length){
+    const m=t.match(/(?:switch to|open|go to|select|course)\s+(.+)/);
+    if(m)return switchCourse(m[1].trim());
+    toast(`Could not find marks in "${raw}". Try "quiz 8 out of 10".`,'warn',3800);return false;
+  }
+  const lab=/\blab\b/.test(t);
+  let key=null;
+  if(/assign/.test(t))key=lab?'labAssignments':'assignments';
+  else if(/quiz/.test(t)){if(lab){toast('Quizzes are theory only.','warn');return false}key='quizzes'}
+  else if(/\bmid/.test(t))key=lab?'midLab':'mid';
+  else if(/final|end ?term/.test(t))key=lab?'finalLab':'final';
+  if(!key){toast('Which one is that? Say assignment, quiz, midterm or final first.','warn',3800);return false}
+  const c=activeCourse();
+  if(!c){toast('Add a course first, or say "new course database systems".','warn',4200);return false}
+  if(lab&&c.lch<=0){toast(`${c.name} has no lab credits. Set lab credit hours first.`,'warn',3800);return false}
+  const meta=META[key],o=nums[0],tot=nums.length>1?nums[1]:(meta.list?meta.def:(Number(c.items[key].t)||meta.def));
+  if(!(tot>0)){toast('Total marks must be above zero.','warn');return false}
+  if(o>tot){toast(`${o} is more than ${tot}. Check the total marks.`,'warn',4200);return false}
+  const cap=meta.one.charAt(0).toUpperCase()+meta.one.slice(1);
+  let fn;
+  if(meta.list){
+    const entry={o:String(o),t:String(tot)};c.items[key].push(entry);
+    fn=()=>{const i=c.items[key].indexOf(entry);if(i>-1)c.items[key].splice(i,1)};
+    toast(`${cap} ${c.items[key].length}: ${o}/${tot} added`,'ok');
+  }else{
+    const old={...c.items[key]};c.items[key]={o:String(o),t:String(tot)};
+    fn=()=>{c.items[key]=old};
+    toast(`${cap}: ${o}/${tot} saved`,'ok');
+  }
+  fn.cid=c.id;undoStack.push(fn);
+  state.subtab=lab?'lab':'theory';save();renderCourses();return true;
+}
+function doUndo(){
+  const fn=undoStack.pop();
+  if(!fn){toast('Nothing to undo.','info');return false}
+  fn();if(fn.cid&&state.courses.some(c=>c.id===fn.cid))state.active=fn.cid;save();renderCourses();toast('Last entry undone','ok');return true;
+}
+function switchCourse(q){
+  const words=q.split(' ').filter(Boolean);
+  let best=null,score=0;
+  state.courses.forEach(c=>{
+    const n=c.name.toLowerCase();let s=0;
+    if(n===q)s=100;else if(n.includes(q))s=50;else words.forEach(w=>{if(w.length>2&&n.includes(w))s+=10});
+    if(s>score){score=s;best=c}
+  });
+  if(!best){toast(`No course matches "${q}".`,'warn');return false}
+  state.active=best.id;state.subtab='theory';save();renderCourses();toast(`Switched to ${best.name}`,'ok');return true;
+}
+
+/* speech engine */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null,listening=false;
+const LANGS=[{v:'en-US',l:'English (US)'},{v:'en-GB',l:'English (UK)'},{v:'en-IN',l:'English (India)'},{v:'en-PK',l:'English (PK)'}];
+function renderLang(){$('#langDD').innerHTML=dd('lang',LANGS,state.lang,'up')}
+ddHandlers.lang=v=>{state.lang=v;save();renderLang();if(listening){stopVoice();setTimeout(startVoice,300)}};
+function setHeard(t,interim){const h=$('#heard');h.textContent=t?`"${t}"`:'';h.classList.toggle('interim',!!interim)}
+function voiceUI(){
+  $('#mic').classList.toggle('live',listening);
+  $('#wave').classList.toggle('on',listening);
+  $('#dstat').innerHTML=listening?'<b>Listening.</b> Say one entry at a time, e.g. "quiz 8 out of 10"':'Tap the mic and say: <b>"quiz 8 out of 10"</b>';
+}
+function startVoice(){
+  if(!SR){toast('Voice input needs Chrome or Edge. You can still type commands below.','warn',5000);return}
+  try{
+    rec=new SR();rec.lang=state.lang;rec.continuous=true;rec.interimResults=true;
+    rec.onresult=e=>{
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        const r=e.results[i],txt=r[0].transcript.trim();
+        if(r.isFinal){setHeard(txt);runCommand(txt)}else setHeard(txt+' ...',true);
+      }
+    };
+    rec.onerror=e=>{
+      if(e.error==='not-allowed'||e.error==='service-not-allowed'){listening=false;voiceUI();toast('Microphone blocked. Allow mic access (page must be on https or localhost).','err',5000)}
+      else if(e.error==='network'){listening=false;voiceUI();toast('Speech service unreachable. Check your internet connection.','err',4500)}
+    };
+    rec.onend=()=>{if(listening){try{rec.start()}catch(_){listening=false;voiceUI()}}else voiceUI()};
+    rec.start();listening=true;voiceUI();toast('Listening. Speak your marks.','info',2000);
+  }catch(err){listening=false;voiceUI();toast('Could not start the microphone.','err')}
+}
+function stopVoice(){listening=false;try{rec&&rec.stop()}catch(_){}voiceUI()}
+$('#mic').onclick=()=>listening?stopVoice():startVoice();
+$('#undoBtn').onclick=doUndo;
+$('#typer').onsubmit=e=>{e.preventDefault();const i=$('#cmd'),v=i.value.trim();if(!v)return;setHeard(v);if(runCommand(v))i.value=''};
+$('#helpBtn').onclick=()=>modal({title:'Voice commands',ok:'Got it',cancel:null,html:`<ul class="help" style="padding-left:18px;margin:0">
+<li><code>new course database systems</code> adds a course</li>
+<li><code>switch to machine learning</code> changes course</li>
+<li><code>quiz 8 out of 10</code> adds a quiz</li>
+<li><code>assignment 9 out of 10</code> adds an assignment</li>
+<li><code>midterm 20 out of 25</code> sets the midterm</li>
+<li><code>final 41 out of 50</code> sets the final exam</li>
+<li><code>lab midterm 18 out of 25</code> (also lab assignment, lab final)</li>
+<li><code>quiz 7</code> uses the default total (10)</li>
+<li><code>undo</code> removes the last entry</li></ul><p style="margin:14px 0 0">Tip: speak one entry at a time and wait for the green confirmation. Voice works in Chrome or Edge over https or localhost.</p>`});
+
+/* ---------- init ---------- */
+renderLang();voiceUI();renderCourses();
+</script>
+</body>
+</html>
