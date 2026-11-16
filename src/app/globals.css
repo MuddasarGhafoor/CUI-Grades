@@ -7,51 +7,42 @@
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0a0f1c;
-  --surface: #121a2c;
-  --surface-2: #18223a;
-  --sunken: #0c1322;
-  --line: #26334f;
-  --line-strong: #33446a;
-  --fg: #eef3fb;
-  --muted: #8b9ab5;
+  --bg: #0b1120;
+  --surface: #111a2b;
+  --surface-2: #172236;
+  --line: #223049;
+  --line-strong: #31415f;
+  --fg: #e8edf5;
+  --muted: #8d9ab0;
   --accent: #2dd4bf;
   --accent-2: #60a5fa;
-  --on-accent: #04211d;
+  --on-accent: #062621;
   --ok: #4ade80;
   --warn: #fbbf24;
   --err: #f87171;
-  --glow-1: #15405a55;
-  --glow-2: #2b2a6a44;
-  --shadow: 0 18px 48px #000a;
 }
 
 [data-theme="light"] {
   color-scheme: light;
-  --bg: #f4f7fb;
+  --bg: #f7f8fa;
   --surface: #ffffff;
-  --surface-2: #eef3f9;
-  --sunken: #f7f9fc;
-  --line: #dde5ef;
-  --line-strong: #c5d2e3;
-  --fg: #0b1324;
-  --muted: #5b6b85;
-  --accent: #0d9488;
+  --surface-2: #f0f2f6;
+  --line: #e2e6ed;
+  --line-strong: #cbd2dd;
+  --fg: #111827;
+  --muted: #5d6879;
+  --accent: #0f9488;
   --accent-2: #2563eb;
   --on-accent: #ffffff;
-  --ok: #16a34a;
-  --warn: #d97706;
+  --ok: #15803d;
+  --warn: #b45309;
   --err: #dc2626;
-  --glow-1: #2dd4bf22;
-  --glow-2: #60a5fa22;
-  --shadow: 0 18px 48px #0b132418;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
-  --color-sunken: var(--sunken);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
   --color-fg: var(--fg);
@@ -65,58 +56,28 @@
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-display: var(--font-carter-one), var(--font-geist-sans), cursive;
-
-  --shadow-pop: var(--shadow);
+  --font-display: var(--font-carter-one), var(--font-geist-sans), serif;
 }
 
 body {
   min-height: 100dvh;
-  background:
-    radial-gradient(900px 420px at 10% -10%, var(--glow-1), transparent 60%),
-    radial-gradient(700px 380px at 100% 0%, var(--glow-2), transparent 60%),
-    var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
-/* Thin themed scrollbars */
 html {
   scrollbar-width: thin;
   scrollbar-color: var(--line-strong) transparent;
-}
-::-webkit-scrollbar {
-  width: 10px;
-  height: 8px;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--line-strong);
-  border-radius: 99px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-  background-clip: padding-box;
 }
 
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-}
-
-@utility text-gradient {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@utility bg-brand {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
 }

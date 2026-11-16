@@ -1,35 +1,34 @@
-import type { IconName } from "@/components/ui/icons";
-
 export type NavItem = {
   href: string;
+  /** Navbar label on wider screens. */
   label: string;
+  /** Navbar label in the narrow mobile row. */
+  shortLabel: string;
+  /** Full name, used on the home page. */
+  title: string;
   description: string;
-  icon: IconName;
 };
 
 export const NAV_ITEMS: NavItem[] = [
   {
-    href: "/",
-    label: "Home",
-    description: "Overview of all calculators",
-    icon: "home",
-  },
-  {
     href: "/internal-marks",
     label: "Internal marks",
-    description: "Quizzes, assignments and mids for each subject",
-    icon: "clipboard",
+    shortLabel: "Internal",
+    title: "Internal marks calculator",
+    description: "Quizzes, assignments and midterms for each subject, theory and lab.",
   },
   {
     href: "/gpa-calculator",
-    label: "GPA calculator",
-    description: "Semester GPA from your subjects",
-    icon: "calculator",
+    label: "GPA",
+    shortLabel: "GPA",
+    title: "GPA calculator",
+    description: "Semester GPA from your internal marks, or from grades you already know.",
   },
   {
     href: "/cgpa-calculator",
-    label: "CGPA calculator",
-    description: "Overall CGPA across semesters",
-    icon: "trend",
+    label: "CGPA",
+    shortLabel: "CGPA",
+    title: "CGPA calculator",
+    description: "Overall CGPA across all your semesters so far.",
   },
 ];

@@ -18,7 +18,7 @@ const getSnapshot = (): Theme =>
 
 const getServerSnapshot = (): Theme => "dark";
 
-export function ThemeToggle({ withLabel = false }: { withLabel?: boolean }) {
+export function ThemeToggle() {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const next: Theme = theme === "dark" ? "light" : "dark";
 
@@ -37,10 +37,9 @@ export function ThemeToggle({ withLabel = false }: { withLabel?: boolean }) {
       onClick={toggle}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-line-strong bg-surface-2 px-3 text-sm font-semibold text-fg transition hover:-translate-y-px hover:border-accent"
+      className="grid size-9 place-items-center rounded-md border border-line text-muted transition-colors hover:bg-surface-2 hover:text-fg"
     >
-      <Icon name={theme === "dark" ? "sun" : "moon"} size={18} />
-      {withLabel && <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>}
+      <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
     </button>
   );
 }

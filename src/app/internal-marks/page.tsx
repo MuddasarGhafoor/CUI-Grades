@@ -11,7 +11,6 @@ export default function InternalMarksPage() {
   return (
     <>
       <PageHeader
-        icon="clipboard"
         title="Internal marks"
         description="Quizzes, assignments and midterms for every subject, theory and lab."
       />

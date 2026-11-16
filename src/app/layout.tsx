@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Carter_One, Geist, Geist_Mono } from "next/font/google";
-import { AppShell } from "@/components/layout/app-shell";
+import { Footer } from "@/components/layout/footer";
+import { Navbar } from "@/components/layout/navbar";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
 
@@ -32,8 +33,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0f1c" },
-    { media: "(prefers-color-scheme: light)", color: "#f4f7fb" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b1120" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f8fa" },
   ],
 };
 
@@ -51,9 +52,13 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${carterOne.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${carterOne.variable} flex min-h-dvh flex-col antialiased`}
       >
-        <AppShell>{children}</AppShell>
+        <Navbar />
+        <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

@@ -3,41 +3,42 @@ import { Icon } from "@/components/ui/icons";
 import { NAV_ITEMS } from "@/lib/nav";
 
 export default function Home() {
-  const calculators = NAV_ITEMS.filter((item) => item.href !== "/");
-
   return (
-    <div>
-      <section className="pb-10 pt-4 sm:pt-8">
-        <p className="mb-3 inline-flex rounded-full border border-line-strong bg-surface-2 px-3 py-1 text-xs font-semibold text-muted">
-          For COMSATS students · Fall 2021+ grading scale
-        </p>
-        <h1 className="font-display text-4xl leading-tight tracking-wide sm:text-5xl">
-          Your grades, <span className="text-gradient">sorted.</span>
+    <div className="max-w-3xl">
+      <section className="border-b border-line pb-8">
+        <h1 className="font-display text-3xl leading-tight sm:text-4xl">
+          Internal marks, GPA and CGPA for CUI students
         </h1>
-        <p className="mt-4 max-w-2xl text-lg text-muted">
-          Work out internal marks, semester GPA and CGPA with totals already filled in, quick
-          keyboard entry and voice commands.
+        <p className="mt-3 text-muted">
+          Totals are filled in for you, Tab moves you to the next box, and you can say your marks
+          out loud instead of typing them. Everything stays saved in your browser.
         </p>
       </section>
 
-      <section aria-label="Calculators" className="grid gap-4 md:grid-cols-3">
-        {calculators.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="group rounded-2xl border border-line bg-surface p-5 transition hover:-translate-y-0.5 hover:border-accent"
-          >
-            <span className="grid size-11 place-items-center rounded-xl bg-surface-2 text-accent transition group-hover:bg-brand group-hover:text-on-accent">
-              <Icon name={item.icon} size={22} />
-            </span>
-            <h2 className="mt-4 font-display text-xl tracking-wide">{item.label}</h2>
-            <p className="mt-1 text-sm text-muted">{item.description}</p>
-            <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-              Open <Icon name="arrowRight" size={16} className="transition group-hover:translate-x-0.5" />
-            </span>
-          </Link>
+      <ul className="divide-y divide-line">
+        {NAV_ITEMS.map((item) => (
+          <li key={item.href}>
+            <Link href={item.href} className="group flex items-center justify-between gap-6 py-5">
+              <span>
+                <span className="block text-lg font-semibold transition-colors group-hover:text-accent">
+                  {item.title}
+                </span>
+                <span className="block text-sm text-muted">{item.description}</span>
+              </span>
+              <Icon
+                name="arrowRight"
+                size={18}
+                className="shrink-0 text-muted transition-colors group-hover:text-accent"
+              />
+            </Link>
+          </li>
         ))}
-      </section>
+      </ul>
+
+      <p className="mt-8 border-l-2 border-accent pl-4 text-sm text-muted">
+        Grades follow the official CUI scale for students admitted in Fall 2021 or later. A starts at
+        85%, and 50% (D) is the minimum pass.
+      </p>
     </div>
   );
 }

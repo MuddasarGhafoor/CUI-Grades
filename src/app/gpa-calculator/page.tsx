@@ -10,7 +10,6 @@ export default function GpaCalculatorPage() {
   return (
     <>
       <PageHeader
-        icon="calculator"
         title="GPA calculator"
         description="Your semester GPA, from internal marks or grades you type in."
       />

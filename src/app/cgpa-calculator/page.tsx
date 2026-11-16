@@ -10,7 +10,6 @@ export default function CgpaCalculatorPage() {
   return (
     <>
       <PageHeader
-        icon="trend"
         title="CGPA calculator"
         description="Your overall CGPA, semester by semester."
       />
