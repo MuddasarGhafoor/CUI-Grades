@@ -1,6 +1,5 @@
 import { GradeScaleTable } from "@/components/guide/grade-scale-table";
 import { GuideSection } from "@/components/guide/guide-section";
-import { HowItWorks } from "@/components/guide/how-it-works";
 import { Shortcuts } from "@/components/guide/shortcuts";
 import { VoiceGuide } from "@/components/guide/voice-guide";
 import { WeightsTable } from "@/components/guide/weights-table";
@@ -12,7 +11,7 @@ export const metadata = pageMetadata({
   path: "/guide",
   title: "Guide",
   description:
-    "The official CUI grade scale, how quizzes, assignments, midterms and finals are weighted, how GPA and CGPA are worked out, and every voice command.",
+    "The official CUI grade scale, how quizzes, assignments, midterms and finals are weighted, keyboard shortcuts and every voice command.",
 });
 
 export default function GuidePage() {
@@ -22,7 +21,7 @@ export default function GuidePage() {
         tone="amber"
         compact
         title="Guide"
-        description="How CUI-Grades works out your marks, the official grade scale it uses, and everything you can say or press."
+        description="The official grade scale CUI-Grades uses, how marks are weighted, and everything you can press or say."
       />
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -45,11 +44,11 @@ export default function GuidePage() {
       </div>
 
       <GuideSection
-        id="how-it-works"
-        title="How the Numbers Are Worked Out"
-        description="Every result in CUI-Grades comes from these six steps. Each card shows a real example you can check by hand."
+        id="shortcuts"
+        title="Keyboard Shortcuts"
+        description="Enter your marks quickly without reaching for the mouse."
       >
-        <HowItWorks />
+        <Shortcuts />
       </GuideSection>
 
       <GuideSection
@@ -58,14 +57,6 @@ export default function GuidePage() {
         description="Fill in marks, add subjects and move between pages without touching the keyboard."
       >
         <VoiceGuide />
-      </GuideSection>
-
-      <GuideSection
-        id="shortcuts"
-        title="Keyboard Shortcuts"
-        description="Enter your marks quickly without reaching for the mouse."
-      >
-        <Shortcuts />
       </GuideSection>
     </>
   );

@@ -20,7 +20,13 @@ function Group({ title, defs }: { title: string; defs: ComponentDef[] }) {
         </h3>
         <span className="text-xs text-muted">100% of the {title.toLowerCase()} part</span>
       </div>
-      <table className="w-full text-[13px]">
+      {/* Fixed layout with the same column widths in both tables, so Theory and Lab line up. */}
+      <table className="w-full table-fixed text-[13px]">
+        <colgroup>
+          <col className="w-[50%]" />
+          <col className="w-[30%]" />
+          <col className="w-[20%]" />
+        </colgroup>
         <thead>
           <tr className="text-left text-xs text-muted">
             <th className="px-3 pb-1 pt-2 font-medium">Assessment</th>
