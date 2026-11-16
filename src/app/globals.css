@@ -84,7 +84,7 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-display: var(--font-carter-one), var(--font-geist-sans), serif;
-
+  --font-hero: var(--font-rubik-mono-one), var(--font-geist-sans), sans-serif;
   --shadow-card: var(--elev-card);
   --shadow-pop: var(--elev-pop);
 }

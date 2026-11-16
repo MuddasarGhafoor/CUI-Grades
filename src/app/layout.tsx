@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Carter_One, Geist, Geist_Mono } from "next/font/google";
+import { Carter_One, Geist, Geist_Mono, Rubik_Mono_One } from "next/font/google";
 import { PrintSheet } from "@/components/export/print-sheet";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
@@ -24,6 +24,12 @@ const carterOne = Carter_One({
   subsets: ["latin"],
 });
 
+/** Very heavy, wide monospace font. Only used for the three hero words on the home page. */
+const rubikMonoOne = Rubik_Mono_One({
+  variable: "--font-rubik-mono-one",
+  weight: "400",
+  subsets: ["latin"],
+});
 const DEFAULT_TITLE = "CUI-Grades: GPA, CGPA & Internal Marks Calculator";
 
 export const metadata: Metadata = {
@@ -80,10 +86,10 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${carterOne.variable} flex min-h-dvh flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${carterOne.variable} ${rubikMonoOne.variable} flex min-h-dvh flex-col antialiased`}
       >
         <Navbar />
-        <main className="mx-auto w-full max-w-[96rem] flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-10">
+        <main className="mx-auto w-[90%] flex-1 py-8 sm:py-10">
           {children}
         </main>
         <Footer />

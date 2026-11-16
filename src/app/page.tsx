@@ -20,12 +20,13 @@ export default function Home() {
     <div>
       {/*
         Hero: fits one screen on laptops, so the home page never scrolls there.
-        Height = screen - navbar (4rem) - page padding (2 x 2.5rem) - footer (about 4.5rem).
+        Height = screen - navbar (4rem) - page padding (2 x 2.5rem) - footer (about 4.5rem), plus a small margin.
         Sizes use vh so the words and cards shrink on shorter screens.
       */}
-      <section className="grid items-center gap-8 md:min-h-[calc(100dvh-13.5rem)] lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14">
+      <section className="grid items-center gap-8 md:h-[calc(100dvh-14rem)] md:min-h-[26rem] lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14">
         <div>
-          <h1 className="font-display text-[length:min(15vh,22vw)] leading-[0.86] lg:text-[length:min(15vh,11vw)]">
+          {/* Rubik Mono One: every letter the same wide, heavy block. Its glyphs are already very wide, so sizes stay modest. */}
+          <h1 className="font-hero text-[length:min(13vh,17vw)] uppercase leading-[0.9] tracking-[-0.1em] lg:text-[length:min(15vh,9vw)]">
             {ITEMS.map((item) => (
               <span key={item.href} style={wordColor(item)} className="block text-[color:var(--word)]">
                 {item.name}

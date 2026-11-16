@@ -31,7 +31,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-surface/85 backdrop-blur-md print:hidden">
-      <div className="mx-auto grid h-16 max-w-[96rem] grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6 lg:px-10">
+      <div className="mx-auto grid h-16 w-[90%] grid-cols-[1fr_auto_1fr] items-center gap-4">
         <Link
           href="/"
           aria-label="CUI-Grades home"
