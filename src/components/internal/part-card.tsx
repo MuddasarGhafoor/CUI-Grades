@@ -5,6 +5,7 @@ import type { PartResult } from "@/lib/calc";
 import { formatCredits, formatMarks } from "@/lib/format";
 import type { Course } from "@/lib/types";
 import { ComponentBlock } from "./component-block";
+import { TONE_CLASS } from "@/lib/tones";
 
 type PartCardProps = {
   course: Course;
@@ -19,7 +20,7 @@ export function PartCard({ course, part, editing }: PartCardProps) {
       <header className="flex items-center justify-between gap-3 border-b border-line bg-surface-2/40 px-4 py-3 sm:px-5">
         <h2 className="flex items-center gap-2 font-semibold">
           {part.part === "theory" ? "Theory" : "Lab"}
-          <span className="rounded-md border border-line px-1.5 py-0.5 text-xs font-medium text-muted">
+          <span className={`rounded-md px-1.5 py-0.5 text-xs font-medium ${part.part === "theory" ? TONE_CLASS.blue.soft : TONE_CLASS.violet.soft}`}>
             {formatCredits(part.credits)}
           </span>
         </h2>

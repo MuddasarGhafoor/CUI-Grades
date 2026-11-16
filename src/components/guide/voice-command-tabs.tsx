@@ -49,7 +49,7 @@ export function VoiceCommandTabs() {
               {g.title}
               <span
                 className={`rounded-md px-1.5 text-[11px] tabular-nums ${
-                  selected ? "bg-accent/15 text-accent" : "bg-surface-2 text-muted"
+                  selected ? "bg-tone-amber/12 text-tone-amber" : "bg-surface-2 text-muted"
                 }`}
               >
                 {g.items.length}
@@ -57,7 +57,7 @@ export function VoiceCommandTabs() {
               <span
                 aria-hidden="true"
                 className={`absolute inset-x-2 -bottom-px h-0.5 rounded-full transition-[scale,background-color] duration-200 ${
-                  selected ? "scale-x-100 bg-accent" : "scale-x-0 bg-line-strong group-hover:scale-x-100"
+                  selected ? "scale-x-100 bg-tone-amber" : "scale-x-0 bg-line-strong group-hover:scale-x-100"
                 }`}
               />
             </button>

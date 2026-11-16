@@ -1,5 +1,9 @@
+import type { Tone } from "./tones";
+
 export type NavItem = {
   href: string;
+  /** Colour of this area: navbar underline, page header mark, hero word and card. */
+  tone: Tone;
   /** Navbar label on wider screens. */
   label: string;
   /** Navbar label in the narrow mobile row. */
@@ -15,14 +19,16 @@ export type NavItem = {
 export const CALCULATORS: NavItem[] = [
   {
     href: "/internal-marks",
+    tone: "teal",
     label: "Internal Marks",
     shortLabel: "Internal",
-    name: "Internal Marks",
+    name: "Marks",
     title: "Internal Marks Calculator",
     description: "Quizzes, assignments and midterms for each subject, theory and lab.",
   },
   {
     href: "/gpa-calculator",
+    tone: "blue",
     label: "GPA Calculator",
     shortLabel: "GPA",
     name: "GPA",
@@ -31,6 +37,7 @@ export const CALCULATORS: NavItem[] = [
   },
   {
     href: "/cgpa-calculator",
+    tone: "violet",
     label: "CGPA Calculator",
     shortLabel: "CGPA",
     name: "CGPA",
@@ -42,6 +49,7 @@ export const CALCULATORS: NavItem[] = [
 /** Shown as an icon button on the right of the navbar. */
 export const GUIDE: NavItem = {
   href: "/guide",
+  tone: "amber",
   label: "Guide",
   shortLabel: "Guide",
   name: "Guide",

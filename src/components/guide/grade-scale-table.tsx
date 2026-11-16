@@ -1,4 +1,5 @@
 import { CUI_GRADE_SCALE, sortScale, type GradeBand } from "@/lib/grading";
+import { TONE_CLASS, gradeTone } from "@/lib/tones";
 
 function rangeLabel(sorted: GradeBand[], index: number): string {
   const band = sorted[index];
@@ -22,7 +23,7 @@ export function GradeScaleTable({ scale = CUI_GRADE_SCALE }: { scale?: GradeBand
       <tbody className="tabular-nums">
         {sorted.map((band, i) => (
           <tr key={band.letter} className="border-b border-line last:border-0">
-            <td className="py-1.5 pr-4 font-semibold">{band.letter}</td>
+            <td className={`py-1.5 pr-4 font-semibold ${TONE_CLASS[gradeTone(band.letter) ?? "rose"].text}`}>{band.letter}</td>
             <td className="py-1.5 pr-4 text-muted">{rangeLabel(sorted, i)}</td>
             <td className="py-1.5 text-right">{band.points.toFixed(2)}</td>
           </tr>

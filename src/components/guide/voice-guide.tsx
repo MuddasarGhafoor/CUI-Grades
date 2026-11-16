@@ -26,7 +26,7 @@ export function VoiceGuide() {
       <ol className="card grid divide-y divide-line md:grid-cols-3 md:divide-x md:divide-y-0">
         {STEPS.map((step, i) => (
           <li key={step.title} className="flex gap-3 p-4">
-            <span className="grid size-6 shrink-0 place-items-center rounded-full border border-accent/40 text-[11px] font-semibold text-accent">
+            <span className="grid size-6 shrink-0 place-items-center rounded-full bg-tone-amber/12 text-[11px] font-semibold text-tone-amber">
               {i + 1}
             </span>
             <div>
@@ -59,7 +59,7 @@ export function VoiceGuide() {
             <ul className="mt-3 space-y-2">
               {NOTES.map((note) => (
                 <li key={note} className="flex items-start gap-2 text-[13px] text-muted">
-                  <Icon name="check" size={15} className="mt-0.5 shrink-0 text-accent" />
+                  <Icon name="check" size={15} className="mt-0.5 shrink-0 text-tone-green" />
                   {note}
                 </li>
               ))}

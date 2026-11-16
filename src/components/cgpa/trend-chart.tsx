@@ -47,10 +47,10 @@ export function TrendChart({ points }: { points: TimelinePoint[] }) {
         <h2 className="text-[15px] font-semibold">GPA and CGPA Over Time</h2>
         <ul className="flex gap-4 text-xs text-muted">
           <li className="flex items-center gap-1.5">
-            <span className="h-0.5 w-4 rounded bg-accent" /> CGPA
+            <span className="h-0.5 w-4 rounded bg-tone-violet" /> CGPA
           </li>
           <li className="flex items-center gap-1.5">
-            <span className="h-0 w-4 border-t-2 border-dashed border-accent-2" /> Semester GPA
+            <span className="h-0 w-4 border-t-2 border-dashed border-tone-blue" /> Semester GPA
           </li>
         </ul>
       </div>
@@ -96,17 +96,17 @@ export function TrendChart({ points }: { points: TimelinePoint[] }) {
 
           {points.length > 1 && (
             <>
-              <path d={line("gpa")} fill="none" stroke="var(--accent-2)" strokeWidth="1.5" strokeDasharray="5 4" />
-              <path d={line("cgpa")} fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinejoin="round" />
+              <path d={line("gpa")} fill="none" stroke="var(--tone-blue)" strokeWidth="1.5" strokeDasharray="5 4" />
+              <path d={line("cgpa")} fill="none" stroke="var(--tone-violet)" strokeWidth="2.5" strokeLinejoin="round" />
             </>
           )}
 
           {points.map((p, i) => (
             <g key={p.id}>
-              <circle cx={x(i)} cy={y(p.gpa)} r="3" fill="var(--surface)" stroke="var(--accent-2)" strokeWidth="1.5">
+              <circle cx={x(i)} cy={y(p.gpa)} r="3" fill="var(--surface)" stroke="var(--tone-blue)" strokeWidth="1.5">
                 <title>{`${p.label}: semester GPA ${formatGpa(p.gpa)}`}</title>
               </circle>
-              <circle cx={x(i)} cy={y(p.cgpa)} r="4" fill="var(--accent)">
+              <circle cx={x(i)} cy={y(p.cgpa)} r="4" fill="var(--tone-violet)">
                 <title>{`${p.label}: CGPA ${formatGpa(p.cgpa)}`}</title>
               </circle>
             </g>

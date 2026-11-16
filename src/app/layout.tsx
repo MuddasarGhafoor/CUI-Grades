@@ -83,7 +83,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${carterOne.variable} flex min-h-dvh flex-col antialiased`}
       >
         <Navbar />
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <main className="mx-auto w-full max-w-[96rem] flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-10">
           {children}
         </main>
         <Footer />

@@ -13,6 +13,7 @@ export default function InternalMarksPage() {
   return (
     <>
       <PageHeader
+        tone="teal"
         title="Internal Marks"
         description="Type the marks you got. Totals are already filled in, and your percentage and grade update as you go."
       />

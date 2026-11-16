@@ -1,3 +1,5 @@
+import { TONE_CLASS, type Tone } from "@/lib/tones";
+
 type Step = {
   title: string;
   explain: string;
@@ -45,13 +47,16 @@ const STEPS: Step[] = [
   },
 ];
 
+/** Each step gets its own colour so the grid is easy to scan. */
+const STEP_TONES: Tone[] = ["teal", "blue", "violet", "amber", "green", "rose"];
+
 export function HowItWorks() {
   return (
     <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {STEPS.map((step, i) => (
         <li key={step.title} className="card flex flex-col p-4">
           <div className="flex items-center gap-3">
-            <span className="grid size-6 shrink-0 place-items-center rounded-full border border-accent/40 text-[11px] font-semibold text-accent">
+            <span className={`grid size-6 shrink-0 place-items-center rounded-full text-[11px] font-semibold ${TONE_CLASS[STEP_TONES[i]].soft}`}>
               {i + 1}
             </span>
             <h3 className="text-sm font-semibold">{step.title}</h3>
@@ -66,7 +71,7 @@ export function HowItWorks() {
               </div>
               <p className="flex items-center justify-between border-t border-line px-3 py-1.5 text-[13px]">
                 <span className="text-xs text-muted">Result</span>
-                <span className="font-semibold tabular-nums text-accent">{step.result}</span>
+                <span className={`font-semibold tabular-nums ${TONE_CLASS[STEP_TONES[i]].text}`}>{step.result}</span>
               </p>
             </div>
           </div>

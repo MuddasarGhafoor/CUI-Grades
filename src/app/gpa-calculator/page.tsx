@@ -14,6 +14,7 @@ export default function GpaCalculatorPage() {
   return (
     <>
       <PageHeader
+        tone="blue"
         title="GPA Calculator"
         description="Grades come from your internal marks. Pick a grade by hand for any subject to use that instead. Subjects are shared with the Internal Marks page."
         actions={<ExportActions />}

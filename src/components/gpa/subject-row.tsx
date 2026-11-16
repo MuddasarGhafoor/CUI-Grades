@@ -8,6 +8,7 @@ import type { GradeBand } from "@/lib/grading";
 import { removeCourse, setActiveCourse, updateCourse } from "@/lib/store";
 import type { Course } from "@/lib/types";
 import { GradeSelect } from "./grade-select";
+import { TONE_CLASS, gradeTone } from "@/lib/tones";
 
 type SubjectRowProps = {
   course: Course;
@@ -30,7 +31,7 @@ export function SubjectRow({ course, result, grade, scale }: SubjectRowProps) {
         <Link
           href="/internal-marks"
           onClick={() => setActiveCourse(course.id)}
-          className="font-semibold hover:text-accent"
+          className="font-semibold hover:text-tone-teal"
           title="Open in Internal Marks"
         >
           {course.name}
@@ -59,7 +60,7 @@ export function SubjectRow({ course, result, grade, scale }: SubjectRowProps) {
               <span className="text-muted">
                 {grade.points.toFixed(2)} × {credits} ={" "}
               </span>
-              <span className="font-semibold">{formatMarks(grade.points * credits)}</span>
+              <span className={`font-semibold ${TONE_CLASS[gradeTone(grade.letter) ?? "teal"].text}`}>{formatMarks(grade.points * credits)}</span>
             </>
           ) : (
             <span className="text-muted">Not counted</span>

@@ -20,7 +20,7 @@ export function GpaSummary({ gpa, totalCredits, ungraded }: GpaSummaryProps) {
     <StatGrid
       label="Semester GPA"
       stats={[
-        { label: "Semester GPA", value: formatGpa(gpa.gpa), note, primary: true },
+        { label: "Semester GPA", value: formatGpa(gpa.gpa), note, primary: true, valueClassName: "text-tone-blue" },
         {
           label: "Credit Hours Counted",
           value: (

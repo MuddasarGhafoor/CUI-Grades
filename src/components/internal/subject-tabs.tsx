@@ -1,6 +1,7 @@
 "use client";
 
 import type { Course } from "@/lib/types";
+import { TONE_CLASS, gradeTone } from "@/lib/tones";
 
 type SubjectTabsProps = {
   courses: Course[];
@@ -33,8 +34,8 @@ export function SubjectTabs({ courses, activeId, letters, onSelect, onAdd }: Sub
             {letter && (
               <span
                 className={`rounded-md px-1.5 py-px text-xs font-semibold tabular-nums ${
-                  active ? "bg-accent/15 text-accent" : "bg-surface-2 text-muted"
-                }`}
+                  TONE_CLASS[gradeTone(letter) ?? "teal"].soft
+                } ${active ? "" : "opacity-70"}`}
               >
                 {letter}
               </span>
@@ -45,7 +46,7 @@ export function SubjectTabs({ courses, activeId, letters, onSelect, onAdd }: Sub
       <button
         type="button"
         onClick={onAdd}
-        className="ml-auto flex h-9 shrink-0 items-center rounded-lg px-3 text-sm font-medium text-accent transition-colors hover:bg-accent/10"
+        className="ml-auto flex h-9 shrink-0 items-center rounded-lg px-3 text-sm font-medium text-tone-teal transition-colors hover:bg-tone-teal/10"
       >
         + Add Subject
       </button>

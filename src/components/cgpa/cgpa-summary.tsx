@@ -24,7 +24,7 @@ export function CgpaSummary({ points, includesCurrent }: CgpaSummaryProps) {
     <StatGrid
       label="CGPA"
       stats={[
-        { label: "CGPA", value: formatGpa(last?.cgpa ?? null), note, primary: true },
+        { label: "CGPA", value: formatGpa(last?.cgpa ?? null), note, primary: true, valueClassName: "text-tone-violet" },
         {
           label: "Credit Hours",
           value: formatMarks(credits),

@@ -14,6 +14,7 @@ export default function CgpaCalculatorPage() {
   return (
     <>
       <PageHeader
+        tone="violet"
         title="CGPA Calculator"
         description="Add each finished semester's GPA and credit hours. This semester comes from the GPA page on its own."
         actions={<ExportActions />}

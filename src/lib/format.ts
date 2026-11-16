@@ -18,13 +18,16 @@ export function formatCredits(credits: number): string {
   return `${credits} Credit${credits === 1 ? "" : "s"}`;
 }
 
-/** Colour for a percentage: green for A range, teal for good, amber near the pass line, red below it. */
+/**
+ * Colour for a percentage, matching the grade colours: A range green, B range blue,
+ * C range amber, D and F rose. Thresholds sit half a mark below each band, like CUI rounding.
+ */
 export function toneColor(percent: number | null): string {
   if (percent === null) return "var(--line-strong)";
-  if (percent >= 84.5) return "var(--ok)";
-  if (percent >= 69.5) return "var(--accent)";
-  if (percent >= 49.5) return "var(--warn)";
-  return "var(--err)";
+  if (percent >= 79.5) return "var(--tone-green)";
+  if (percent >= 67.5) return "var(--tone-blue)";
+  if (percent >= 57.5) return "var(--tone-amber)";
+  return "var(--tone-rose)";
 }
 
 export function capitalize(text: string): string {
