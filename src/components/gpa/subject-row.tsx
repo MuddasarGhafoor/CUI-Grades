@@ -26,12 +26,12 @@ export function SubjectRow({ course, result, grade, scale }: SubjectRowProps) {
     : "no marks entered";
 
   return (
-    <li className="flex flex-wrap items-center gap-x-4 gap-y-3 px-4 py-4 transition-colors hover:bg-surface-2/40 sm:px-5">
+    <li className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2.5 transition-colors hover:bg-surface-2/40">
       <div className="min-w-0 flex-1 basis-48">
         <Link
           href="/internal-marks"
           onClick={() => setActiveCourse(course.id)}
-          className="font-semibold hover:text-tone-teal"
+          className="text-[13px] font-semibold hover:text-tone-teal"
           title="Open in Internal Marks"
         >
           {course.name}
@@ -54,7 +54,7 @@ export function SubjectRow({ course, result, grade, scale }: SubjectRowProps) {
             })
           }
         />
-        <p className="w-32 text-right text-sm tabular-nums">
+        <p className="w-32 text-right text-[13px] tabular-nums">
           {grade ? (
             <>
               <span className="text-muted">

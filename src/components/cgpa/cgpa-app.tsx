@@ -5,10 +5,10 @@ import { useAppData } from "@/lib/store";
 import { useIsClient } from "@/lib/use-is-client";
 import { CgpaSummary } from "./cgpa-summary";
 import { SemesterTable } from "./semester-table";
-import { TrendChart } from "./trend-chart";
 
 const CURRENT_ID = "current-semester";
 
+/** Two sections: semesters on the left, the CGPA results panel on the right. */
 export function CgpaApp() {
   const isClient = useIsClient();
   const data = useAppData();
@@ -24,11 +24,9 @@ export function CgpaApp() {
     semesters,
     includeCurrent ? { id: CURRENT_ID, label: "This Semester", result: current } : undefined,
   );
-  const countsCurrent = timeline.some((p) => p.id === CURRENT_ID);
 
   return (
-    <div className="space-y-6">
-      <CgpaSummary points={timeline} includesCurrent={countsCurrent} />
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start">
       <SemesterTable
         semesters={semesters}
         timeline={timeline}
@@ -36,11 +34,7 @@ export function CgpaApp() {
         currentId={CURRENT_ID}
         includeCurrent={includeCurrent}
       />
-      {timeline.length > 0 && <TrendChart points={timeline} />}
-      <p className="text-xs text-muted">
-        CGPA is every semester&apos;s grade points × credit hours, added up and divided by all your
-        credit hours. Repeated or improved courses are not adjusted here.
-      </p>
+      <CgpaSummary points={timeline} />
     </div>
   );
 }

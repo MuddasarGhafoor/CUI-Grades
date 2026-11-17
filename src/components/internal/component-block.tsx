@@ -1,108 +1,79 @@
 "use client";
 
-import { useState } from "react";
-import { buttonClass } from "@/components/ui/button";
-import type { ComponentDef } from "@/lib/assessments";
+import { LAB_QUIZ_PLACEHOLDER, rowLabel, rowSingular, type ComponentDef } from "@/lib/assessments";
 import type { ComponentResult } from "@/lib/calc";
 import { formatMarks, titleCase } from "@/lib/format";
-import { createMark, updateCourse } from "@/lib/store";
-import type { Course, Mark } from "@/lib/types";
-import { MarkField } from "./mark-field";
-import { QuickFill } from "./quick-fill";
+import { updateCourse } from "@/lib/store";
+import type { Course } from "@/lib/types";
+import { MarkField, markProblem } from "./mark-field";
+
+/** Shared row grid: name and weight, mark boxes, score. Boxes drop below the name on phones. */
+const ROW =
+  "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 border-b border-line px-4 py-2.5 last:border-0 sm:grid-cols-[7.5rem_minmax(0,1fr)_4rem]";
 
 type ComponentBlockProps = {
   course: Course;
   def: ComponentDef;
   result: ComponentResult;
-  editing: boolean;
 };
 
-/** One assessment, e.g. Quizzes: a row of mark boxes plus its weighted score. */
-export function ComponentBlock({ course, def, result, editing }: ComponentBlockProps) {
-  const [quickOpen, setQuickOpen] = useState(false);
+/** One assessment on one compact row: name and weight, small mark boxes, weighted score. */
+export function ComponentBlock({ course, def, result }: ComponentBlockProps) {
   const value = course.marks[def.key];
   const entries = Array.isArray(value) ? value : [value];
+  const firstError = entries.map(markProblem).find(Boolean);
+  const singular = titleCase(rowSingular(def));
 
-  function setField(index: number, field: keyof Mark, text: string) {
+  function setObtained(index: number, text: string) {
     updateCourse(course.id, (c) => {
       const current = c.marks[def.key];
       const target = Array.isArray(current) ? current[index] : current;
-      if (target) target[field] = text;
-    });
-  }
-
-  function addEntry() {
-    updateCourse(course.id, (c) => {
-      const list = c.marks[def.key];
-      if (!Array.isArray(list)) return;
-      // A new entry copies the last total, so a teacher's "out of 15" carries over.
-      const last = list.at(-1);
-      list.push(last ? { obtained: "", total: last.total } : createMark(def));
-    });
-  }
-
-  function removeLast() {
-    updateCourse(course.id, (c) => {
-      const list = c.marks[def.key];
-      if (Array.isArray(list) && list.length > 1) list.pop();
+      if (target) target.obtained = text;
     });
   }
 
   return (
-    <section className="border-b border-line px-4 py-4 last:border-0 sm:px-5">
-      <header className="mb-2.5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        <h3 className="text-sm font-semibold">
-          {def.label}
-          <span className="ml-2 font-normal text-muted">{def.weight}%</span>
-        </h3>
-        <div className="flex items-baseline gap-3">
-          {def.kind === "list" && !quickOpen && (
-            <button
-              type="button"
-              onClick={() => setQuickOpen(true)}
-              className="text-xs font-medium text-accent hover:underline"
-            >
-              Type All at Once
-            </button>
-          )}
-          <p className="text-sm tabular-nums text-muted">
-            <span className="font-semibold text-fg">{formatMarks(result.marks)}</span> / {def.weight}
-          </p>
-        </div>
-      </header>
+    <div className={ROW}>
+      <p className="text-[13px] font-medium">
+        {rowLabel(def)}
+        <span className="ml-1.5 text-xs font-normal text-muted">{def.weight}%</span>
+      </p>
 
-      {def.kind === "list" && quickOpen && (
-        <QuickFill course={course} def={def} onClose={() => setQuickOpen(false)} />
-      )}
+      <p className="text-right text-[13px] tabular-nums text-muted sm:order-last">
+        <span className="font-semibold text-fg">{formatMarks(result.marks)}</span>/{def.weight}
+      </p>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="col-span-2 flex flex-wrap items-center gap-1.5 sm:col-span-1">
         {entries.map((mark, i) => (
           <MarkField
             key={i}
             id={`${course.id}-${def.key}-${i}`}
-            label={def.kind === "list" ? `${titleCase(def.singular)} ${i + 1}` : titleCase(def.singular)}
+            label={def.kind === "list" ? `${singular} ${i + 1}` : singular}
             mark={mark}
-            editingTotal={editing}
-            onChange={(field, text) => setField(i, field, text)}
+            onChange={(text) => setObtained(i, text)}
           />
         ))}
+        {firstError && <span className="text-xs text-err">{firstError}</span>}
       </div>
+    </div>
+  );
+}
 
-      {editing && def.kind === "list" && (
-        <div className="mt-3 flex gap-2">
-          <button type="button" onClick={addEntry} className={buttonClass("secondary", "sm")}>
-            + Add {titleCase(def.singular)}
-          </button>
-          <button
-            type="button"
-            onClick={removeLast}
-            disabled={entries.length <= 1}
-            className={buttonClass("ghost", "sm")}
-          >
-            Remove Last
-          </button>
-        </div>
-      )}
-    </section>
+/** Greyed-out quizzes row in the lab card. Lab has no quizzes; this keeps both cards aligned. */
+export function LabQuizPlaceholder() {
+  const { label, count, total } = LAB_QUIZ_PLACEHOLDER;
+  return (
+    <div className={ROW} aria-disabled="true" title="Lab has no quizzes">
+      <p className="text-[13px] font-medium text-muted">
+        {label}
+        <span className="ml-1.5 text-xs font-normal">0%</span>
+      </p>
+      <p className="text-right text-[13px] text-muted sm:order-last">-</p>
+      <div className="col-span-2 flex flex-wrap items-center gap-1.5 sm:col-span-1">
+        {Array.from({ length: count }, (_, i) => (
+          <MarkField key={i} label={`Quiz ${i + 1}`} mark={{ obtained: "", total: String(total) }} disabled />
+        ))}
+      </div>
+    </div>
   );
 }

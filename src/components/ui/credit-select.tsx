@@ -17,7 +17,7 @@ export function CreditSelect({ label, value, max, disableZero, onChange }: Credi
       label={label}
       value={value}
       onChange={onChange}
-      className="w-32"
+      className="w-28"
       options={Array.from({ length: max + 1 }, (_, n) => ({
         value: n,
         label: creditLabel(n),

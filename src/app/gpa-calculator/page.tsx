@@ -1,6 +1,6 @@
 import { ExportActions } from "@/components/export/export-actions";
 import { GpaApp } from "@/components/gpa/gpa-app";
-import { PageHeader } from "@/components/ui/page-header";
+import { CalculatorHeader } from "@/components/voice/calculator-header";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
@@ -13,12 +13,7 @@ export const metadata = pageMetadata({
 export default function GpaCalculatorPage() {
   return (
     <>
-      <PageHeader
-        tone="blue"
-        title="GPA Calculator"
-        description="Grades come from your internal marks. Pick a grade by hand for any subject to use that instead. Subjects are shared with the Internal Marks page."
-        actions={<ExportActions />}
-      />
+      <CalculatorHeader tone="blue" title="GPA Calculator" actions={<ExportActions />} />
       <GpaApp />
     </>
   );

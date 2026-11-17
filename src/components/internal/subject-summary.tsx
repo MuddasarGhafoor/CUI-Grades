@@ -1,84 +1,52 @@
 import { ProgressRing } from "@/components/ui/progress-ring";
-import { INTERNAL_OUT_OF } from "@/lib/assessments";
 import type { CourseResult, PartResult } from "@/lib/calc";
 import { formatMarks, formatPercent, toneColor } from "@/lib/format";
-import { BreakdownBar } from "./breakdown-bar";
+import { ComponentBars } from "./breakdown-bar";
 
-function Row({ label, value, note }: { label: string; value: string; note?: string }) {
-  return (
-    <div className="flex items-baseline justify-between gap-3">
-      <dt className="text-muted">{label}</dt>
-      <dd className="text-right tabular-nums">
-        {note && <span className="mr-1.5 text-xs text-muted">{note}</span>}
-        <span className="font-medium">{value}</span>
-      </dd>
-    </div>
-  );
-}
-
+/** Theory or lab: its total so far, then one line per assessment with its bar after it. */
 function PartSummary({ part }: { part: PartResult }) {
-  const final = part.components.find((c) => !c.def.internal);
-  const internalNote =
-    part.internalPossible > 0 && part.internalPossible < INTERNAL_OUT_OF
-      ? `${part.internalPossible} entered`
-      : undefined;
-
   return (
-    <div className="border-t border-line px-5 py-4">
-      <h3 className="text-sm font-semibold">{part.part === "theory" ? "Theory" : "Lab"}</h3>
-      <dl className="mt-2 space-y-1 text-sm">
-        <Row label="Internal" value={`${formatMarks(part.internalMarks)} / ${INTERNAL_OUT_OF}`} note={internalNote} />
-        <Row
-          label="Final"
-          value={final?.marks == null ? "Not Entered" : `${formatMarks(final.marks)} / ${final.def.weight}`}
-        />
-        <Row label="Total" value={`${formatMarks(part.marks)} / 100`} />
-      </dl>
-      <div className="mt-3">
-        <BreakdownBar part={part} />
+    <div className="min-w-0 px-4 py-3 lg:flex-1">
+      <div className="flex items-baseline justify-between gap-3">
+        <h3 className="text-[13px] font-semibold">{part.part === "theory" ? "Theory" : "Lab"}</h3>
+        <p className="text-[13px] tabular-nums">
+          <span className="font-semibold">{formatMarks(part.marks)}</span>
+          <span className="text-muted">/100</span>
+        </p>
+      </div>
+      <div className="mt-2">
+        <ComponentBars part={part} />
       </div>
     </div>
   );
 }
 
-type SubjectSummaryProps = {
-  result: CourseResult;
-  /** Extra panels shown under the result, such as the final exam target. */
-  children?: React.ReactNode;
-};
-
-export function SubjectSummary({ result, children }: SubjectSummaryProps) {
+/** The results strip under the marks: grade first, then theory and lab, side by side on wide screens. */
+export function SubjectSummary({ result }: { result: CourseResult }) {
   const grade = result.gradeFromMarks;
   const parts = [result.theory, result.lab].filter((p): p is PartResult => p !== null);
 
-  let status: string;
-  if (result.percent === null) status = "Enter a mark to see your percentage.";
-  else if (result.complete) status = "All marks entered.";
-  else status = `Based on the ${Math.round(result.coverage * 100)}% of marks entered so far.`;
-
   return (
-    <aside className="card lg:sticky lg:top-24 lg:max-h-[calc(100dvh-16rem)] lg:overflow-y-auto">
-      <div className="flex items-center gap-4 p-5">
-        <ProgressRing value={result.percent} color={toneColor(result.percent)}>
+    <section aria-label="Result" className="card flex flex-col divide-y divide-line lg:flex-row lg:divide-x lg:divide-y-0">
+      <div className="flex items-center gap-4 p-4 lg:shrink-0 lg:pr-6">
+        <ProgressRing value={result.percent} color={toneColor(result.percent)} size={92} stroke={8}>
           <div>
-            <p className="text-xl font-semibold tabular-nums">{formatPercent(result.percent)}</p>
+            <p className="text-lg font-semibold tabular-nums">{formatPercent(result.percent)}</p>
             <p className="text-[11px] text-muted">{result.complete ? "Result" : "So Far"}</p>
           </div>
         </ProgressRing>
         <div className="min-w-0">
-          <p className="font-display text-4xl leading-none" style={{ color: grade ? toneColor(result.percent) : undefined }}>
+          <p className="font-display text-3xl leading-none" style={{ color: grade ? toneColor(result.percent) : undefined }}>
             {grade ? grade.letter : "-"}
           </p>
-          <p className="mt-1.5 text-sm tabular-nums">
+          <p className="mt-1 text-[13px] tabular-nums text-muted">
             {grade ? `${grade.points.toFixed(2)} Grade Points` : "No Grade Yet"}
           </p>
-          <p className="mt-1 text-xs text-muted">{status}</p>
         </div>
       </div>
-      {children}
       {parts.map((part) => (
         <PartSummary key={part.part} part={part} />
       ))}
-    </aside>
+    </section>
   );
 }

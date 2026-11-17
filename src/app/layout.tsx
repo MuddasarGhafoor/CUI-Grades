@@ -3,7 +3,6 @@ import { Carter_One, Geist, Geist_Mono, Rubik_Mono_One } from "next/font/google"
 import { PrintSheet } from "@/components/export/print-sheet";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
-import { VoiceDock } from "@/components/voice/voice-dock";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
@@ -93,7 +92,6 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <VoiceDock />
         <PrintSheet />
       </body>
     </html>

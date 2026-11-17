@@ -15,7 +15,6 @@ export function InternalMarksApp() {
   const isClient = useIsClient();
   const data = useAppData();
   const [adding, setAdding] = useState(false);
-  const [editing, setEditing] = useState(false);
 
   // Saved data only exists in the browser. Show a quiet placeholder until it is read.
   if (!isClient) {
@@ -29,12 +28,8 @@ export function InternalMarksApp() {
 
   if (!active) {
     return (
-      <div className="max-w-3xl">
-        <h2 className="text-lg font-semibold">Add Your First Subject</h2>
-        <p className="mb-4 mt-1 text-sm text-muted">
-          Give it a name and its credit hours. Quizzes, assignments and exams come pre-filled with
-          their usual totals, so you only type the marks you got.
-        </p>
+      <div className="mx-auto flex w-full max-w-3xl flex-col justify-center py-10 md:min-h-[50vh]">
+        <h2 className="mb-3 text-center text-lg font-semibold">Add Your First Subject</h2>
         <AddSubjectForm fallbackName={fallbackName} onDone={() => setAdding(false)} />
       </div>
     );
@@ -44,9 +39,11 @@ export function InternalMarksApp() {
   const letters = Object.fromEntries(
     courses.map((c) => [c.id, courseResult(c, scale).gradeFromMarks?.letter]),
   );
+  const bothParts = Boolean(result.theory && result.lab);
 
+  // Full width: tabs, subject row, Theory and Lab side by side, the results strip, then the target.
   return (
-    <div>
+    <div className="space-y-4">
       <SubjectTabs
         courses={courses}
         activeId={active.id}
@@ -59,34 +56,23 @@ export function InternalMarksApp() {
       />
 
       {adding && (
-        <div className="mt-4">
-          <AddSubjectForm
-            fallbackName={fallbackName}
-            onDone={() => setAdding(false)}
-            onCancel={() => setAdding(false)}
-          />
-        </div>
+        <AddSubjectForm
+          fallbackName={fallbackName}
+          onDone={() => setAdding(false)}
+          onCancel={() => setAdding(false)}
+        />
       )}
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
-        <div className="min-w-0 space-y-6">
-          <SubjectHeader
-            course={active}
-            result={result}
-            editing={editing}
-            onToggleEditing={() => setEditing((v) => !v)}
-          />
-          {result.theory && <PartCard course={active} part={result.theory} editing={editing} />}
-          {result.lab && <PartCard course={active} part={result.lab} editing={editing} />}
-          <p className="text-xs text-muted">
-            Press Enter or Tab to move to the next box. Leave a box empty if that mark isn&apos;t out
-            yet; it won&apos;t count against you.
-          </p>
-        </div>
-        <SubjectSummary result={result}>
-          <FinalTarget key={active.id} course={active} result={result} scale={scale} />
-        </SubjectSummary>
+      <SubjectHeader course={active} />
+
+      <div className={`grid items-start gap-4 ${bothParts ? "lg:grid-cols-2" : ""}`}>
+        {result.theory && <PartCard course={active} part={result.theory} />}
+        {result.lab && <PartCard course={active} part={result.lab} />}
       </div>
+
+      <SubjectSummary result={result} />
+
+      <FinalTarget key={active.id} course={active} scale={scale} />
     </div>
   );
 }

@@ -118,6 +118,9 @@ export function parseGradeLetter(text: string): string | null {
   return match ? `${match[1].toUpperCase()}${match[2]}` : null;
 }
 
+const isListKey = (key: ComponentKey): key is ListKey =>
+  key === "quizzes" || key === "assignments" || key === "labAssignments";
+
 const PAGES = [
   { href: "/cgpa-calculator", label: "CGPA Calculator", match: /^cgpa\b/ },
   { href: "/gpa-calculator", label: "GPA Calculator", match: /^gpa\b/ },
@@ -198,8 +201,8 @@ export function parseVoiceCommand(raw: string): ParseResult {
   }
   if (tokens.length === 0) return fail("I heard which one, but no marks. Try \"quiz 8 out of 10\".");
 
-  const isList = key === "quizzes" || key === "assignments" || key === "labAssignments";
-  if (!isList) {
+  // A type guard (not a plain boolean) so TypeScript knows `key` is a list key below.
+  if (!isListKey(key)) {
     const [first] = tokens;
     return ok({ type: "mark", key, index: null, obtained: first.obtained, total: first.total });
   }

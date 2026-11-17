@@ -1,43 +1,33 @@
 "use client";
 
-import { INTERNAL_OUT_OF } from "@/lib/assessments";
 import type { PartResult } from "@/lib/calc";
-import { formatCredits, formatMarks } from "@/lib/format";
-import type { Course } from "@/lib/types";
-import { ComponentBlock } from "./component-block";
+import { formatCredits } from "@/lib/format";
 import { TONE_CLASS } from "@/lib/tones";
+import type { Course } from "@/lib/types";
+import { ComponentBlock, LabQuizPlaceholder } from "./component-block";
 
 type PartCardProps = {
   course: Course;
   part: PartResult;
-  editing: boolean;
 };
 
-/** Theory or lab: every assessment of that part, in marking order. */
-export function PartCard({ course, part, editing }: PartCardProps) {
+/** Theory or lab: every assessment of that part, in marking order. Lab shows a greyed quizzes row. */
+export function PartCard({ course, part }: PartCardProps) {
+  const isLab = part.part === "lab";
+
   return (
     <section className="card overflow-hidden">
-      <header className="flex items-center justify-between gap-3 border-b border-line bg-surface-2/40 px-4 py-3 sm:px-5">
-        <h2 className="flex items-center gap-2 font-semibold">
-          {part.part === "theory" ? "Theory" : "Lab"}
-          <span className={`rounded-md px-1.5 py-0.5 text-xs font-medium ${part.part === "theory" ? TONE_CLASS.blue.soft : TONE_CLASS.violet.soft}`}>
-            {formatCredits(part.credits)}
-          </span>
-        </h2>
-        <p className="text-sm text-muted">
-          Internal{" "}
-          <span className="font-semibold tabular-nums text-fg">{formatMarks(part.internalMarks)}</span>{" "}
-          / {INTERNAL_OUT_OF}
-        </p>
+      <header className="flex items-center gap-2 border-b border-line bg-surface-2/40 px-4 py-2">
+        <h2 className="text-sm font-semibold">{isLab ? "Lab" : "Theory"}</h2>
+        <span
+          className={`rounded-md px-1.5 py-px text-[11px] font-medium ${isLab ? TONE_CLASS.violet.soft : TONE_CLASS.blue.soft}`}
+        >
+          {formatCredits(part.credits)}
+        </span>
       </header>
+      {isLab && <LabQuizPlaceholder />}
       {part.components.map((component) => (
-        <ComponentBlock
-          key={component.def.key}
-          course={course}
-          def={component.def}
-          result={component}
-          editing={editing}
-        />
+        <ComponentBlock key={component.def.key} course={course} def={component.def} result={component} />
       ))}
     </section>
   );

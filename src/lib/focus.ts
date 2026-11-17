@@ -8,7 +8,9 @@ export function focusNextMarkInput(from: HTMLElement) {
   const next = inputs[inputs.indexOf(from as HTMLInputElement) + 1];
   if (next) {
     next.focus();
-    next.select();
+    // Cursor at the end, no text highlight.
+    const end = next.value.length;
+    next.setSelectionRange(end, end);
   } else {
     from.blur();
   }

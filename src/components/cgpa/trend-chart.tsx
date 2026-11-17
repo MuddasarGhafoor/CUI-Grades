@@ -4,7 +4,7 @@ import type { TimelinePoint } from "@/lib/calc";
 import { formatGpa } from "@/lib/format";
 import { useElementWidth } from "@/lib/use-element-width";
 
-const HEIGHT = 220;
+const HEIGHT = 180;
 const PAD = { top: 18, right: 18, bottom: 30, left: 34 };
 
 /** Lowest y value shown: rounded down to a half point, always showing at least one full point of range. */
@@ -18,6 +18,7 @@ function shortLabel(label: string, max: number): string {
   return label.length > max ? `${label.slice(0, max - 1)}…` : label;
 }
 
+/** Semester GPA and running CGPA as lines. Sits inside the CGPA results panel. */
 export function TrendChart({ points }: { points: TimelinePoint[] }) {
   const [ref, width] = useElementWidth<HTMLDivElement>();
 
@@ -42,20 +43,20 @@ export function TrendChart({ points }: { points: TimelinePoint[] }) {
   const last = points[points.length - 1];
 
   return (
-    <section className="card p-5">
+    <div>
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2 className="text-[15px] font-semibold">GPA and CGPA Over Time</h2>
-        <ul className="flex gap-4 text-xs text-muted">
+        <h3 className="text-sm font-semibold">Trend</h3>
+        <ul className="flex gap-3 text-xs text-muted">
           <li className="flex items-center gap-1.5">
             <span className="h-0.5 w-4 rounded bg-tone-violet" /> CGPA
           </li>
           <li className="flex items-center gap-1.5">
-            <span className="h-0 w-4 border-t-2 border-dashed border-tone-blue" /> Semester GPA
+            <span className="h-0 w-4 border-t-2 border-dashed border-tone-blue" /> GPA
           </li>
         </ul>
       </div>
 
-      <div ref={ref} className="mt-4">
+      <div ref={ref} className="mt-3">
         <svg
           width={width}
           height={HEIGHT}
@@ -124,6 +125,6 @@ export function TrendChart({ points }: { points: TimelinePoint[] }) {
           </text>
         </svg>
       </div>
-    </section>
+    </div>
   );
 }

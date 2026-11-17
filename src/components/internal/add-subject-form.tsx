@@ -28,7 +28,7 @@ export function AddSubjectForm({ fallbackName, onDone, onCancel }: AddSubjectFor
     <form
       onSubmit={submit}
       onKeyDown={(e) => e.key === "Escape" && onCancel?.()}
-      className="card p-4 sm:p-5"
+      className="card p-3"
     >
       <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-end">
         <div>

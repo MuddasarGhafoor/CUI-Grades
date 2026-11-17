@@ -2,7 +2,7 @@ import { Icon } from "@/components/ui/icons";
 import { VOICE_COMMAND_GROUPS } from "@/lib/voice/commands";
 
 const STEPS = [
-  { title: "Open a Calculator", text: "The voice bar sits at the bottom of every calculator page." },
+  { title: "Press Voice", text: "The Voice button is at the top right of every calculator page." },
   { title: "Tap the Mic and Speak", text: 'Say one thing at a time, like "quiz 8 out of 10".' },
   { title: "Check the Confirmation", text: 'A green line shows what was saved. Say "undo" to take it back.' },
 ];
@@ -16,7 +16,7 @@ const NOTES = [
   "Works in Chrome, Edge and Safari.",
   "Needs an internet connection for speech.",
   "Marks go to the subject open on the Internal Marks page.",
-  "Every command can be typed in the voice bar too.",
+  "Every command can be typed in the voice panel too.",
 ];
 
 /** Every command in one flat list, tagged with its group. */
@@ -82,7 +82,7 @@ export function VoiceGuide() {
       <div className="grid gap-5 md:grid-cols-2">
         <section className="card p-4">
           <h3 className="text-sm font-semibold">Two Modes</h3>
-          <p className="mt-0.5 text-xs text-muted">Switch in the voice bar&apos;s settings.</p>
+          <p className="mt-0.5 text-xs text-muted">Switch in the voice panel&apos;s settings.</p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {MODES.map((mode) => (
               <div key={mode.name} className="rounded-lg border border-line px-3 py-2.5">

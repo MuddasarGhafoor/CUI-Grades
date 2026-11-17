@@ -1,5 +1,5 @@
 import { InternalMarksApp } from "@/components/internal/internal-marks-app";
-import { PageHeader } from "@/components/ui/page-header";
+import { CalculatorHeader } from "@/components/voice/calculator-header";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
@@ -12,11 +12,7 @@ export const metadata = pageMetadata({
 export default function InternalMarksPage() {
   return (
     <>
-      <PageHeader
-        tone="teal"
-        title="Internal Marks"
-        description="Type the marks you got. Totals are already filled in, and your percentage and grade update as you go."
-      />
+      <CalculatorHeader tone="teal" title="Internal Marks" />
       <InternalMarksApp />
     </>
   );

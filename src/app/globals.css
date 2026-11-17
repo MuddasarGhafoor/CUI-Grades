@@ -129,12 +129,12 @@
 
 /* Text inputs and dropdown buttons share one look, with a soft focus ring. */
 @utility field {
-  height: 2.25rem;
+  height: 2rem;
   border-radius: 0.5rem;
   border: 1px solid var(--line-strong);
   background: var(--field);
   padding-inline: 0.75rem;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--fg);
   outline: none;
   transition:
@@ -146,11 +146,11 @@
   &:hover {
     border-color: color-mix(in srgb, var(--accent) 35%, var(--line-strong));
   }
+  /* Active box: the same soft tint as hover, a little stronger. No outline or glow. */
   &:focus,
   &:focus-visible {
     outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 60%, var(--line-strong));
   }
 }
 
@@ -159,8 +159,8 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.5;
   font-feature-settings: "cv11", "ss01";
 }
 
@@ -183,9 +183,17 @@ h3 {
   display: none;
 }
 
+/* Keyboard focus on buttons and links: a thin, soft ring. */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
   outline-offset: 2px;
+}
+
+/* Text boxes and menus show focus through their own border instead of an outline. */
+input:focus-visible,
+textarea:focus-visible,
+[role="listbox"]:focus-visible {
+  outline: none;
 }
 
 /* ---------- printing ---------- */

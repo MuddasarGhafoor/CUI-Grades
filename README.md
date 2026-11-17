@@ -6,7 +6,7 @@ An unofficial student tool. Not affiliated with COMSATS University Islamabad.
 
 ## Features
 
-- **Internal Marks:** quizzes, assignments, midterms and finals for theory and lab, with every total already filled in. Enter or Tab jumps to the next box. Type `8 7 9 6` to fill all four quizzes at once.
+- **Internal Marks:** quizzes, assignments, midterms and finals for theory and lab, with every total already filled in. Enter or Tab jumps to the next box.
 - **Final Exam Target:** pick a grade and see the marks you need in the final.
 - **GPA Calculator:** grades come from your marks, or pick them by hand. Includes a bar chart comparing subjects.
 - **CGPA Calculator:** past semesters plus this one, with the running CGPA and a trend chart.

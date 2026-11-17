@@ -50,6 +50,26 @@ export const COMPONENTS_BY_PART: Record<Part, ComponentDef[]> = {
   lab: LAB_COMPONENTS,
 };
 
+/**
+ * Label inside a Theory or Lab card, where "Lab" would only repeat the card title:
+ * "Lab Assignments" → "Assignments", "Lab Final" → "Final Exam".
+ */
+export function rowLabel(def: ComponentDef): string {
+  if (def.part !== "lab") return def.label;
+  const label = def.label.replace(/^Lab /, "");
+  return label === "Final" ? "Final Exam" : label;
+}
+
+/** Same idea for one entry: "lab assignment" → "assignment", "lab final" → "final exam". */
+export function rowSingular(def: ComponentDef): string {
+  if (def.part !== "lab") return def.singular;
+  const singular = def.singular.replace(/^lab /, "");
+  return singular === "final" ? "final exam" : singular;
+}
+
+/** Lab has no quizzes. Its card still shows a greyed-out quizzes row so both cards line up. */
+export const LAB_QUIZ_PLACEHOLDER = { label: "Quizzes", count: 4, total: 10 };
+
 /** Internal marks per part are out of 50 (everything except the 50-mark final). */
 export const INTERNAL_OUT_OF = 50;
 

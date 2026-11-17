@@ -194,7 +194,7 @@ export function Select<T extends string | number>({
     }
   }
 
-  const height = size === "sm" ? "h-8 text-sm" : "h-9 text-sm";
+  const height = size === "sm" ? "h-7 text-[13px]" : "h-8 text-[13px]";
   const transform = `translate(${align === "end" ? "-100%" : "0"}, ${position?.up ? "-100%" : "0"})`;
 
   return (
@@ -241,7 +241,7 @@ export function Select<T extends string | number>({
               if (e.relatedTarget !== buttonRef.current) setOpen(false);
             }}
             style={{ top: position.top, left: position.left, minWidth: position.width, transform }}
-            className="fixed z-50 max-h-64 overflow-y-auto rounded-lg border border-line-strong bg-surface p-1 text-sm text-fg shadow-pop outline-none"
+            className="fixed z-50 max-h-64 overflow-y-auto rounded-lg border border-line-strong bg-surface p-1 text-[13px] text-fg shadow-pop outline-none"
           >
             {options.map((option, i) => {
               const isSelected = option.value === value;
@@ -255,7 +255,7 @@ export function Select<T extends string | number>({
                   aria-disabled={option.disabled || undefined}
                   onPointerMove={() => !option.disabled && setActive(i)}
                   onClick={() => choose(i)}
-                  className={`flex cursor-pointer select-none items-center gap-3 rounded-md px-2.5 py-1.5 whitespace-nowrap ${
+                  className={`flex cursor-pointer select-none items-center gap-3 rounded-md px-2 py-1 whitespace-nowrap ${
                     option.disabled ? "cursor-not-allowed text-muted/50" : ""
                   } ${i === active && !option.disabled ? "bg-surface-2" : ""}`}
                 >

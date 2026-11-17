@@ -1,6 +1,6 @@
 import { CgpaApp } from "@/components/cgpa/cgpa-app";
 import { ExportActions } from "@/components/export/export-actions";
-import { PageHeader } from "@/components/ui/page-header";
+import { CalculatorHeader } from "@/components/voice/calculator-header";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
@@ -13,12 +13,7 @@ export const metadata = pageMetadata({
 export default function CgpaCalculatorPage() {
   return (
     <>
-      <PageHeader
-        tone="violet"
-        title="CGPA Calculator"
-        description="Add each finished semester's GPA and credit hours. This semester comes from the GPA page on its own."
-        actions={<ExportActions />}
-      />
+      <CalculatorHeader tone="violet" title="CGPA Calculator" actions={<ExportActions />} />
       <CgpaApp />
     </>
   );

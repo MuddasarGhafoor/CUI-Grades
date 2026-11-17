@@ -48,7 +48,7 @@ export function SemesterTable({ semesters, timeline, current, currentId, include
               onClick={() => addSemester("Earlier Semesters")}
               className={buttonClass("ghost", "sm")}
             >
-              I Only Know My CGPA So Far
+              Add CGPA So Far
             </button>
           )}
           <button type="button" onClick={() => addSemester(nextLabel)} className={buttonClass("secondary", "sm")}>
@@ -67,8 +67,7 @@ export function SemesterTable({ semesters, timeline, current, currentId, include
 
       {semesters.length === 0 && (
         <p className="py-3 text-sm text-muted">
-          Add each finished semester with its GPA and credit hours. If you only know your current
-          CGPA, add one row with that CGPA and your total credit hours so far.
+          No semesters yet.
         </p>
       )}
 
