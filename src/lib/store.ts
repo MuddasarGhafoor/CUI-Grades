@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
 import { ALL_COMPONENTS, type ComponentDef } from "./assessments";
 import { CUI_GRADE_SCALE, type GradeBand } from "./grading";
-import type { AppData, Course, CourseMarks, Mark, Semester, Settings } from "./types";
+import type { AppData, Course, CourseMarks, GpaCourse, Mark, Semester, Settings } from "./types";
 
 /**
  * All app data lives in one localStorage entry. Components read it with useAppData()
@@ -46,6 +46,20 @@ export function createCourse(name: string, theoryCredits = 3, labCredits = 0): C
   };
 }
 
+export const GPA_DEFAULT_COURSES = 6;
+export const GPA_DEFAULT_CREDITS = 3;
+export const GPA_MIN_CREDITS = 1;
+export const GPA_MAX_CREDITS = 4;
+
+export function createGpaCourse(name: string, credits = GPA_DEFAULT_CREDITS): GpaCourse {
+  return { id: newId(), name, credits, grade: null };
+}
+
+/** The GPA page starts with six 3-credit courses, ready to pick grades for. */
+export function defaultGpaCourses(): GpaCourse[] {
+  return Array.from({ length: GPA_DEFAULT_COURSES }, (_, i) => createGpaCourse(`Course ${i + 1}`));
+}
+
 export function createSemester(label: string): Semester {
   return { id: newId(), label, gpa: "", credits: "" };
 }
@@ -64,6 +78,7 @@ export function defaultData(): AppData {
     version: DATA_VERSION,
     courses: [],
     activeCourseId: null,
+    gpaCourses: defaultGpaCourses(),
     semesters: [],
     settings: defaultSettings(),
   };
@@ -134,6 +149,20 @@ function normalize(raw: unknown): AppData {
         credits: asString(s.credits),
       }))
     : [];
+  const gpaCourses = Array.isArray(raw.gpaCourses)
+    ? raw.gpaCourses.filter(isObject).map((g) => {
+        const credits = Number(g.credits);
+        return {
+          id: asString(g.id) || newId(),
+          name: asString(g.name, "Course"),
+          credits:
+            Number.isInteger(credits) && credits >= GPA_MIN_CREDITS && credits <= GPA_MAX_CREDITS
+              ? credits
+              : GPA_DEFAULT_CREDITS,
+          grade: typeof g.grade === "string" && g.grade ? g.grade : null,
+        };
+      })
+    : defaultGpaCourses();
   const settings: Record<string, unknown> = isObject(raw.settings) ? raw.settings : {};
   const activeId = asString(raw.activeCourseId);
 
@@ -141,6 +170,7 @@ function normalize(raw: unknown): AppData {
     version: DATA_VERSION,
     courses,
     activeCourseId: courses.some((c) => c.id === activeId) ? activeId : (courses[0]?.id ?? null),
+    gpaCourses,
     semesters,
     settings: {
       gradeScale: normalizeScale(settings.gradeScale),
@@ -251,6 +281,29 @@ export function updateCourse(id: string, mutate: (course: Course) => void) {
   updateData((d) => {
     const course = d.courses.find((c) => c.id === id);
     if (course) mutate(course);
+  });
+}
+
+/** New courses take the lowest free number: with Course 2-6 left, the next one is Course 1. */
+export function addGpaCourse() {
+  updateData((d) => {
+    const taken = new Set(d.gpaCourses.map((c) => c.name.trim().toLowerCase()));
+    let n = 1;
+    while (taken.has(`course ${n}`)) n += 1;
+    d.gpaCourses.push(createGpaCourse(`Course ${n}`));
+  });
+}
+
+export function updateGpaCourse(id: string, mutate: (course: GpaCourse) => void) {
+  updateData((d) => {
+    const course = d.gpaCourses.find((c) => c.id === id);
+    if (course) mutate(course);
+  });
+}
+
+export function removeGpaCourse(id: string) {
+  updateData((d) => {
+    d.gpaCourses = d.gpaCourses.filter((c) => c.id !== id);
   });
 }
 

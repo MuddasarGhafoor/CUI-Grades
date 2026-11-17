@@ -2,23 +2,23 @@
 
 import Link from "next/link";
 import { Icon } from "@/components/ui/icons";
-import { cumulativeGpa, semesterGpa } from "@/lib/calc";
+import { cumulativeGpa } from "@/lib/calc";
 import { formatGpa } from "@/lib/format";
+import { gpaPageResult } from "@/lib/gpa";
 import { useAppData } from "@/lib/store";
 
 /**
- * A single compact row under the hero tagline: saved subjects, semester GPA and CGPA.
+ * A single compact row under the hero tagline: Internal Marks subjects, the GPA page's
+ * semester GPA, and the CGPA page's CGPA. Each page keeps its own data.
  * Renders nothing for first-time visitors, so the hero stays clean.
  */
 export function SavedProgress() {
   const data = useAppData();
-  if (data.courses.length === 0 && data.semesters.length === 0) return null;
+  const hasGpaGrades = data.gpaCourses.some((c) => c.grade);
+  if (data.courses.length === 0 && data.semesters.length === 0 && !hasGpaGrades) return null;
 
-  const semester = semesterGpa(data.courses, data.settings.gradeScale);
-  const overall = cumulativeGpa(
-    data.semesters,
-    data.settings.includeCurrentSemester ? semester : undefined,
-  );
+  const semester = gpaPageResult(data.gpaCourses, data.settings.gradeScale).gpa;
+  const overall = cumulativeGpa(data.semesters);
 
   const stats = [
     { label: "Subjects", value: String(data.courses.length), tone: "text-tone-teal" },

@@ -1,79 +1,57 @@
 "use client";
 
-import { useState } from "react";
-import { buttonClass } from "@/components/ui/button";
-import { SectionCard } from "@/components/ui/section-card";
-import { courseResult, effectiveGrade, weightedGpa } from "@/lib/calc";
-import { useAppData } from "@/lib/store";
+import { Icon } from "@/components/ui/icons";
+import { gpaPageResult } from "@/lib/gpa";
+import { addGpaCourse, useAppData } from "@/lib/store";
 import { useIsClient } from "@/lib/use-is-client";
-import { AddGradedSubject } from "./add-graded-subject";
-import { GpaSummary } from "./gpa-summary";
-import { SubjectRow } from "./subject-row";
+import { GpaColumnsHeader, GpaCourseRow } from "./gpa-course-row";
+import { GpaResult } from "./gpa-result";
+import { GPA_MAIN_WIDTH } from "./layout";
 
-/** Two sections: subjects on the left, the GPA results panel on the right. */
+/**
+ * GPA page: its own courses (not linked to Internal Marks), six to start with.
+ * Courses on top, the grading section underneath.
+ */
 export function GpaApp() {
   const isClient = useIsClient();
   const data = useAppData();
-  const [adding, setAdding] = useState(false);
 
   if (!isClient) {
     return <div aria-hidden="true" className="card h-72" />;
   }
 
   const scale = data.settings.gradeScale;
-  const rows = data.courses.map((course) => {
-    const result = courseResult(course, scale);
-    return { course, result, grade: effectiveGrade(course, result, scale) };
-  });
-  const gpa = weightedGpa(rows.map((r) => ({ credits: r.result.credits, points: r.grade?.points ?? null })));
-  const totalCredits = rows.reduce((sum, r) => sum + r.result.credits, 0);
-  const ungraded = rows.filter((r) => !r.grade).length;
-  const showForm = adding || rows.length === 0;
+  const result = gpaPageResult(data.gpaCourses, scale);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
-      <SectionCard
-        title="Subjects"
-        bodyClassName=""
-        actions={
-          !showForm && (
-            <button type="button" onClick={() => setAdding(true)} className={buttonClass("secondary", "sm")}>
-              + Add Subject
-            </button>
-          )
-        }
-      >
-        {rows.length > 0 && (
-          <ul className="divide-y divide-line">
-            {rows.map((r) => (
-              <SubjectRow key={r.course.id} course={r.course} result={r.result} grade={r.grade} scale={scale} />
-            ))}
-          </ul>
-        )}
+    <div className="space-y-4">
+      <section aria-label="Courses" className={`card mx-auto w-full overflow-hidden ${GPA_MAIN_WIDTH}`}>
+        <header className="flex items-center justify-between gap-3 border-b border-line px-4 py-2">
+          <h2 className="text-sm font-semibold">
+            Courses
+            <span className="ml-2 text-xs font-normal text-muted">{data.gpaCourses.length}</span>
+          </h2>
+          <button
+            type="button"
+            onClick={addGpaCourse}
+            aria-label="Add course"
+            title="Add course"
+            className="grid size-8 place-items-center rounded-md text-tone-blue transition-colors hover:bg-tone-blue/10"
+          >
+            <Icon name="plus" size={17} />
+          </button>
+        </header>
 
-        {showForm && (
-          <div className={`px-4 py-4 sm:px-5 ${rows.length > 0 ? "border-t border-line bg-surface-2/30" : ""}`}>
-            <AddGradedSubject
-              fallbackName={`Subject ${rows.length + 1}`}
-              scale={scale}
-              onDone={() => setAdding(false)}
-              onCancel={rows.length > 0 ? () => setAdding(false) : undefined}
-            />
-          </div>
+        <GpaColumnsHeader />
+        {data.gpaCourses.map((course) => (
+          <GpaCourseRow key={course.id} course={course} scale={scale} />
+        ))}
+        {data.gpaCourses.length === 0 && (
+          <p className="px-4 py-6 text-center text-[13px] text-muted">No courses. Press + to add one.</p>
         )}
-      </SectionCard>
+      </section>
 
-      <GpaSummary
-        gpa={gpa}
-        totalCredits={totalCredits}
-        ungraded={ungraded}
-        bars={rows.map((r) => ({
-          id: r.course.id,
-          name: r.course.name,
-          percent: r.result.percent,
-          letter: r.result.gradeFromMarks?.letter ?? null,
-        }))}
-      />
+      <GpaResult result={result} />
     </div>
   );
 }

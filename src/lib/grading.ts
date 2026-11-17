@@ -62,3 +62,21 @@ export function bandForLetter(letter: string, scale: GradeBand[] = CUI_GRADE_SCA
 export function isPassingPercent(percent: number): boolean {
   return roundPercent(percent) >= PASS_PERCENT;
 }
+
+/**
+ * Percentage range of each grade, by letter: "85-100", "80-84", ... "Below 50".
+ * Ranges run from a band's minimum up to one below the next band's minimum.
+ */
+export function bandRanges(scale: GradeBand[] = CUI_GRADE_SCALE): Record<string, string> {
+  const sorted = sortScale(scale);
+  const ranges: Record<string, string> = {};
+  sorted.forEach((band, i) => {
+    if (i === 0) ranges[band.letter] = `${band.min}-100`;
+    else if (band.min === 0) ranges[band.letter] = `Below ${sorted[i - 1].min}`;
+    else {
+      const upper = sorted[i - 1].min - 1;
+      ranges[band.letter] = upper === band.min ? `${band.min}` : `${band.min}-${upper}`;
+    }
+  });
+  return ranges;
+}

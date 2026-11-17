@@ -17,6 +17,8 @@ export type SelectOption<T extends string | number> = {
   label: string;
   /** Small text on the right of the option, e.g. grade points. */
   hint?: string;
+  /** Show the option as aligned columns instead of label + hint (see optionGrid / menuColumns). */
+  columns?: string[];
   disabled?: boolean;
 };
 
@@ -35,6 +37,12 @@ type SelectProps<T extends string | number> = {
   align?: "start" | "end";
   className?: string;
   buttonClassName?: string;
+  /** Which side the selected tick sits on. */
+  checkSide?: "left" | "right";
+  /** Grid template for options that use `columns`, e.g. "grid-cols-[3rem_2.5rem_1fr]". */
+  optionGrid?: string;
+  /** Column titles shown above the options, lined up with `optionGrid`. */
+  menuColumns?: string[];
 };
 
 type Position = { top: number; left: number; width: number; up: boolean };
@@ -58,6 +66,9 @@ export function Select<T extends string | number>({
   align = "start",
   className = "",
   buttonClassName = "",
+  checkSide = "right",
+  optionGrid = "",
+  menuColumns,
 }: SelectProps<T>) {
   const id = useId();
   const buttonId = `${id}-button`;
@@ -243,8 +254,25 @@ export function Select<T extends string | number>({
             style={{ top: position.top, left: position.left, minWidth: position.width, transform }}
             className="fixed z-50 max-h-64 overflow-y-auto rounded-lg border border-line-strong bg-surface p-1 text-[13px] text-fg shadow-pop outline-none"
           >
+            {menuColumns && (
+              <li
+                role="presentation"
+                className="mb-1 flex select-none items-center gap-3 border-b border-line px-2 pb-1.5 pt-0.5 text-[11px] font-medium text-muted"
+              >
+                {checkSide === "left" && <span className="w-[15px] shrink-0" />}
+                <span className={`grid flex-1 gap-3 ${optionGrid}`}>
+                  {menuColumns.map((title) => (
+                    <span key={title}>{title}</span>
+                  ))}
+                </span>
+                {checkSide === "right" && <span className="w-[15px] shrink-0" />}
+              </li>
+            )}
             {options.map((option, i) => {
               const isSelected = option.value === value;
+              const check = (
+                <Icon name="check" size={15} className={`shrink-0 text-accent ${isSelected ? "" : "invisible"}`} />
+              );
               return (
                 <li
                   key={String(option.value)}
@@ -259,13 +287,20 @@ export function Select<T extends string | number>({
                     option.disabled ? "cursor-not-allowed text-muted/50" : ""
                   } ${i === active && !option.disabled ? "bg-surface-2" : ""}`}
                 >
-                  <span className={`flex-1 ${isSelected ? "font-semibold" : ""}`}>{option.label}</span>
+                  {checkSide === "left" && check}
+                  {option.columns ? (
+                    <span className={`grid flex-1 items-center gap-3 tabular-nums ${optionGrid}`}>
+                      {option.columns.map((text, ci) => (
+                        <span key={ci} className={isSelected ? "font-semibold" : ci === 0 ? "" : "text-muted"}>
+                          {text}
+                        </span>
+                      ))}
+                    </span>
+                  ) : (
+                    <span className={`flex-1 ${isSelected ? "font-semibold" : ""}`}>{option.label}</span>
+                  )}
                   {option.hint && <span className="text-xs tabular-nums text-muted">{option.hint}</span>}
-                  <Icon
-                    name="check"
-                    size={15}
-                    className={`shrink-0 text-accent ${isSelected ? "" : "invisible"}`}
-                  />
+                  {checkSide === "right" && check}
                 </li>
               );
             })}

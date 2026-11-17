@@ -1,25 +1,20 @@
-import {
-  cgpaTimeline,
-  courseResult,
-  effectiveGrade,
-  semesterGpa,
-  type GpaResult,
-  type TimelinePoint,
-} from "./calc";
+import { cgpaTimeline, type GpaResult, type TimelinePoint } from "./calc";
+import { gpaPageResult } from "./gpa";
 import type { AppData } from "./types";
 
-/** Everything the exported result card and print sheet show, worked out once. */
+/**
+ * Everything the exported result card and print sheet show, worked out once.
+ * Courses and the semester GPA come from the GPA page; the CGPA from the CGPA page's semesters.
+ */
 
 export type ResultSubject = {
   id: string;
   name: string;
   credits: number;
-  /** "3+1" style. */
-  creditSplit: string;
-  percent: number | null;
+  /** Percentage range of the grade, e.g. "75-79", or null without a grade. */
+  range: string | null;
   letter: string | null;
   points: number | null;
-  manual: boolean;
 };
 
 export type ResultSummary = {
@@ -32,33 +27,22 @@ export type ResultSummary = {
 };
 
 export function buildResultSummary(data: AppData): ResultSummary {
-  const scale = data.settings.gradeScale;
-  const subjects = data.courses.map((course) => {
-    const result = courseResult(course, scale);
-    const grade = effectiveGrade(course, result, scale);
-    return {
-      id: course.id,
-      name: course.name,
-      credits: result.credits,
-      creditSplit: `${course.theoryCredits}+${course.labCredits}`,
-      percent: result.percent,
-      letter: grade?.letter ?? null,
-      points: grade?.points ?? null,
-      manual: grade?.source === "manual",
-    };
-  });
+  const page = gpaPageResult(data.gpaCourses, data.settings.gradeScale);
+  const subjects = page.rows.map(({ course, band, range }) => ({
+    id: course.id,
+    name: course.name,
+    credits: course.credits,
+    range,
+    letter: band?.letter ?? null,
+    points: band?.points ?? null,
+  }));
 
-  const semester = semesterGpa(data.courses, scale);
-  const timeline = cgpaTimeline(
-    data.semesters,
-    data.settings.includeCurrentSemester
-      ? { id: "current-semester", label: "This Semester", result: semester }
-      : undefined,
-  );
+  // The GPA page is kept separate from the CGPA page, so the CGPA uses its own semesters only.
+  const timeline = cgpaTimeline(data.semesters);
 
   return {
     subjects,
-    semester,
+    semester: page.gpa,
     timeline,
     cgpa: timeline.at(-1)?.cgpa ?? null,
     cgpaCredits: timeline.reduce((sum, p) => sum + p.credits, 0),

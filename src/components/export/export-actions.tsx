@@ -17,7 +17,8 @@ export function ExportActions() {
   const [error, setError] = useState<string | null>(null);
 
   if (!isClient) return null;
-  const empty = data.courses.length === 0 && data.semesters.length === 0;
+  // Nothing to export until a GPA course has a grade or a semester is added.
+  const empty = !data.gpaCourses.some((c) => c.grade) && data.semesters.length === 0;
 
   async function saveImage() {
     setBusy(true);

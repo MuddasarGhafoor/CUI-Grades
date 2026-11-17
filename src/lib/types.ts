@@ -19,6 +19,16 @@ export type Course = {
   manualGrade: string | null;
 };
 
+/** A course on the GPA page. Separate from the Internal Marks subjects. */
+export type GpaCourse = {
+  id: string;
+  name: string;
+  /** 1 to 4. */
+  credits: number;
+  /** Letter grade picked from the CUI scale, or null when not chosen yet. */
+  grade: string | null;
+};
+
 /** A finished semester on the CGPA page. */
 export type Semester = {
   id: string;
@@ -41,6 +51,8 @@ export type AppData = {
   version: 1;
   courses: Course[];
   activeCourseId: string | null;
+  /** Courses on the GPA page. */
+  gpaCourses: GpaCourse[];
   semesters: Semester[];
   settings: Settings;
 };
