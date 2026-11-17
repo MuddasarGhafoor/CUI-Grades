@@ -4,7 +4,7 @@ import type { PartResult } from "@/lib/calc";
 import { formatCredits } from "@/lib/format";
 import { TONE_CLASS } from "@/lib/tones";
 import type { Course } from "@/lib/types";
-import { ComponentBlock, LabQuizPlaceholder } from "./component-block";
+import { ComponentBlock, ComponentColumnsHeader, LabQuizPlaceholder } from "./component-block";
 
 type PartCardProps = {
   course: Course;
@@ -25,6 +25,7 @@ export function PartCard({ course, part }: PartCardProps) {
           {formatCredits(part.credits)}
         </span>
       </header>
+      <ComponentColumnsHeader />
       {isLab && <LabQuizPlaceholder />}
       {part.components.map((component) => (
         <ComponentBlock key={component.def.key} course={course} def={component.def} result={component} />

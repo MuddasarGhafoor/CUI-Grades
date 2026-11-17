@@ -24,7 +24,13 @@ export type TargetEntry = {
   total: number;
 };
 
-export type TargetComponent = { def: ComponentDef; entries: TargetEntry[] };
+export type TargetComponent = {
+  def: ComponentDef;
+  entries: TargetEntry[];
+  /** Sum of valid marks, and sum of every box's total (filled or empty). */
+  obtained: number;
+  allTotals: number;
+};
 export type TargetPart = { part: Part; credits: number; components: TargetComponent[] };
 
 /**
@@ -44,6 +50,7 @@ export type TargetRow = {
 
 export type TargetResult = {
   parts: TargetPart[];
+  totalCredits: number;
   /** Passing grades from best to worst. */
   rows: TargetRow[];
   /** Number of empty boxes still to come. */
@@ -86,7 +93,7 @@ export function finalTargets(course: Course, scale: GradeBand[]): TargetResult |
       let allTotals = 0;
       let emptySum = 0;
 
-      const entries: TargetEntry[] = marks.map((mark) => {
+      const entries = marks.map((mark): TargetEntry => {
         const parsedTotal = parseNumber(mark.total);
         const total = parsedTotal !== null && parsedTotal > 0 ? parsedTotal : def.defaultTotal;
         const read = readMark(mark);
@@ -109,7 +116,7 @@ export function finalTargets(course: Course, scale: GradeBand[]): TargetResult |
         known += (credits * def.weight * obtained) / allTotals;
         open += (credits * def.weight * emptySum) / allTotals;
       }
-      return { def, entries };
+      return { def, entries, obtained, allTotals };
     }),
   }));
 
@@ -119,7 +126,7 @@ export function finalTargets(course: Course, scale: GradeBand[]): TargetResult |
   const maxPercent = (known + open) / totalCredits;
   const bands = sortScale(scale).filter((band) => band.min > 0);
 
-  const rows: TargetRow[] = bands.map((band) => {
+  const rows = bands.map((band): TargetRow => {
     if (complete) {
       return { band, status: band.letter === currentGrade.letter ? "achieved" : "out-of-reach", x: 0 };
     }
@@ -133,6 +140,7 @@ export function finalTargets(course: Course, scale: GradeBand[]): TargetResult |
 
   return {
     parts,
+    totalCredits,
     rows,
     remaining: emptyTotals.length,
     complete,
@@ -141,4 +149,24 @@ export function finalTargets(course: Course, scale: GradeBand[]): TargetResult |
     maxPercent,
     maxGrade: gradeForPercent(maxPercent, scale),
   };
+}
+
+/**
+ * The exact course percentage if every empty box gets the marks shown for this target
+ * (already rounded up to half marks), with filled boxes as they are. Secured grades assume 0
+ * in the empty boxes, and once everything is filled in it is simply the final result.
+ */
+export function projectedPercent(target: TargetResult, row: TargetRow | null): number {
+  if (target.complete || !row || row.status !== "possible") return target.currentPercent;
+  let sum = 0;
+  for (const part of target.parts) {
+    for (const component of part.components) {
+      if (component.allTotals <= 0) continue;
+      const added = component.entries
+        .filter((entry) => entry.state === "todo")
+        .reduce((total, entry) => total + neededMarks(row, entry.total), 0);
+      sum += (part.credits * component.def.weight * (component.obtained + added)) / component.allTotals;
+    }
+  }
+  return sum / target.totalCredits;
 }

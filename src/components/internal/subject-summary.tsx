@@ -7,14 +7,14 @@ import { ComponentBars } from "./breakdown-bar";
 function PartSummary({ part }: { part: PartResult }) {
   return (
     <div className="min-w-0 px-4 py-3 lg:flex-1">
-      <div className="flex items-baseline justify-between gap-3">
+      <div className="flex items-baseline justify-between gap-3 border-b border-line pb-2">
         <h3 className="text-[13px] font-semibold">{part.part === "theory" ? "Theory" : "Lab"}</h3>
         <p className="text-[13px] tabular-nums">
           <span className="font-semibold">{formatMarks(part.marks)}</span>
           <span className="text-muted">/100</span>
         </p>
       </div>
-      <div className="mt-2">
+      <div className="mt-2.5">
         <ComponentBars part={part} />
       </div>
     </div>

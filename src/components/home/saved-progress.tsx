@@ -27,7 +27,7 @@ export function SavedProgress() {
   ];
 
   return (
-    <section aria-label="Saved progress" className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+    <section aria-label="Saved progress" className="mt-6 flex max-w-xl flex-col items-start gap-3 border-t border-line pt-5">
       <dl className="flex divide-x divide-line">
         {stats.map((stat) => (
           <div key={stat.label} className="px-4 first:pl-0">

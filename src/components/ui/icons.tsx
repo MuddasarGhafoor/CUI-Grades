@@ -39,6 +39,12 @@ const PATHS = {
   chevronUpDown: <path d="m8 9 4-4 4 4M8 15l4 4 4-4" />,
   check: <path d="M5 12.5 10 17l9-10" />,
   plus: <path d="M12 5v14M5 12h14" />,
+  pencil: (
+    <>
+      <path d="M4 20h4L19 9l-4-4L4 16v4z" />
+      <path d="m13.5 6.5 4 4" />
+    </>
+  ),
   book: (
     <>
       <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z" />
